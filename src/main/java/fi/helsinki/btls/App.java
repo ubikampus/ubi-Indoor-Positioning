@@ -3,15 +3,48 @@
  */
 package fi.helsinki.btls;
 
+import fi.helsinki.ubimqtt.IUbiActionListener;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
 import fi.helsinki.ubimqtt.UbiMqtt;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+    public static void main(String[] args) throws Exception {
+        UbiMqtt mqtt = new UbiMqtt("iot.ubikampus.net");
 
-    public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
-        UbiMqtt u = new UbiMqtt();
+        IUbiMessageListener messageListener = new IUbiMessageListener() {
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
+                System.out.println("Topic " + topic + " Message: " + mqttMessage.toString());
+            }
+        };
+
+        IUbiActionListener subscriptionListener = new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                System.out.println("subscribed");
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                System.out.println("Connection failed");
+            }
+        };
+
+        IUbiActionListener connectionListener = new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                System.out.println("connected");
+                mqtt.subscribe("ohtu/test", messageListener, subscriptionListener);
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                System.out.println("Connection failed");
+            }
+        };
+
+        mqtt.connect(connectionListener);
     }
 }
