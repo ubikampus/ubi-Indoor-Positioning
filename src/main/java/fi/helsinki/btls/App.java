@@ -3,6 +3,8 @@
  */
 package fi.helsinki.btls;
 
+import fi.helsinki.ubimqtt.UbiMqtt;
+
 public class App {
     public String getGreeting() {
         return "Hello world.";
@@ -10,5 +12,6 @@ public class App {
 
     public static void main(String[] args) {
         System.out.println(new App().getGreeting());
+        UbiMqtt u = new UbiMqtt();
     }
 }
