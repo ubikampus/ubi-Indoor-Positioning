@@ -18,3 +18,17 @@ gradle-app.setting
 *.db
 /out
 *.iml
+
+nbactions-release-profile.xml
+nbactions.xml
+dependency-reduced-pom.xml
+.tmcproject.yml
+
+.nb-gradle
+.settings
+*~
+/bin
+*.log
+local.properties
+*.zip
+.DS_Store
