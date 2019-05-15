@@ -30,7 +30,16 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            excludes = [
+                    'fi.helsinki.btls.io.*',
+                    'fi.helsinki.btls.App'
+            ]
+        }
+    }
+}
 
 // Define the main class for the application
 mainClassName = 'fi.helsinki.btls.App'
