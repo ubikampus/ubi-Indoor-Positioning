@@ -16,4 +16,5 @@ script:
   - docker-compose run btls ./gradlew check
 
 after_success:
-  - docker-compose run btls bash -c "bash <(curl -s https://codecov.io/bash)"
+  - ci_env=`bash <(curl -s https://codecov.io/env)`
+  - docker-compose run btls $ci_env bash -c "bash <(curl -s https://codecov.io/bash)"
