@@ -1,4 +1,4 @@
 /**
- * Package to contain Utility classes.
+ * Package to contain utility classes.
  */
 package fi.helsinki.btls.utils;

@@ -1,19 +1,17 @@
 package fi.helsinki.btls.utils;
 
-import java.io.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.Map;
-import org.junit.After;
-import org.junit.Rule;
-import org.junit.rules.TemporaryFolder;
-
-import java.util.Scanner;
-
 import static org.junit.Assert.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import java.io.*;
+import java.util.Map;
 
+/**
+ * Tests for properties file handler class.
+ */
 public class PropertiesHandlerTest {
     private File tempConfig;
 
