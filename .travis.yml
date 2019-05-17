@@ -17,4 +17,5 @@ script:
 
 after_success:
   - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker-compose run btls $ci_env bash -c "bash <(curl -s https://codecov.io/bash)"
+  - docker run $ci_env btls
+  - bash <(curl -s https://codecov.io/bash)
