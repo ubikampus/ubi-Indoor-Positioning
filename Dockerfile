@@ -1,8 +1,7 @@
-FROM openjdk
+FROM openjdk:11.0.3-stretch
 
 WORKDIR /app
 COPY . /app
-RUN cd /app
 RUN ./gradlew compileJava
 
 CMD ["./gradlew", "run"]

@@ -9,6 +9,7 @@ import fi.helsinki.ubimqtt.UbiMqtt;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        System.out.println("Hello from docker");
         PropertiesHandler handler = new PropertiesHandler("config.properties");
         UbiMqtt mqtt = new UbiMqtt(handler.getProperty("mqttUrl"));
         mqtt.connect(new ConnectionListener(mqtt, "ohtu/test"));
