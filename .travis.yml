@@ -3,6 +3,9 @@ sudo: required
 services:
   - docker
 
+env:
+  - DOCKER_COMPOSE_VERSION=3.5
+
 install:
   - docker-compose build
 
