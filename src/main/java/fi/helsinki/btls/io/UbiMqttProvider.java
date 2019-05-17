@@ -8,24 +8,29 @@ import fi.helsinki.ubimqtt.UbiMqtt;
 /**
  * Wrapper for UbiMqtt class.
  */
-public class MqttProvider {
+public class UbiMqttProvider implements IMqttProvider {
     private final UbiMqtt instance;
     private final String topic;
-    private final IUbiMessageListener listener;
+    private IUbiMessageListener listener;
 
     /**
      * Wrapper for UbiMqtt class.
      * @param topic topic to listen
      * @param listener IUbiMessageListener fro subscribing
      */
-    public MqttProvider(String topic, IUbiMessageListener listener) {
+    public UbiMqttProvider(String topic) {
         this.topic = topic;
-        this.listener = listener;
         instance  = new UbiMqtt("iot.ubikampus.net");
-        connect();
     }
 
-    private void connect() {
+    /**
+     * Connects to Mqtt bus.
+     */
+    @Override
+    public void connect() {
+        if (listener == null) {
+            throw new NullPointerException("MessageListener not set");
+        }
         instance.connect(new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
@@ -54,6 +59,7 @@ public class MqttProvider {
      * Publish message.
      * @param message
      */
+    @Override
     public void publish(String message) {
         instance.publish(topic, message, new IUbiActionListener() {
             @Override
@@ -66,6 +72,15 @@ public class MqttProvider {
                 System.out.println("Publish to " + topic + " failed");
             }
         });
+    }
+
+    /**
+     * Adds IUbiMessageListener.
+     * @param listener listener to add.
+     */
+    @Override
+    public void setListener(IUbiMessageListener listener) {
+        this.listener = listener;
     }
 
 }

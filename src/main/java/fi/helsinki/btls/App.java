@@ -7,11 +7,13 @@ import com.google.gson.Gson;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.MessageListener;
-import fi.helsinki.btls.io.MqttProvider;
+import fi.helsinki.btls.io.UbiMqttProvider;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        MqttProvider provider = new MqttProvider("ohtu/test", new MessageListener());
+        UbiMqttProvider provider = new UbiMqttProvider("ohtu/test");
+        provider.setListener(new MessageListener());
+        provider.connect();
 
         String json = "{ 'raspId':'f8fe6w739fweuy', 'beaconId':'s6383f47f364', 'volume':129 }";
         Gson gson = new Gson();
