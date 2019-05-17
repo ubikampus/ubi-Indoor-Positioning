@@ -13,9 +13,11 @@ install:
   - docker-compose build
 
 script:
-  - docker-compose run btls ./gradlew check
+  - ci_env=`bash <(curl -s https://codecov.io/env)`
+
+  - docker-compose run -e $ci_env btls bash
+  - ./gradlew assemble
+  - ./gradlew check
 
 after_success:
-  - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker run $ci_env btls
   - bash <(curl -s https://codecov.io/bash)
