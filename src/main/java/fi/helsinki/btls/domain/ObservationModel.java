@@ -1,5 +1,8 @@
 package fi.helsinki.btls.domain;
 
+/**
+ * Model class for observation data.
+ */
 public class ObservationModel {
     private String raspId;
     private String beaconId;

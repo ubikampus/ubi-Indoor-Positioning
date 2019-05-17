@@ -1,5 +1,8 @@
 package fi.helsinki.btls.domain;
 
+/**
+ * Model class for location data.
+ */
 public class LocationModel {
     private String beaconId;
     private long x;
@@ -60,6 +63,7 @@ public class LocationModel {
 
     @Override
     public String toString() {
-        return "{ 'beaconId':'" + beaconId + "', 'x':" + x + ", 'y':" + y + ", 'xr':" + xr + ", 'yr':" + yr + " }";
+        return "{ 'beaconId':'" + beaconId + "', 'x':" + x + ", 'y':" + y +
+                ", 'xr':" + xr + ", 'yr':" + yr + " }";
     }
 }
