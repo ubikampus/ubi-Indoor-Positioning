@@ -4,12 +4,16 @@
 package fi.helsinki.btls;
 
 import fi.helsinki.btls.io.ConnectionListener;
+import fi.helsinki.btls.io.MessageListener;
+import fi.helsinki.btls.io.MqttProvider;
 import fi.helsinki.ubimqtt.UbiMqtt;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        UbiMqtt mqtt = new UbiMqtt("iot.ubikampus.net");
-        ConnectionListener connectionListener = new ConnectionListener(mqtt, "ohtu/test");
-        mqtt.connect(connectionListener);
+        MqttProvider provider = new MqttProvider("ohtu/test", new MessageListener());
+        //UbiMqtt mqtt = new UbiMqtt("iot.ubikampus.net");
+        //ConnectionListener connectionListener = new ConnectionListener(mqtt, "ohtu/test");
+        //mqtt.connect(connectionListener);
+
     }
 }
