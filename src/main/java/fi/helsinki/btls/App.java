@@ -6,10 +6,8 @@ package fi.helsinki.btls;
 import com.google.gson.Gson;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
-import fi.helsinki.btls.io.ConnectionListener;
 import fi.helsinki.btls.io.MessageListener;
 import fi.helsinki.btls.io.MqttProvider;
-import fi.helsinki.ubimqtt.UbiMqtt;
 
 public class App {
     public static void main(String[] args) throws Exception {
@@ -28,8 +26,5 @@ public class App {
         LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
         System.out.println(model);
 
-        UbiMqtt mqtt = new UbiMqtt("iot.ubikampus.net");
-        ConnectionListener connectionListener = new ConnectionListener(mqtt, "ohtu/test");
-        mqtt.connect(connectionListener);
     }
 }
