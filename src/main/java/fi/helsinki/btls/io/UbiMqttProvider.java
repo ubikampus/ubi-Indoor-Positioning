@@ -16,7 +16,6 @@ public class UbiMqttProvider implements IMqttProvider {
     /**
      * Wrapper for UbiMqtt class.
      * @param topic topic to listen
-     * @param listener IUbiMessageListener fro subscribing
      */
     public UbiMqttProvider(String topic) {
         this.topic = topic;
