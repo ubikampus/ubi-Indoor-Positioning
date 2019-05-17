@@ -16,4 +16,6 @@ script:
   - docker-compose run btls ./gradlew check
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - docker-compose run btls apt-get update
+  - docker-compose run btls apt-get install curl
+  - docker-compose run btls bash <(curl -s https://codecov.io/bash)
