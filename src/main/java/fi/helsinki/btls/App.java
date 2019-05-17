@@ -3,13 +3,29 @@
  */
 package fi.helsinki.btls;
 
+import com.google.gson.Gson;
+import fi.helsinki.btls.domain.LocationModel;
+import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.ConnectionListener;
 import fi.helsinki.ubimqtt.UbiMqtt;
 
 public class App {
     public static void main(String[] args) throws Exception {
+        String json = "{ 'raspId':'f8fe6w739fweuy', 'beaconId':'s6383f47f364', 'volume':129 }";
+        Gson gson = new Gson();
+        ObservationModel user = gson.fromJson(json, ObservationModel.class);
+
+        System.out.println("Observation json to model:");
+        System.out.println("json: " + json);
+        System.out.println(user);
+
+        System.out.println();
+        System.out.println("LocationModel to json:");
+        LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
+        System.out.println(model);
+        /*
         UbiMqtt mqtt = new UbiMqtt("iot.ubikampus.net");
         ConnectionListener connectionListener = new ConnectionListener(mqtt, "ohtu/test");
-        mqtt.connect(connectionListener);
+        mqtt.connect(connectionListener);*/
     }
 }
