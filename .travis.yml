@@ -5,7 +5,6 @@ services:
 
 env:  
   - DOCKER_COMPOSE_VERSION=3.5
-  - CODECOV=`bash <(curl -s https://codecov.io/env)`
 
 install:
   - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -17,5 +16,4 @@ script:
   - docker-compose run btls ./gradlew check
 
 after_success:
-  - docker-compose run btls ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker-compose run btls $ci_env
+  - docker-compose run btls bash -c "bash <(curl -s https://codecov.io/bash)"
