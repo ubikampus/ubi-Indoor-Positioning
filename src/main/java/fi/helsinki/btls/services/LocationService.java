@@ -1,10 +1,13 @@
 
 package fi.helsinki.btls.services;
 
+import java.util.List;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
-import java.util.List;
 
+/**
+ * Location service class.
+ */
 public class LocationService implements IMqttService{
     
     private String raspId;
@@ -18,7 +21,7 @@ public class LocationService implements IMqttService{
     } 
     
     @Override
-    public List<ObservationModel> getObsercations() throws Exception {
+    public List<ObservationModel> getObservations() throws Exception {
         return null;
     }
 
