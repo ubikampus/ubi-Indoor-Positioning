@@ -26,3 +26,26 @@ TODO
 
 ### Usage
 TODO
+
+### Contributing
+
+Jhoneagle - Joni Kokko
+
+Ajhaa - Atte Haarni 
+
+alemati - Aleksander Matikainen 
+
+andeem - Emil Andersson
+
+je-l  - Jere Lahelma
+
+mriekkin - Matti Riekkinen
+
+### Links
+
+[Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
+
+[Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
+
+
+

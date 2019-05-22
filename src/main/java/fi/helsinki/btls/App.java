@@ -3,15 +3,34 @@
  */
 package fi.helsinki.btls;
 
-import fi.helsinki.btls.io.ConnectionListener;
-import fi.helsinki.btls.utils.PropertiesHandler;
-import fi.helsinki.ubimqtt.UbiMqtt;
+import com.google.gson.Gson;
+import fi.helsinki.btls.io.UbiMqttProvider;
+import fi.helsinki.btls.services.LocationService;
+import fi.helsinki.btls.services.MqttService;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        System.out.println("Hello from docker");
-        PropertiesHandler handler = new PropertiesHandler("config.properties");
-        UbiMqtt mqtt = new UbiMqtt(handler.getProperty("mqttUrl"));
-        mqtt.connect(new ConnectionListener(mqtt, "ohtu/test"));
+        UbiMqttProvider provider = new UbiMqttProvider("ohtu/test");
+        LocationService service = new LocationService(new MqttService(provider, new Gson()));
+
+        while(true) {
+            Thread.sleep(1000);
+
+            service.calculateLocation();
+        }
+
+
+        //String json = "{ 'raspId':'f8fe6w739fweuy', 'beaconId':'s6383f47f364', 'volume':129 }";
+        //Gson gson = new Gson();
+        //ObservationModel user = gson.fromJson(json, ObservationModel.class);
+
+        //System.out.println("Observation json to model:");
+        //System.out.println("json: " + json);
+        //System.out.println(user);
+
+        //System.out.println();
+        //System.out.println("LocationModel to json:");
+        //LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
+        //System.out.println(model);
     }
 }
