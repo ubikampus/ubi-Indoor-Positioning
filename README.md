@@ -12,3 +12,26 @@ TODO
 
 ### Usage
 TODO
+
+### Contributing
+
+Jhoneagle - Joni Kokko
+
+Atte Haarni - 
+
+Aleksander - 
+
+andeem - 
+
+Jere Lahelma - 
+
+mriekkin - 
+
+### Links
+
+[Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
+
+[Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
+
+
+
