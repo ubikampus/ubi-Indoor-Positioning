@@ -17,3 +17,5 @@ services:
       - 1883:1883
       - 9001:9001
     container_name: mqtt
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
