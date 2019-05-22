@@ -32,3 +32,7 @@ dependency-reduced-pom.xml
 local.properties
 *.zip
 .DS_Store
+
+.vscode
+
+config.properties

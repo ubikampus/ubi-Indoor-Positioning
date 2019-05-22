@@ -1,5 +1,21 @@
 language: java
+sudo: required
+services:
+  - docker
+
+env:  
+  - DOCKER_COMPOSE_VERSION=3.5
+
+install:
+  - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  - sudo chmod +x /usr/local/bin/docker-compose
+  - docker-compose --version
+  - docker-compose build
+
+script:
+  - ci_env=`bash <(curl -s https://codecov.io/env)`
+  - docker-compose run $ci_env btls bash -c "./gradlew assemble && ./gradlew check && bash <(curl -s https://codecov.io/bash)"
 jdk:
-  - oraclejdk8
+  - oraclejdk11
 after_success:
   - bash <(curl -s https://codecov.io/bash)

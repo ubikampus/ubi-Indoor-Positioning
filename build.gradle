@@ -10,36 +10,75 @@ plugins {
     // Apply the java plugin to add support for Java
     id 'java'
 
+    //Test Coverage
+    id 'jacoco'
+    
+    // Code style
+    id 'checkstyle'
+
     // Apply the application plugin to add support for building an application
     id 'application'
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+    reportsDir = file("$buildDir/JacocoReports")
 }
 
 repositories {
     // Use jcenter for resolving your dependencies.
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
     // This dependency is found on compile classpath of this component and consumers.
     implementation 'com.google.guava:guava:27.0.1-jre'
+    implementation 'com.github.ubikampus:ubimqttjava:v2.0.5'
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.8.5'
+
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
+
 }
 
-apply plugin: 'jacoco'
+
+test {
+    testLogging.showStandardStreams = true
+    systemProperties System.getProperties()
+}
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 jacocoTestReport {
     reports {
-        xml.enabled = true
-        html.enabled = true
+        xml.enabled true
+        html.enabled true
+    }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'fi/helsinki/btls/App.class'
+            ])
+        })
     }
 }
 
+task stage {
+    dependsOn build
+}
+
+task copyToLib(type: Copy) {
+    into "$buildDir/libs"
+    from(configurations.compile)
+}
+
+stage.dependsOn(copyToLib)
 check.dependsOn jacocoTestReport
 
 // Define the main class for the application
