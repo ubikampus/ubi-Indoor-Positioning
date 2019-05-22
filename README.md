@@ -17,15 +17,15 @@ TODO
 
 Jhoneagle - Joni Kokko
 
-Atte Haarni - 
+Ajhaa - Atte Haarni 
 
-Aleksander - 
+alemati - Aleksander Matikainen 
 
 andeem - Emil Andersson
 
-Jere Lahelma - 
+je-l  - Jere Lahelma
 
-mriekkin - 
+mriekkin - Matti Riekkinen
 
 ### Links
 

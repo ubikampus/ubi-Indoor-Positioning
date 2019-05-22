@@ -5,15 +5,15 @@ package fi.helsinki.btls.domain;
  */
 public class LocationModel {
     private String beaconId;
-    private long x;
-    private long y;
-    private long xr;
-    private long yr;
+    private double x;
+    private double y;
+    private double xr;
+    private double yr;
 
     public LocationModel() {
     }
 
-    public LocationModel(String beaconId, long x, long y, long xr, long yr) {
+    public LocationModel(String beaconId, double x, double y, double xr, double yr) {
         this.beaconId = beaconId;
         this.x = x;
         this.y = y;
@@ -29,35 +29,35 @@ public class LocationModel {
         this.beaconId = beaconId;
     }
 
-    public long getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(long x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public long getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(long y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public long getXr() {
+    public double getXr() {
         return xr;
     }
 
-    public void setXr(long xr) {
+    public void setXr(double xr) {
         this.xr = xr;
     }
 
-    public long getYr() {
+    public double getYr() {
         return yr;
     }
 
-    public void setYr(long yr) {
+    public void setYr(double yr) {
         this.yr = yr;
     }
 

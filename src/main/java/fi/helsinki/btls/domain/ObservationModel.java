@@ -6,12 +6,12 @@ package fi.helsinki.btls.domain;
 public class ObservationModel {
     private String raspId;
     private String beaconId;
-    private long volume;
+    private double volume;
 
     public ObservationModel() {
     }
 
-    public ObservationModel(String raspId, String beaconId, long volume) {
+    public ObservationModel(String raspId, String beaconId, double volume) {
         this.raspId = raspId;
         this.beaconId = beaconId;
         this.volume = volume;
@@ -33,11 +33,11 @@ public class ObservationModel {
         this.beaconId = beaconId;
     }
 
-    public long getVolume() {
+    public double getVolume() {
         return volume;
     }
 
-    public void setVolume(long volume) {
+    public void setVolume(double volume) {
         this.volume = volume;
     }
 
