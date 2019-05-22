@@ -8,25 +8,18 @@ import fi.helsinki.btls.domain.ObservationModel;
 /**
  * Location service class.
  */
-public class LocationService implements IMqttService{
+public class LocationService {
     
-    private String raspId;
-    private String beaconId;
-    private long volume;
+    private IMqttService service;
     
-    public LocationService(String raspId, String beaconId, long volume) {
-        this.raspId = raspId;
-        this.beaconId = beaconId;
-        this.volume = volume;
-    } 
-    
-    @Override
-    public List<ObservationModel> getObservations() throws Exception {
-        return null;
+    public LocationService(IMqttService service) {
+        this.service = service;
     }
 
-    @Override
-    public void publish(LocationModel locationModel) {
-        
-    }   
+    public void CalculateLocation() throws Exception {
+        List<ObservationModel> obs = service.getObservations();
+        service.publish(new LocationModel("beacon", 1, 1, 1, 1));
+    }
+    
+
 }
