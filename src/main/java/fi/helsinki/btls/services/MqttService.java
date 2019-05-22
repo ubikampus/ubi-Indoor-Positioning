@@ -1,13 +1,12 @@
 package fi.helsinki.btls.services;
 
-import java.util.List;
-
 import com.google.gson.Gson;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import java.util.List;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  * MqttService.

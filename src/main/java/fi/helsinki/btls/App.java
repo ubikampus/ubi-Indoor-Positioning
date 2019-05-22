@@ -16,7 +16,7 @@ public class App {
         while(true) {
             Thread.sleep(1000);
 
-            service.CalculateLocation();
+            service.calculateLocation();
         }
 
 

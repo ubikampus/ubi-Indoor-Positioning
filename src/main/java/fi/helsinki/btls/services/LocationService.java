@@ -16,9 +16,17 @@ public class LocationService {
         this.service = service;
     }
 
-    public void CalculateLocation() throws Exception {
+    public void calculateLocation() throws Exception {
         List<ObservationModel> obs = service.getObservations();
-        service.publish(new LocationModel("beacon", 1, 1, 1, 1));
+        if (obs == null || obs.isEmpty()) {
+            service.publish(new LocationModel("beacon", 1, 1, 1, 1));
+        }
+        LocationModel model = new LocationModel(obs.get(obs.size() - 1).getBeaconId(),
+                obs.get(obs.size() - 1).getVolume(),
+                obs.get(obs.size() - 1).getVolume(),
+                obs.get(obs.size() - 1).getVolume(),
+                obs.get(obs.size() - 1).getVolume());
+        service.publish(model);
     }
     
 
