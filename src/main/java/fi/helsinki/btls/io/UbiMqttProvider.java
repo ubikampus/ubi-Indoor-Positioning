@@ -10,16 +10,18 @@ import fi.helsinki.ubimqtt.UbiMqtt;
  */
 public class UbiMqttProvider implements IMqttProvider {
     private final UbiMqtt instance;
-    private final String topic;
+    private final String subscribeTopic;
+    private final String publishTopic;
     private IUbiMessageListener listener;
 
     /**
      * Wrapper for UbiMqtt class.
-     * @param topic topic to listen
+     * @param subscribeTopic subscribeTopic to listen
      */
-    public UbiMqttProvider(String topic) {
-        this.topic = topic;
-        instance  = new UbiMqtt("iot.ubikampus.net");
+    public UbiMqttProvider(String subscribeTopic, String publishTopic) {
+        this.subscribeTopic = subscribeTopic;
+        this.publishTopic = publishTopic;
+        instance  = new UbiMqtt("localhost");
     }
 
     /**
@@ -34,10 +36,10 @@ public class UbiMqttProvider implements IMqttProvider {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
                 System.out.println("Connected to");
-                instance.subscribe(topic, listener, new IUbiActionListener() {
+                instance.subscribe(subscribeTopic, listener, new IUbiActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
-                        System.out.println("Subscribed to " + topic);
+                        System.out.println("Subscribed to " + subscribeTopic);
                     }
 
                     @Override
@@ -60,15 +62,15 @@ public class UbiMqttProvider implements IMqttProvider {
      */
     @Override
     public void publish(String message) {
-        instance.publish(topic, message, new IUbiActionListener() {
+        instance.publish(publishTopic, message, new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                System.out.println("Published message to " + topic);
+                System.out.println("Published message to " + subscribeTopic);
             }
 
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                System.out.println("Publish to " + topic + " failed");
+                System.out.println("Publish to " + subscribeTopic + " failed");
             }
         });
     }

@@ -2,6 +2,8 @@ package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.util.ArrayList;
 import java.util.List;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
@@ -22,13 +24,17 @@ public class MqttService implements IMqttService{
      * @param provider
      */
     public MqttService(IMqttProvider provider, Gson gson) {
-
+        this.observations = new ArrayList<ObservationModel>();
         this.gson = gson;
         this.provider = provider;
         this.provider.setListener(new IUbiMessageListener() {
             @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
-                observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
+            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
+                try {
+                    observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
+                }
             }
         });
         this.provider.connect();
