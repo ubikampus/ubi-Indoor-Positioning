@@ -20,13 +20,14 @@ public class LocationService {
         List<ObservationModel> obs = service.getObservations();
         if (obs == null || obs.isEmpty()) {
             service.publish(new LocationModel("beacon", 1, 1, 1, 1));
+        } else {
+            LocationModel model = new LocationModel(obs.get(obs.size() - 1).getBeaconId(),
+                    obs.get(obs.size() - 1).getVolume(),
+                    obs.get(obs.size() - 1).getVolume(),
+                    obs.get(obs.size() - 1).getVolume(),
+                    obs.get(obs.size() - 1).getVolume());
+            service.publish(model);
         }
-        LocationModel model = new LocationModel(obs.get(obs.size() - 1).getBeaconId(),
-                obs.get(obs.size() - 1).getVolume(),
-                obs.get(obs.size() - 1).getVolume(),
-                obs.get(obs.size() - 1).getVolume(),
-                obs.get(obs.size() - 1).getVolume());
-        service.publish(model);
     }
     
 
