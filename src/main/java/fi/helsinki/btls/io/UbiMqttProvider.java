@@ -65,12 +65,12 @@ public class UbiMqttProvider implements IMqttProvider {
         instance.publish(publishTopic, message, new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                System.out.println("Published message to " + subscribeTopic);
+                System.out.println("Published message to " + publishTopic);
             }
 
             @Override
             public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                System.out.println("Publish to " + subscribeTopic + " failed");
+                System.out.println("Publish to " + publishTopic + " failed");
             }
         });
     }
