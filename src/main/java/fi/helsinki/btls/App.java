@@ -32,6 +32,5 @@ public class App {
         //System.out.println("LocationModel to json:");
         //LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
         //System.out.println(model);
-
     }
 }
