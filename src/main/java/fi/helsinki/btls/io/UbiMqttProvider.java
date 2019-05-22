@@ -1,6 +1,7 @@
 package fi.helsinki.btls.io;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import fi.helsinki.btls.utils.PropertiesHandler;
 import fi.helsinki.ubimqtt.IUbiActionListener;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
 import fi.helsinki.ubimqtt.UbiMqtt;
@@ -21,7 +22,9 @@ public class UbiMqttProvider implements IMqttProvider {
     public UbiMqttProvider(String subscribeTopic, String publishTopic) {
         this.subscribeTopic = subscribeTopic;
         this.publishTopic = publishTopic;
-        instance  = new UbiMqtt("localhost");
+
+        String mqttUrl = new PropertiesHandler("config.properties").getProperty("mqttUrl");
+        instance  = new UbiMqtt(mqttUrl);
     }
 
     /**
