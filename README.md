@@ -41,6 +41,8 @@ je-l  - Jere Lahelma
 
 mriekkin - Matti Riekkinen
 
+reykjaviks - Elizabeth Berg
+
 ### Links
 
 [Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
