@@ -35,22 +35,16 @@ public class MqttServiceTest {
             }
         });
 
-        int i = 10;
-        while (true) {
-            test.connect();
+        test.connect();
 
-            Thread.sleep(3000);
-            if (i == 0) {
-                break;
-            } else {
-                i--;
-            }
-        }
+        Thread.sleep(5000);
     }
 
     @Test
-    public void publishCallsProviderPublish() {
+    public void publishCallsProviderPublish() throws InterruptedException {
         LocationModel location = new LocationModel("raspi", 1, 1, 1, 1);
         service.publish(location);
+
+        Thread.sleep(5000);
     }
 }
