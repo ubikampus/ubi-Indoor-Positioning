@@ -36,7 +36,7 @@ public class MqttServiceTest {
         });
 
         int i = 10;
-        while(true) {
+        while (true) {
             test.connect();
 
             Thread.sleep(3000);
