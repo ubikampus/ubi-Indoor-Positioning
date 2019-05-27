@@ -38,8 +38,6 @@ public class UbiMqttProvider implements IMqttProvider {
         this.publishTopic = handler.getProperty("publishTopic");
 
         String mqttUrl = handler.getProperty("mqttUrl");
-
-        System.out.println(mqttUrl + ", " + subscribeTopic + " and " + publishTopic);
         instance  = new UbiMqtt(mqttUrl);
     }
 

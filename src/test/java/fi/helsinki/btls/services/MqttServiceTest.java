@@ -25,7 +25,7 @@ public class MqttServiceTest {
     }
 
     @Test
-    public void newServiceConnectsAndSubscribes() {
+    public void newServiceConnectsAndSubscribes() throws InterruptedException {
         UbiMqttProvider test = new UbiMqttProvider();
         test.setListener((topic, mqttMessage, listenerId) -> {
             try {
@@ -35,7 +35,17 @@ public class MqttServiceTest {
             }
         });
 
-        test.connect();
+        int i = 10;
+        while(true) {
+            test.connect();
+
+            Thread.sleep(3000);
+            if (i == 0) {
+                break;
+            } else {
+                i--;
+            }
+        }
     }
 
     @Test
