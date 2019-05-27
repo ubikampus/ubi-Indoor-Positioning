@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-file="$HOME/config.properties"
+file="$TRAVIS_BUILD_DIR/config.properties"
 echo "mqttUrl=mqtt" > $file
 echo "subscribeTopic=ohtu/test/observations" >> $file
 echo "publishTopic=ohtu/test/locations" >> $file
