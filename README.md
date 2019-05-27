@@ -1,15 +1,20 @@
-# Bluetooth-location-server
+# Bluetooth Location Server
 
 [![Build Status](https://travis-ci.org/ubikampus/Bluetooth-location-server.svg?branch=master)](https://travis-ci.org/ubikampus/Bluetooth-location-server)
 [![codecov](https://codecov.io/gh/ubikampus/Bluetooth-location-server/branch/master/graph/badge.svg)](https://codecov.io/gh/ubikampus/Bluetooth-location-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-See ohtu-project specific documentation in /ohtudoc directory.
+<!-- TODO: Description -->
 
-Short description TODO.
+## Table of Contents <a name="table-of-contents"/>
+*  [Local Development](#local-development)
+*  [Installation](#installation)
+*  [Usage](#usage)
+*  [Contributors](#contributors)
+*  [Documentation](#documentation)
 
-### Local development
-
-#### Docker
+## Local Development
+### Docker
 
 Easiest way to get a development server running is to use docker-compose.
 Create a config.properties -file, and define `mqttUrl=mqtt`.  
@@ -21,31 +26,35 @@ src and config.properties are shared to the container, so you don't have to rebu
 
 If you just need the location server, set `mqttUrl` to the mqtt server's url, and run `docker-compose up btls`.
 
-### Installation
-TODO
+## Installation
+<!-- TODO -->
 
-### Usage
-TODO
+## Usage
+<!-- TODO -->
 
-### Contributing
+## Contributors
 
-Jhoneagle - Joni Kokko
+* [Atte Haarni](https://github.com/Ajhaa)
 
-Ajhaa - Atte Haarni 
+* [Aleksander Matikainen](https://github.com/alemati)
 
-alemati - Aleksander Matikainen 
+* [Emil Andersson](https://github.com/andeem)
 
-andeem - Emil Andersson
+* [Elizabeth Berg](https://github.com/reykjaviks)
 
-je-l  - Jere Lahelma
+* [Joni Kokko](https://github.com/Jhoneagle)
 
-mriekkin - Matti Riekkinen
+* [Jere Lahelma](https://github.com/je-l)
 
-### Links
+* [Matti Riekkinen](https://github.com/mriekkin)
 
-[Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
+## Documentation
 
-[Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
+* [Hours](https://docs.google.com/spreadsheets/d/1pgeD1oTm5cBeNS73Hs8ie4iGBln6UkSQHe_rVjXCOTo/edit?usp=sharing)
+
+* [Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
+
+* [Visualizer For Development](https://github.com/ubikampus/bluetooth-dev-visualizer)
 
 
 
