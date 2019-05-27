@@ -36,10 +36,16 @@ public class MqttServiceTest {
         });
 
         test.connect();
+
+        // connect works because of sleep
+        Thread.sleep(5000);
     }
 
     @Test
     public void publishCallsProviderPublish() throws InterruptedException {
+        // connect works becasue of sleep
+        Thread.sleep(5000);
+        
         LocationModel location = new LocationModel("raspi", 1, 1, 1, 1);
         service.publish(location);
     }
