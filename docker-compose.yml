@@ -17,3 +17,7 @@ services:
       - 1883:1883
       - 9001:9001
     container_name: mqtt
+
+  travis-mqtt:
+    image: library/eclipse-mosquitto
+    container_name: mqtt
