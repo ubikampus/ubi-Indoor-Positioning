@@ -15,7 +15,7 @@ install:
 script:
   - ./scripts/run-tests.sh
   - ci_env=`bash <(curl -s https://codecov.io/env)`
-  - docker-compose run $ci_env btls bash -c "./gradlew assemble && ./gradlew check && bash <(curl -s https://codecov.io/bash)"
+  - docker-compose run $ci_env bash -c "./gradlew assemble && ./gradlew check && bash <(curl -s https://codecov.io/bash)"
 jdk:
   - oraclejdk11
 after_success:
