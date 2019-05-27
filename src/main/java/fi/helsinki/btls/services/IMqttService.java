@@ -10,8 +10,6 @@ import fi.helsinki.btls.io.IMqttProvider;
  * Interface for mqtt service.
  */
 public interface IMqttService {
-    IMqttProvider getProvider();
-    
     public List<ObservationModel> getObservations() throws Exception;
 
     public void publish(LocationModel locationModel);
