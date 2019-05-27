@@ -35,26 +35,15 @@ If you just need the location server, set `mqttUrl` to the mqtt server's url, an
 ## Contributors
 
 * [Atte Haarni](https://github.com/Ajhaa)
-
 * [Aleksander Matikainen](https://github.com/alemati)
-
 * [Emil Andersson](https://github.com/andeem)
-
 * [Elizabeth Berg](https://github.com/reykjaviks)
-
 * [Joni Kokko](https://github.com/Jhoneagle)
-
 * [Jere Lahelma](https://github.com/je-l)
-
 * [Matti Riekkinen](https://github.com/mriekkin)
 
 ## Documentation
 
 * [Hours](https://docs.google.com/spreadsheets/d/1pgeD1oTm5cBeNS73Hs8ie4iGBln6UkSQHe_rVjXCOTo/edit?usp=sharing)
-
 * [Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
-
 * [Visualizer For Development](https://github.com/ubikampus/bluetooth-dev-visualizer)
-
-
-
