@@ -49,6 +49,7 @@ public class UbiMqttProvider implements IMqttProvider {
         if (listener == null) {
             throw new NullPointerException("MessageListener not set");
         }
+
         instance.connect(new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {

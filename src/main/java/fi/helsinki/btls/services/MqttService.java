@@ -17,7 +17,6 @@ public class MqttService implements IMqttService{
     private static final int MAX_OBSERVATIONS = 10000;
     private List<ObservationModel> observations;
     private IMqttProvider provider;
-    private Gson gson;
 
     /**
      * Creates MqttService.
@@ -25,7 +24,6 @@ public class MqttService implements IMqttService{
      */
     public MqttService(IMqttProvider provider, Gson gson) {
         this.observations = new ArrayList<ObservationModel>();
-        this.gson = gson;
         this.provider = provider;
         this.provider.setListener(new IUbiMessageListener() {
             @Override
@@ -40,7 +38,6 @@ public class MqttService implements IMqttService{
         this.provider.connect();
 
     }
-
 
     @Override
     public List<ObservationModel> getObservations() throws Exception {

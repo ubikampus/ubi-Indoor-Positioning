@@ -3,6 +3,8 @@ package fi.helsinki.btls.services;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import com.google.gson.Gson;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -24,6 +26,17 @@ public class MqttServiceTest {
 
     @Test
     public void newServiceConnectsAndSubscribes() {
+        this.provider.setListener(new IUbiMessageListener() {
+            @Override
+            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
+                try {
+                    System.out.println(topic + ": " + mqttMessage.toString());
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
+                }
+            }
+        });
+
         provider.connect();
     }
 
