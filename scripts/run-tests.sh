@@ -1,6 +1,6 @@
 #!/bin/bash
 set -ev
-file="../app/config.properties"
+file="$HOME/config.properties"
 echo "mqttUrl=mqtt" > $file
 echo "subscribeTopic=ohtu/test/observations" >> $file
 echo "publishTopic=ohtu/test/locations" >> $file
