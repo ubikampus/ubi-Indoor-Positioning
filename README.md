@@ -12,7 +12,7 @@ Short description TODO.
 #### Docker
 
 Easiest way to get a development server running is to use docker-compose.
-Create a config.properties -file, and define `mqttUrl=mqtt`.  
+Create a config.properties -file, and define `mqttUrl=mqtt`, `subscribeTopic=ohtu/test/observations` and `publishTopic=ohtu/test/locations`.  
 Set up the development environment with `docker-compose up`.
 You should now have both the location server and an mqtt server running.
 The mqtt server has port 1883 exposed, so you can also connect to it from the outside.
