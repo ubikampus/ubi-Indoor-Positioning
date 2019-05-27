@@ -26,18 +26,16 @@ public class MqttServiceTest {
 
     @Test
     public void newServiceConnectsAndSubscribes() {
-        this.provider.setListener(new IUbiMessageListener() {
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
-                try {
-                    System.out.println(topic + ": " + mqttMessage.toString());
-                } catch (Exception ex) {
-                    System.out.println(ex.toString());
-                }
+        UbiMqttProvider test = new UbiMqttProvider();
+        test.setListener((topic, mqttMessage, listenerId) -> {
+            try {
+                System.out.println(topic + ": " + mqttMessage.toString());
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
             }
         });
 
-        provider.connect();
+        test.connect();
     }
 
     @Test

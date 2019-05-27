@@ -25,14 +25,11 @@ public class MqttService implements IMqttService{
     public MqttService(IMqttProvider provider, Gson gson) {
         this.observations = new ArrayList<ObservationModel>();
         this.provider = provider;
-        this.provider.setListener(new IUbiMessageListener() {
-            @Override
-            public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
-                try {
-                    observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
-                } catch (Exception ex) {
-                    System.out.println(ex.toString());
-                }
+        this.provider.setListener((topic, mqttMessage, listenerId) -> {
+            try {
+                observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
+            } catch (Exception ex) {
+                System.out.println(ex.toString());
             }
         });
         this.provider.connect();
