@@ -32,8 +32,8 @@ public class MqttService implements IMqttService{
                 System.out.println(ex.toString());
             }
         });
-        this.provider.connect();
 
+        this.provider.connect();
     }
 
     @Override
