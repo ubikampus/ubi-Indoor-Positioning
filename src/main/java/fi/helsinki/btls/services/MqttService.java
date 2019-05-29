@@ -38,15 +38,15 @@ public class MqttService implements IMqttService{
 
     @Override
     public List<ObservationModel> getObservations() throws Exception {
-        List<ObservationModel> test = new ArrayList<ObservationModel>();
+        /*List<ObservationModel> test = new ArrayList<ObservationModel>();
         test.add(new ObservationModel("rasp1", "", 8.82));
         test.add(new ObservationModel("rasp2", "", 8.82));
         test.add(new ObservationModel("rasp3", "", 8.64));
         test.add(new ObservationModel("rasp4", "", 8.05));
         test.add(new ObservationModel("rasp2", "", 4.05));
 
-        return test;
-        //return observations;
+        return test;*/
+        return observations;
     }
 
     @Override

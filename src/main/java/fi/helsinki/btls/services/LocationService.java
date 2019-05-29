@@ -61,9 +61,8 @@ public class LocationService {
 
             LocationModel model = new LocationModel("",
                     centroid[0], centroid[1], centroid[2],
-                    obs.get(obs.size() - 1).getVolume(),
-                    obs.get(obs.size() - 1).getVolume(),
-                    obs.get(obs.size() - 1).getVolume());
+                    -1, -1, -1);
+
             service.publish(model);
         }
     }
