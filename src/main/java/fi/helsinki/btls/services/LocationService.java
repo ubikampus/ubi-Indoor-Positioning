@@ -1,9 +1,7 @@
 
 package fi.helsinki.btls.services;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
@@ -21,26 +19,33 @@ import org.apache.commons.math3.linear.RealVector;
 public class LocationService {
     private IMqttService service;
     private Map<String, String> rasps;
-    
+
     public LocationService(IMqttService service) {
         rasps = new PropertiesHandler("config.properties").getAllProperties();
         this.service = service;
     }
 
     public void calculateLocation() throws Exception {
+        List<String> raspsChecked = new ArrayList<>();
         List<ObservationModel> obs = service.getObservations();
         double[][] positions = new double[obs.size()][3]; // 3-D positions as x,y,z of observation posts
         double[] distances = new double[obs.size()]; // disatcnes of the beacon from observation post which coordinates are in same index in positions array
 
         if (!obs.isEmpty()) {
-            for (int i = 0; i < obs.size(); i++) {
+            // go through observations from newest to latest
+            for (int i = obs.size() - 1; i >= 0; i--) {
                 ObservationModel model = obs.get(i);
-                String[] rasp = rasps.get(model.getRaspId()).split(":");
-                positions[i][0] = Double.parseDouble(rasp[0]);
-                positions[i][1] = Double.parseDouble(rasp[1]);
-                positions[i][2] = Double.parseDouble(rasp[2]);
 
-                distances[i] = model.getVolume();
+                // preventing double value for rasps
+                if (!raspsChecked.contains(model.getRaspId())) {
+                    String[] rasp = rasps.get(model.getRaspId()).split(":");
+                    positions[i][0] = Double.parseDouble(rasp[0]);
+                    positions[i][1] = Double.parseDouble(rasp[1]);
+                    positions[i][2] = Double.parseDouble(rasp[2]);
+
+                    distances[i] = model.getVolume();
+                    raspsChecked.add(model.getRaspId());
+                }
             }
 
             NonLinearLeastSquaresSolver solver;
@@ -54,7 +59,7 @@ public class LocationService {
             RealVector standardDeviation = optimum.getSigma(0);
             RealMatrix covarianceMatrix = optimum.getCovariances(0);
 
-            LocationModel model = new LocationModel(obs.get(obs.size() - 1).getBeaconId(),
+            LocationModel model = new LocationModel("",
                     centroid[0], centroid[1], centroid[2],
                     obs.get(obs.size() - 1).getVolume(),
                     obs.get(obs.size() - 1).getVolume(),

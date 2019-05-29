@@ -43,6 +43,7 @@ public class MqttService implements IMqttService{
         test.add(new ObservationModel("rasp2", "", 8.82));
         test.add(new ObservationModel("rasp3", "", 8.64));
         test.add(new ObservationModel("rasp4", "", 8.05));
+        test.add(new ObservationModel("rasp2", "", 4.05));
 
         return test;
         //return observations;
