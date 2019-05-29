@@ -3,8 +3,6 @@ package fi.helsinki.btls.services;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import com.google.gson.Gson;
-import fi.helsinki.ubimqtt.IUbiMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -15,38 +13,27 @@ import fi.helsinki.btls.io.UbiMqttProvider;
  * Test class for MqttService.
  */
 public class MqttServiceTest {
-    private UbiMqttProvider provider;
-    private IMqttService service;
+    UbiMqttProvider provider;
+    IMqttService service;
+    InOrder inOrder;
 
     @Before
     public void setUp() throws Exception {
-        provider = new UbiMqttProvider();
+        provider = mock(UbiMqttProvider.class);
         service = new MqttService(provider, new Gson());
+        inOrder = inOrder(provider);
     }
 
     @Test
-    public void newServiceConnectsAndSubscribes() throws InterruptedException {
-        UbiMqttProvider test = new UbiMqttProvider();
-        test.setListener((topic, mqttMessage, listenerId) -> {
-            try {
-                System.out.println(topic + ": " + mqttMessage.toString());
-            } catch (Exception ex) {
-                System.out.println(ex.toString());
-            }
-        });
-
-        test.connect();
-
-        // connect works because of sleep
-        Thread.sleep(5000);
+    public void newServiceConnectsAndSubscribes() {
+        inOrder.verify(provider).setListener(any());
+        inOrder.verify(provider).connect();
     }
 
     @Test
-    public void publishCallsProviderPublish() throws InterruptedException {
-        // connect works because of sleep
-        Thread.sleep(5000);
-
+    public void publishCallsProviderPublish() {
         LocationModel location = new LocationModel("raspi", 1, 1, 1, 1);
         service.publish(location);
+        inOrder.verify(provider).publish(location.toString());
     }
 }

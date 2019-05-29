@@ -32,13 +32,20 @@ public class MqttService implements IMqttService{
                 System.out.println(ex.toString());
             }
         });
-        this.provider.connect();
 
+        this.provider.connect();
     }
 
     @Override
     public List<ObservationModel> getObservations() throws Exception {
-        return observations;
+        List<ObservationModel> test = new ArrayList<ObservationModel>();
+        test.add(new ObservationModel("rasp1", "", 8.82));
+        test.add(new ObservationModel("rasp2", "", 8.82));
+        test.add(new ObservationModel("rasp3", "", 8.64));
+        test.add(new ObservationModel("rasp4", "", 8.05));
+
+        return test;
+        //return observations;
     }
 
     @Override
