@@ -1,17 +1,17 @@
 
 package fi.helsinki.btls.services;
 
+import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
+import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
+import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 import java.util.*;
-
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.utils.PropertiesHandler;
-import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
-import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
-import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.RealVector;
 
 /**
  * Location service class.
@@ -25,13 +25,14 @@ public class LocationService {
         this.service = service;
     }
 
-    public void calculateLocation() throws Exception {
+    public void calculateLocation() {
         List<String> raspsChecked = new ArrayList<>();
         List<ObservationModel> obs = service.getObservations();
-        double[][] positions = new double[obs.size()][3]; // 3-D positions as x,y,z of observation posts
-        double[] distances = new double[obs.size()]; // disatcnes of the beacon from observation post which coordinates are in same index in positions array
 
         if (!obs.isEmpty()) {
+            List<double[]> pos = new ArrayList<>();
+            List<Double> dist = new ArrayList<>();
+
             // go through observations from newest to latest
             for (int i = obs.size() - 1; i >= 0; i--) {
                 ObservationModel model = obs.get(i);
@@ -39,13 +40,27 @@ public class LocationService {
                 // preventing double value for rasps
                 if (!raspsChecked.contains(model.getRaspId())) {
                     String[] rasp = rasps.get(model.getRaspId()).split(":");
-                    positions[i][0] = Double.parseDouble(rasp[0]);
-                    positions[i][1] = Double.parseDouble(rasp[1]);
-                    positions[i][2] = Double.parseDouble(rasp[2]);
+                    double[] temp = new double[3];
 
-                    distances[i] = model.getVolume();
+                    temp[0] = Double.parseDouble(rasp[0]);
+                    temp[1] = Double.parseDouble(rasp[1]);
+                    temp[2] = Double.parseDouble(rasp[2]);
+
+                    dist.add(model.getVolume());
+                    pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
+            }
+
+            double[][] positions = new double[pos.size()][3]; // 3-D positions as x,y,z of observation posts
+            double[] distances = new double[dist.size()]; // distances from observation post thats coordinates are in same index in positions array
+
+            // Move from ArrayList to array so that empty slots can be avoided.
+            // Otherwise covariance throws singularity exception as it doesn't allow same value to be present at same column in different rows
+            // at least if this includes all the rows same time. Not sure about other scenarios.
+            for (int i = 0; i < dist.size(); i++) {
+                positions[i] = pos.get(i);
+                distances[i] = dist.get(i);
             }
 
             NonLinearLeastSquaresSolver solver;
@@ -59,9 +74,13 @@ public class LocationService {
             RealVector standardDeviation = optimum.getSigma(0);
             RealMatrix covarianceMatrix = optimum.getCovariances(0);
 
+            // solving highest standard deviation to get best possible circle for accuracy
+            MultivariateNormalDistribution distribution = new MultivariateNormalDistribution(new double[3], covarianceMatrix.getData());
+            double[] standardDeviations = distribution.getStandardDeviations(); // should be in form of x,y,z
+
             LocationModel model = new LocationModel("",
                     centroid[0], centroid[1], centroid[2],
-                    -1, -1, -1);
+                    standardDeviations[0], standardDeviations[1], standardDeviations[2]);
 
             service.publish(model);
         }

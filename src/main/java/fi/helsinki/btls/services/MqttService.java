@@ -1,14 +1,11 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
-import fi.helsinki.ubimqtt.IUbiMessageListener;
 
 /**
  * MqttService.
@@ -37,13 +34,13 @@ public class MqttService implements IMqttService{
     }
 
     @Override
-    public List<ObservationModel> getObservations() throws Exception {
+    public List<ObservationModel> getObservations() {
         /*List<ObservationModel> test = new ArrayList<ObservationModel>();
-        test.add(new ObservationModel("rasp1", "", 8.82));
-        test.add(new ObservationModel("rasp2", "", 8.82));
-        test.add(new ObservationModel("rasp3", "", 8.64));
-        test.add(new ObservationModel("rasp4", "", 8.05));
-        test.add(new ObservationModel("rasp2", "", 4.05));
+        test.add(new ObservationModel("rasp1", "", 123.45));
+        test.add(new ObservationModel("rasp2", "", 71.3));
+        test.add(new ObservationModel("rasp3", "", 18.6));
+        test.add(new ObservationModel("rasp4", "", 96.33));
+        test.add(new ObservationModel("rasp2", "", 50.33));
 
         return test;*/
         return observations;
