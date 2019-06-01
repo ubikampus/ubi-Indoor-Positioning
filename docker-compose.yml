@@ -10,10 +10,14 @@ services:
       - ./src:/app/src
       - ./config:/app/config
     container_name: btls
+    depends_on:
+      - mqtt
   
   mqtt:
-    image: library/eclipse-mosquitto
+    image: erlio/docker-vernemq:1.8.0-alpine
     ports:
       - 1883:1883
-      - 9001:9001
+      - 9001:8080  # ubikampus uses port 9001 for mqtt websockets
     container_name: mqtt
+    environment:
+      DOCKER_VERNEMQ_ALLOW_ANONYMOUS: "on"
