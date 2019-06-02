@@ -32,7 +32,7 @@ public class MqttServiceTest {
 
     @Test
     public void publishCallsProviderPublish() {
-        LocationModel location = new LocationModel("raspi", 1, 1, 1, 1, 1, 1);
+        LocationModel location = new LocationModel("raspi", 1, 1, 1, 1, 1, 1, 1);
 
         service.publish(location);
         inOrder.verify(provider).publish(location.toString());

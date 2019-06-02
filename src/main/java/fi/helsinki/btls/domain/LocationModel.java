@@ -11,11 +11,12 @@ public class LocationModel {
     private double xr;
     private double yr;
     private double zr;
+    private double alignment;
 
     public LocationModel() {
     }
 
-    public LocationModel(String beaconId, double x, double y, double z, double xr, double yr, double zr) {
+    public LocationModel(String beaconId, double x, double y, double z, double xr, double yr, double zr, double alignment) {
         this.beaconId = beaconId;
         this.x = x;
         this.y = y;
@@ -23,6 +24,7 @@ public class LocationModel {
         this.xr = xr;
         this.yr = yr;
         this.zr = zr;
+        this.alignment = alignment;
     }
 
     public String getBeaconId() {
@@ -81,9 +83,17 @@ public class LocationModel {
         this.zr = zr;
     }
 
+    public double getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(double alignment) {
+        this.alignment = alignment;
+    }
+
     @Override
     public String toString() {
         return "{ 'beaconId':'" + beaconId + "', 'x':" + x + ", 'y':" + y + ", 'z':" + z +
-                ", 'xr':" + xr + ", 'yr':" + yr + ", 'zr':" + zr + " }";
+                ", 'xr':" + xr + ", 'yr':" + yr + ", 'zr':" + zr + ", 'alignment':" + alignment + " }";
     }
 }

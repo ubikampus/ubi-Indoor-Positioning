@@ -16,7 +16,7 @@ public class App {
         while(true) {
             Thread.sleep(5000);
 
-            service.calculateLocation();
+            service.calculateLocation2D();
         }
 
 
