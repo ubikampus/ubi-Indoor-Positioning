@@ -27,6 +27,9 @@ public class MqttService implements IMqttService{
 
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
+                if (observations.size() > MAX_OBSERVATIONS) {
+                    observations.remove(0);
+                }
                 observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
             } catch (Exception ex) {
                 System.out.println(ex.toString());
