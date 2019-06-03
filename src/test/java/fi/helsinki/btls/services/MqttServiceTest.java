@@ -13,10 +13,10 @@ import fi.helsinki.btls.io.UbiMqttProvider;
  * Test class for MqttService.
  */
 public class MqttServiceTest {
-
     UbiMqttProvider provider;
     IMqttService service;
     InOrder inOrder;
+
     @Before
     public void setUp() throws Exception {
         provider = mock(UbiMqttProvider.class);
@@ -26,7 +26,6 @@ public class MqttServiceTest {
 
     @Test
     public void newServiceConnectsAndSubscribes() {
-
         inOrder.verify(provider).setListener(any());
         inOrder.verify(provider).connect();
     }

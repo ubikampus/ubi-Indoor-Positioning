@@ -17,6 +17,7 @@ public class UbiMqttProvider implements IMqttProvider {
 
     /**
      * Wrapper for UbiMqtt class.
+     *
      * @param subscribeTopic subscribeTopic to listen
      */
     public UbiMqttProvider(String subscribeTopic, String publishTopic) {
@@ -28,6 +29,19 @@ public class UbiMqttProvider implements IMqttProvider {
     }
 
     /**
+     * Wrapper for UbiMqtt class.
+     */
+    public UbiMqttProvider() {
+        PropertiesHandler handler = new PropertiesHandler("config.properties");
+
+        this.subscribeTopic = handler.getProperty("subscribeTopic");
+        this.publishTopic = handler.getProperty("publishTopic");
+
+        String mqttUrl = handler.getProperty("mqttUrl");
+        instance  = new UbiMqtt(mqttUrl);
+    }
+
+    /**
      * Connects to Mqtt bus.
      */
     @Override
@@ -35,6 +49,7 @@ public class UbiMqttProvider implements IMqttProvider {
         if (listener == null) {
             throw new NullPointerException("MessageListener not set");
         }
+
         instance.connect(new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {

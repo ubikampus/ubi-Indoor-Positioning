@@ -10,11 +10,11 @@ import fi.helsinki.btls.services.MqttService;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        UbiMqttProvider provider = new UbiMqttProvider("ohtu/test/observations", "ohtu/test/locations");
+        UbiMqttProvider provider = new UbiMqttProvider();
         LocationService service = new LocationService(new MqttService(provider, new Gson()));
 
         while(true) {
-            Thread.sleep(3000);
+            Thread.sleep(5000);
 
             service.calculateLocation();
         }
