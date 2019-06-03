@@ -93,7 +93,7 @@ public class LocationModel {
 
     @Override
     public String toString() {
-        return "{ 'beaconId':'" + beaconId + "', 'x':" + x + ", 'y':" + y + ", 'z':" + z +
-                ", 'xr':" + xr + ", 'yr':" + yr + ", 'zr':" + zr + ", 'alignment':" + alignment + " }";
+        return "{ \"beaconId\": \"" + beaconId + "\", \"x\": " + x + ", \"y\": " + y + ", \"z\": " + z +
+                ", \"xr\": " + xr + ", \"yr\": " + yr + ", \"zr\": " + zr + ", \"alignment\": " + alignment + " }";
     }
 }

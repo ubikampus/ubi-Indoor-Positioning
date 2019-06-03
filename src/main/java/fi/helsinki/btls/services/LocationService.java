@@ -96,8 +96,8 @@ public class LocationService {
             double arctan = Math.atan(asArray[0] / asArray[1]); // uncertain which way should be the division...
 
             LocationModel model = new LocationModel("undefined",
-                    centroid[0], centroid[1], Double.NaN,
-                    standardDeviation[0], standardDeviation[1], Double.NaN, arctan);
+                    centroid[0], centroid[1], 0,
+                    standardDeviation[0], standardDeviation[1], 0, arctan);
 
             service.publish(model);
         }
@@ -156,7 +156,7 @@ public class LocationService {
 
             LocationModel model = new LocationModel("undefined",
                     centroid[0], centroid[1], centroid[2],
-                    standardDeviation[0], standardDeviation[1], standardDeviation[2], Double.NaN);
+                    standardDeviation[0], standardDeviation[1], standardDeviation[2], 0);
 
             service.publish(model);
         }

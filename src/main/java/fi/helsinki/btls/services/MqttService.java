@@ -14,6 +14,7 @@ public class MqttService implements IMqttService{
     private static final int MAX_OBSERVATIONS = 10000;
     private List<ObservationModel> observations;
     private IMqttProvider provider;
+    private Gson gson;
 
     /**
      * Creates MqttService.
@@ -22,6 +23,8 @@ public class MqttService implements IMqttService{
     public MqttService(IMqttProvider provider, Gson gson) {
         this.observations = new ArrayList<ObservationModel>();
         this.provider = provider;
+        this.gson = gson;
+
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
                 observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
