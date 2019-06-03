@@ -22,7 +22,7 @@ public class LocationService {
     private Map<String, String> rasps;
 
     public LocationService(IMqttService service) {
-        rasps = new PropertiesHandler("config.properties").getAllProperties();
+        rasps = new PropertiesHandler("config/rasps.properties").getAllProperties();
         this.service = service;
     }
 
@@ -46,7 +46,7 @@ public class LocationService {
                     temp[0] = Double.parseDouble(rasp[0]);
                     temp[1] = Double.parseDouble(rasp[1]);
 
-                    dist.add(model.getVolume());
+                    dist.add(Math.abs(model.getVolume())); // needs scaling on minimum value of RSSI.
                     pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
