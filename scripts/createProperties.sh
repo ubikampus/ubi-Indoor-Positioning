@@ -13,11 +13,12 @@ echo "mqttUrl=mqtt" > $mqtt
 echo "subscribeTopic=ohtu/test/observations" >> $mqtt
 echo "publishTopic=ohtu/test/locations" >> $mqtt
 echo "debug=true" >> $mqtt
-cat $mqtt
 
-echo "# rasps locations in format of x:y:z" >> $rasp
+echo "# rasps locations in format of x:y:z" > $rasp
 echo "rasp-1=8000:3600:0" >> $rasp
-echo "rasp-2=0:0:66" >> $rasp
-echo "rasp-3=66:50:33" >> $rasp
-echo "rasp-4=0:4000:100" >> $rasp
+echo "rasp-2=0:0:6666" >> $rasp
+echo "rasp-3=6000:8000:3333" >> $rasp
+echo "rasp-4=0:4000:10000" >> $rasp
+
+cat $mqtt
 cat $rasp
