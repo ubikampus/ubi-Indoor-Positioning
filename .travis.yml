@@ -13,7 +13,7 @@ install:
   - docker-compose build
 
 script:
-  - ./scripts/run-tests.sh
+  - ./scripts/createProperties.sh
   - ci_env=`bash <(curl -s https://codecov.io/env)`
   - docker-compose up -d mqtt
   - docker-compose run $ci_env btls bash -c "./gradlew assemble && ./gradlew check && bash <(curl -s https://codecov.io/bash)"

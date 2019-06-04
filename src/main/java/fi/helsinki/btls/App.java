@@ -14,9 +14,9 @@ public class App {
         LocationService service = new LocationService(new MqttService(provider, new Gson()));
 
         while(true) {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
 
-            service.calculateLocation();
+            service.calculateLocation2D();
         }
 
 

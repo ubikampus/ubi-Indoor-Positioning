@@ -35,4 +35,4 @@ local.properties
 
 .vscode
 
-config.properties
+*.properties

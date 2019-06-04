@@ -1,14 +1,11 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-
 import java.util.ArrayList;
 import java.util.List;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
-import fi.helsinki.ubimqtt.IUbiMessageListener;
 
 /**
  * MqttService.
@@ -17,6 +14,7 @@ public class MqttService implements IMqttService{
     private static final int MAX_OBSERVATIONS = 10000;
     private List<ObservationModel> observations;
     private IMqttProvider provider;
+    private Gson gson;
 
     /**
      * Creates MqttService.
@@ -25,8 +23,13 @@ public class MqttService implements IMqttService{
     public MqttService(IMqttProvider provider, Gson gson) {
         this.observations = new ArrayList<ObservationModel>();
         this.provider = provider;
+        this.gson = gson;
+
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
+                if (observations.size() > MAX_OBSERVATIONS) {
+                    observations.remove(0);
+                }
                 observations.add(gson.fromJson(mqttMessage.toString(), ObservationModel.class));
             } catch (Exception ex) {
                 System.out.println(ex.toString());
@@ -37,8 +40,19 @@ public class MqttService implements IMqttService{
     }
 
     @Override
-    public List<ObservationModel> getObservations() throws Exception {
-        return observations;
+    public List<ObservationModel> getObservations() {
+        if (this.provider.isDebugMode()) {
+            List<ObservationModel> test = new ArrayList<ObservationModel>();
+            test.add(new ObservationModel("rasp-1", "", 123.45));
+            test.add(new ObservationModel("rasp-2", "", 71.3));
+            test.add(new ObservationModel("rasp-3", "", 18.6));
+            test.add(new ObservationModel("rasp-4", "", 96.33));
+            test.add(new ObservationModel("rasp-2", "", 50.33));
+
+            return test;
+        } else {
+            return observations;
+        }
     }
 
     @Override
