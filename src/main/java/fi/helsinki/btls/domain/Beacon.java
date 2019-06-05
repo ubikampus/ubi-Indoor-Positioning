@@ -3,7 +3,7 @@ package fi.helsinki.btls.domain;
 import java.util.List;
 
 /***
- * Class representing one beacon
+ * Class representing one beacon.
  */
 public class Beacon {
     private String id;

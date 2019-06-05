@@ -4,19 +4,24 @@
 package fi.helsinki.btls;
 
 import com.google.gson.Gson;
+import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.io.UbiMqttProvider;
+import fi.helsinki.btls.services.IMqttService;
 import fi.helsinki.btls.services.LocationService;
 import fi.helsinki.btls.services.MqttService;
 
 public class App {
     public static void main(String[] args) throws Exception {
         UbiMqttProvider provider = new UbiMqttProvider();
-        LocationService service = new LocationService(new MqttService(provider, new Gson()));
+        IMqttService mqttService = new MqttService(provider, new Gson());
+        LocationService service = new LocationService(mqttService);
 
         while(true) {
             Thread.sleep(1000);
-
-            service.calculateLocation2D();
+            for (Beacon beacon : mqttService.getBeacons()) {
+                mqttService.publish(service.calculateBeaconLocation2D(beacon));
+            }
+            //service.calculateLocation2D();
         }
 
 
