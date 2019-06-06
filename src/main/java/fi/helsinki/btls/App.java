@@ -10,6 +10,8 @@ import fi.helsinki.btls.services.IMqttService;
 import fi.helsinki.btls.services.LocationService;
 import fi.helsinki.btls.services.MqttService;
 
+import java.util.Iterator;
+
 public class App {
     public static void main(String[] args) throws Exception {
         UbiMqttProvider provider = new UbiMqttProvider();
@@ -18,8 +20,9 @@ public class App {
 
         while(true) {
             Thread.sleep(1000);
-            for (Beacon beacon : mqttService.getBeacons()) {
-                mqttService.publish(service.calculateBeaconLocation2D(beacon));
+            Iterator<Beacon> iterator = mqttService.getBeacons().iterator();
+            while (iterator.hasNext()) {
+                mqttService.publish(service.calculateBeaconLocation2D(iterator.next()));
             }
             //service.calculateLocation2D();
         }
