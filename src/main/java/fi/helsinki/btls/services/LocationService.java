@@ -28,16 +28,16 @@ public class LocationService {
     }
 
     public LocationModel calculateBeaconLocation2D(Beacon beacon) {
-        LocationModel loc = calculateLocation2D(beacon.getObservations());
+        LocationModel loc = calculateLocation2D(beacon.getObservations(), beacon.getMinVolume());
         loc.setBeaconId(beacon.getId());
         return loc;
     }
 
     public void calculateLocation2D() {
-        service.publish(calculateLocation2D(service.getObservations()));
+        service.publish(calculateLocation2D(service.getObservations(), -38));
     }
 
-    public LocationModel calculateLocation2D(List<ObservationModel> obs) {
+    public LocationModel calculateLocation2D(List<ObservationModel> obs, double minValue) {
         List<String> raspsChecked = new ArrayList<>();
 
         if (!obs.isEmpty()) {
@@ -56,7 +56,7 @@ public class LocationService {
                     temp[0] = Double.parseDouble(rasp[0]);
                     temp[1] = Double.parseDouble(rasp[1]);
 
-                    dist.add(Math.abs(model.getVolume())); // needs scaling on minimum value of RSSI.
+                    dist.add(Math.abs(model.getVolume()) - minValue); // needs scaling on minimum value of RSSI.
                     pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
