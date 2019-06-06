@@ -2,16 +2,16 @@ package fi.helsinki.btls.services;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import com.google.gson.Gson;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.domain.ObservationModel;
-import org.junit.*;
 import static org.junit.Assert.*;
+import com.google.gson.Gson;
+import org.junit.*;
 import org.mockito.InOrder;
+import java.util.List;
+import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.domain.LocationModel;
+import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.UbiMqttProvider;
 
-import java.util.List;
 
 /**
  * Test class for MqttService.
@@ -58,7 +58,7 @@ public class MqttServiceTest {
         assertFalse(obs.isEmpty());
     }
     @Test
-    public void listenerHandlesInvalidData() { //TODO: change system out to ByteArrayOutputStream and verifiy the exception is printed
+    public void listenerHandlesInvalidData() { //TODO(andeem): change system out to ByteArrayOutputStream and verifiy the exception is printed
         DummyMqttProvider provider = new DummyMqttProvider();
         service = new MqttService(provider, new Gson());
         provider.simulateBusInvalid();

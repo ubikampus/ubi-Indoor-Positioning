@@ -1,10 +1,13 @@
 package fi.helsinki.btls.services;
 
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+/**
+ * Dummy provider for testing.
+ */
 public class DummyMqttProvider implements IMqttProvider {
     private IUbiMessageListener listener;
     @Override
@@ -38,7 +41,9 @@ public class DummyMqttProvider implements IMqttProvider {
 
     private MqttMessage serialize(ObservationModel observationModel) {
         MqttMessage message =  new MqttMessage();
-        String json = "{ \"raspId\": \"" + observationModel.getRaspId() + "\", \"beaconId\": \"" + observationModel.getBeaconId() + "\", \"volume\": \"" + observationModel.getVolume() + "\" }";
+        String json = "{ \"raspId\": \"" + observationModel.getRaspId()
+                + "\", \"beaconId\": \"" + observationModel.getBeaconId()
+                + "\", \"volume\": \"" + observationModel.getVolume() + "\" }";
         message.setPayload(json.getBytes());
         return message;
     }
