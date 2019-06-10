@@ -46,6 +46,6 @@ If you just need the location server, set `mqttUrl` to the mqtt server's url in 
 ## Documentation
 
 * [Hours](https://docs.google.com/spreadsheets/d/1pgeD1oTm5cBeNS73Hs8ie4iGBln6UkSQHe_rVjXCOTo/edit?usp=sharing)
-* [Backlog](https://docs.google.com/spreadsheets/d/1ypNhF0JG-SiwpOhV2lv1u9FnfyDAChQ84imtakCc800/edit#gid=7)
+* [Backlog](https://docs.google.com/spreadsheets/d/1dOJzTgOaNfIl2t6UdaIPswVt-OaKmjpm_03oe0t5R6o/edit?usp=sharing)
 * [Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
 * [Rasperry scanner](https://github.com/ubikampus/bluetooth-raspberry-scanner)
