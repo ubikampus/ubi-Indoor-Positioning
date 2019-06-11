@@ -1,7 +1,6 @@
 
 package fi.helsinki.btls.services;
 
-import org.apache.commons.math3.distribution.MultivariateNormalDistribution;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import org.apache.commons.math3.linear.EigenDecomposition;
@@ -10,9 +9,11 @@ import org.apache.commons.math3.linear.RealVector;
 import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
+import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.utils.PropertiesHandler;
+
 
 /**
  * Location service class.
@@ -26,9 +27,18 @@ public class LocationService {
         this.service = service;
     }
 
+    public LocationModel calculateBeaconLocation2D(Beacon beacon) {
+        LocationModel loc = calculateLocation2D(beacon.getObservations(), beacon.getMinVolume());
+        loc.setBeaconId(beacon.getId());
+        return loc;
+    }
+
     public void calculateLocation2D() {
+        service.publish(calculateLocation2D(service.getObservations(), -38));
+    }
+
+    public LocationModel calculateLocation2D(List<ObservationModel> obs, double minValue) {
         List<String> raspsChecked = new ArrayList<>();
-        List<ObservationModel> obs = service.getObservations();
 
         if (!obs.isEmpty()) {
             List<double[]> pos = new ArrayList<>();
@@ -46,7 +56,7 @@ public class LocationService {
                     temp[0] = Double.parseDouble(rasp[0]);
                     temp[1] = Double.parseDouble(rasp[1]);
 
-                    dist.add(Math.abs(model.getVolume())); // needs scaling on minimum value of RSSI.
+                    dist.add(Math.abs(model.getVolume()) - minValue); // needs scaling on minimum value of RSSI.
                     pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
@@ -99,8 +109,9 @@ public class LocationService {
                     centroid[0], centroid[1], 0,
                     standardDeviation[0], standardDeviation[1], 0, arctan);
 
-            service.publish(model);
+            return model;
         }
+        return null;
     }
 
     public void calculateLocation3D() {
