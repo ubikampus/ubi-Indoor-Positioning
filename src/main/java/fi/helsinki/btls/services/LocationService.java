@@ -9,9 +9,7 @@ import org.apache.commons.math3.linear.RealVector;
 import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.domain.LocationModel;
-import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.domain.*;
 import fi.helsinki.btls.utils.PropertiesHandler;
 
 
@@ -28,7 +26,7 @@ public class LocationService {
     }
 
     public LocationModel calculateBeaconLocation2D(Beacon beacon) {
-        LocationModel loc = calculateLocation2D(beacon.getObservations(), beacon.getMinVolume());
+        LocationModel loc = calculateLocation2D(beacon.getObservations(), beacon.getMinRSSI());
         loc.setBeaconId(beacon.getId());
         return loc;
     }
@@ -56,7 +54,7 @@ public class LocationService {
                     temp[0] = Double.parseDouble(rasp[0]);
                     temp[1] = Double.parseDouble(rasp[1]);
 
-                    dist.add(Math.abs(model.getVolume()) - minValue); // needs scaling on minimum value of RSSI.
+                    dist.add(Math.abs(model.getRssi()) - minValue); // needs scaling on minimum value of RSSI.
                     pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
@@ -105,9 +103,9 @@ public class LocationService {
             double[] asArray = principal.toArray();
             double arctan = Math.atan(asArray[0] / asArray[1]); // uncertain which way should be the division...
 
-            LocationModel model = new LocationModel("undefined",
-                    centroid[0], centroid[1], 0,
-                    standardDeviation[0], standardDeviation[1], 0, arctan);
+            LocationModel model = new Location2D("undefined",
+                    centroid[0], centroid[1],
+                    standardDeviation[0], standardDeviation[1], arctan);
 
             return model;
         }
@@ -135,7 +133,7 @@ public class LocationService {
                     temp[1] = Double.parseDouble(rasp[1]);
                     temp[2] = Double.parseDouble(rasp[2]);
 
-                    dist.add(model.getVolume());
+                    dist.add(model.getRssi());
                     pos.add(temp);
                     raspsChecked.add(model.getRaspId());
                 }
@@ -165,9 +163,9 @@ public class LocationService {
             //covariance matrix
             RealMatrix covMatrix = optimum.getCovariances(0);
 
-            LocationModel model = new LocationModel("undefined",
+            LocationModel model = new Location3D("undefined",
                     centroid[0], centroid[1], centroid[2],
-                    standardDeviation[0], standardDeviation[1], standardDeviation[2], 0);
+                    standardDeviation[0], standardDeviation[1], standardDeviation[2]);
 
             service.publish(model);
         }

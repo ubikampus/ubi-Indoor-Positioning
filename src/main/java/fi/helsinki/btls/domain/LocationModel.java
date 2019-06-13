@@ -1,99 +1,25 @@
 package fi.helsinki.btls.domain;
 
+import lombok.*;
+
 /**
- * Model class for location data.
+ * Representation of specific beacons location on two dimensional space.
+ * With information about locations standard error.
  */
-public class LocationModel {
-    private String beaconId;
-    private double x;
-    private double y;
-    private double z;
-    private double xr;
-    private double yr;
-    private double zr;
-    private double alignment;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public abstract class LocationModel {
+    protected String beaconId;
+    protected double x;
+    protected double y;
+    protected double xr;
+    protected double yr;
 
-    public LocationModel() {
-    }
-
-    public LocationModel(String beaconId, double x, double y, double z, double xr, double yr, double zr, double alignment) {
-        this.beaconId = beaconId;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.xr = xr;
-        this.yr = yr;
-        this.zr = zr;
-        this.alignment = alignment;
-    }
-
-    public String getBeaconId() {
-        return beaconId;
-    }
-
-    public void setBeaconId(String beaconId) {
-        this.beaconId = beaconId;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
-    }
-
-    public double getXr() {
-        return xr;
-    }
-
-    public void setXr(double xr) {
-        this.xr = xr;
-    }
-
-    public double getYr() {
-        return yr;
-    }
-
-    public void setYr(double yr) {
-        this.yr = yr;
-    }
-
-    public double getZr() {
-        return zr;
-    }
-
-    public void setZr(double zr) {
-        this.zr = zr;
-    }
-
-    public double getAlignment() {
-        return alignment;
-    }
-
-    public void setAlignment(double alignment) {
-        this.alignment = alignment;
-    }
-
-    @Override
-    public String toString() {
-        return "{ \"beaconId\": \"" + beaconId + "\", \"x\": " + x + ", \"y\": " + y + ", \"z\": " + z +
-                ", \"xr\": " + xr + ", \"yr\": " + yr + ", \"zr\": " + zr + ", \"alignment\": " + alignment + " }";
-    }
+    /**
+     * Method to produce JSON representation of the objects.
+     *
+     * @return JSON string containing all the the objects data as json object.
+     */
+    public abstract String toJson();
 }

@@ -2,44 +2,42 @@ package fi.helsinki.btls.domain;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /***
- * Class representing one beacon.
+ * Class representation of one beacon.
  */
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Beacon {
     private String id;
-    private double minVolume;
+    private double minRSSI;
     private List<ObservationModel> observations;
 
     public Beacon(String id) {
         this.id = id;
-        this.minVolume = Double.MAX_VALUE;
+        this.minRSSI = Double.MAX_VALUE;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public double getMinVolume() {
-        return minVolume;
-    }
-
-    public List<ObservationModel> getObservations() {
-        return observations;
-    }
-
-    public void setObservations(List<ObservationModel> observations) {
+    /**
+     * Set observations of the beacon.
+     * Also updates the min RSSI to equal the new list of observations if needed.
+     *
+     * @param observations list of observations.
+     */
+   public void setObservations(List<ObservationModel> observations) {
         this.observations = observations;
         double minVol = observations
                 .stream()
-                .map(x -> x.getVolume())
+                .map(ObservationModel::getRssi)
                 .min(Comparator.comparing(Double::valueOf))
                 .get();
-        if (minVol < this.minVolume) {
-            this.minVolume = minVol;
-        }
 
+        if (minVol < this.minRSSI) {
+            this.minRSSI = minVol;
+        }
     }
 }
