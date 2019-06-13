@@ -73,7 +73,7 @@ public class MqttService implements IMqttService{
 
     @Override
     public void publish(LocationModel locationModel) {
-        this.provider.publish(locationModel.toJson());
+        this.provider.publish(gson.toJson(locationModel));
         System.out.println("Published: " + locationModel);
     }
 

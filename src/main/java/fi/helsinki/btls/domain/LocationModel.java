@@ -1,5 +1,6 @@
 package fi.helsinki.btls.domain;
 
+import com.google.gson.Gson;
 import lombok.*;
 
 /**
@@ -15,11 +16,4 @@ public abstract class LocationModel {
     protected double y;
     protected double xr;
     protected double yr;
-
-    /**
-     * Method to produce JSON representation of the objects.
-     *
-     * @return JSON string containing all the the objects data as json object.
-     */
-    public abstract String toJson();
 }

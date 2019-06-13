@@ -19,15 +19,4 @@ public class Location3D extends LocationModel {
         this.z = z;
         this.zr = zr;
     }
-
-    /**
-     * Method to produce JSON representation of the objects.
-     *
-     * @return JSON string containing all the the objects data as json object.
-     */
-    @Override
-    public String toJson() {
-        return "{ \"beaconId\": \"" + beaconId + "\", \"x\": " + x + ", \"y\": " + y + ", \"z\": " + z +
-                ", \"xr\": " + xr + ", \"yr\": " + yr + ", \"zr\": " + zr + " }";
-    }
 }

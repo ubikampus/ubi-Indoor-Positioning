@@ -17,15 +17,4 @@ public class Location2D extends LocationModel {
         super(beaconId, x, y, xr, yr);
         this.alignment = alignment;
     }
-
-    /**
-     * Method to produce JSON representation of the objects.
-     *
-     * @return JSON string containing all the the objects data as json object.
-     */
-    @Override
-    public String toJson() {
-        return "{ \"beaconId\": \"" + beaconId + "\", \"x\": " + x + ", \"y\": " + y +
-                ", \"xr\": " + xr + ", \"yr\": " + yr + ", \"alignment\": " + alignment + " }";
-    }
 }

@@ -37,7 +37,7 @@ public class MqttServiceTest {
         LocationModel location = new Location2D("raspi", 1, 1, 1, 1, 1);
 
         service.publish(location);
-        inOrder.verify(provider).publish(location.toJson());
+        inOrder.verify(provider).publish(new Gson().toJson(location));
     }
     @Test
     public void getBeaconsReturnsBeaconsWhenObservationsArePresent() {
