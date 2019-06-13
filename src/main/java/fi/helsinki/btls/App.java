@@ -4,48 +4,38 @@
 package fi.helsinki.btls;
 
 import com.google.gson.Gson;
-import fi.helsinki.btls.domain.Beacon;
+import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.btls.io.UbiMqttProvider;
+import fi.helsinki.btls.services.ILocationService;
 import fi.helsinki.btls.services.IMqttService;
-import fi.helsinki.btls.services.LocationService;
+import fi.helsinki.btls.services.LocationService2D;
 import fi.helsinki.btls.services.MqttService;
+import fi.helsinki.btls.utils.PropertiesHandler;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
         IMqttProvider provider = new UbiMqttProvider();
         IMqttService mqttService = new MqttService(provider, new Gson());
-        LocationService service = new LocationService(mqttService);
-        while(true) {
+        ILocationService service = new LocationService2D();
+        Map<String, String> allProperties = new PropertiesHandler("config/rasps.properties").getAllProperties();
 
+
+
+        while(true) {
             try {
                 Thread.sleep(1000);
-                List<Beacon> beacons = mqttService.getBeacons();
-                for (int i = 0; i < beacons.size(); i++) {
-                    mqttService.publish(service.calculateBeaconLocation2D(beacons.get(i)));
+                List<LocationModel> locations = service.calculateAllLocations(mqttService.getBeacons());
+
+                for (LocationModel location : locations) {
+                    mqttService.publish(location);
                 }
-                //service.calculateLocation2D();
-                }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
         }
-
-
-        //String json = "{ 'raspId':'f8fe6w739fweuy', 'beaconId':'s6383f47f364', 'volume':129 }";
-        //Gson gson = new Gson();
-        //ObservationModel user = gson.fromJson(json, ObservationModel.class);
-
-        //System.out.println("Observation json to model:");
-        //System.out.println("json: " + json);
-        //System.out.println(user);
-
-        //System.out.println();
-        //System.out.println("LocationModel to json:");
-        //LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
-        //System.out.println(model);
     }
 }
