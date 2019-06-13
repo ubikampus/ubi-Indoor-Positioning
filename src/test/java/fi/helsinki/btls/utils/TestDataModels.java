@@ -1,18 +1,16 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.utils;
 
 import static org.junit.Assert.*;
-
-import com.google.gson.Gson;
-import fi.helsinki.btls.domain.*;
 import org.junit.Test;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import fi.helsinki.btls.domain.*;
 
+/**
+ * Test class for making sure that data models work as they should.
+ */
 public class TestDataModels {
     @Test
     public void testEmptyConstructor2D() {
