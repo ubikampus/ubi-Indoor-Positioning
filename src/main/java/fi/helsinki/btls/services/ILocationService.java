@@ -14,21 +14,18 @@ public interface ILocationService {
     LocationModel calculateLocation(Beacon beacon);
     List<LocationModel> calculateAllLocations(List<Beacon> beacons);
 
-
-    void deleteAllRasps();
-
     /**
      * Static method to create solution for trilaterion task.
      *
-     * @param beacon which devices location is been calculated.
-     * @param raspsChecked rasps that have been already gone through.
+     * @param minRSSI minimum RSSI observations can get to.
+     * @param observersChecked rasps that have been already gone through.
      * @param obs observations related to beacon.
-     * @param rasps existing observation posts.
+     * @param observerService existing observation posts.
      *
      * @return Optimum object which contains the result for problem in raw form.
      */
-    static LeastSquaresOptimizer.Optimum createOptimum(Beacon beacon, List<String> raspsChecked,
-                                                       List<ObservationModel> obs, Map<String, double[]> rasps) {
+    static LeastSquaresOptimizer.Optimum createOptimum(double minRSSI, List<String> observersChecked,
+                                                       List<ObservationModel> obs, IObserverService observerService) {
         List<double[]> pos = new ArrayList<>();
         List<Double> dist = new ArrayList<>();
 
@@ -37,10 +34,10 @@ public interface ILocationService {
             ObservationModel model = obs.get(i);
 
             // preventing double value for rasps
-            if (!raspsChecked.contains(model.getRaspId())) {
-                dist.add(Math.abs(model.getVolume()) - beacon.getMinVolume()); // Needs scaling on minimum value of RSSI.
-                pos.add(rasps.get(model.getRaspId()));
-                raspsChecked.add(model.getRaspId());
+            if (!observersChecked.contains(model.getRaspId())) {
+                dist.add(Math.abs(model.getVolume()) - minRSSI); // Needs scaling on minimum value of RSSI.
+                pos.add(observerService.getObserver(model.getRaspId()).getPosition());
+                observersChecked.add(model.getRaspId());
             }
         }
 

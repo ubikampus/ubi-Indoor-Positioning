@@ -16,43 +16,18 @@ import fi.helsinki.btls.domain.ObservationModel;
  * Location service class.
  */
 public class LocationService2D implements ILocationService {
-    private Map<String, double[]> rasps;
+    private IObserverService iObserverService;
 
-    public LocationService2D() {
-        rasps = new HashMap<>();
-    }
-
-    public double[] addRasp(String raspId, double x, double y) {
-        return rasps.put(raspId, new double[]{x, y});
-    }
-
-    public boolean addAllRasps(Map<String, double[]> newOnes) {
-        for (Map.Entry<String, double[]> e : newOnes.entrySet()) {
-            if (e.getValue().length != 2) {
-                return false;
-            }
-        }
-
-        rasps.putAll(newOnes);
-        return true;
-    }
-
-    public double[] deleteRasp(String raspId) {
-        return rasps.remove(raspId);
-    }
-
-    @Override
-    public void deleteAllRasps() {
-        rasps.clear();
+    public LocationService2D(IObserverService iObserverService) {
+        this.iObserverService = iObserverService;
     }
 
     @Override
     public LocationModel calculateLocation(Beacon beacon) {
-        List<String> raspsChecked = new ArrayList<>();
         List<ObservationModel> obs = beacon.getObservations();
 
         if (!obs.isEmpty()) {
-            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon, raspsChecked, obs, rasps);
+            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon.getMinVolume(), new ArrayList<>(), obs, iObserverService);
 
             // gotten location in form of [x,y]
             double[] centroid = optimum.getPoint().toArray();
