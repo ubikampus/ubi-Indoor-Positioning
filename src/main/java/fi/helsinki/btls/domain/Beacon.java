@@ -10,20 +10,24 @@ import java.util.stream.Collectors;
  */
 public class Beacon {
     private String id;
-    private double minVolume;
+    private double minRSSI;
     private List<ObservationModel> observations;
 
     public Beacon(String id) {
         this.id = id;
-        this.minVolume = Double.MAX_VALUE;
+        this.minRSSI = Double.MAX_VALUE;
     }
 
     public String getId() {
         return id;
     }
 
-    public double getMinVolume() {
-        return minVolume;
+    public double getMinRSSI() {
+        return minRSSI;
+    }
+
+    public void setMinRSSI(double minRSSI) {
+        this.minRSSI = minRSSI;
     }
 
     public List<ObservationModel> getObservations() {
@@ -34,11 +38,11 @@ public class Beacon {
         this.observations = observations;
         double minVol = observations
                 .stream()
-                .map(x -> x.getVolume())
+                .map(ObservationModel::getVolume)
                 .min(Comparator.comparing(Double::valueOf))
                 .get();
-        if (minVol < this.minVolume) {
-            this.minVolume = minVol;
+        if (minVol < this.minRSSI) {
+            this.minRSSI = minVol;
         }
 
     }

@@ -11,7 +11,7 @@ import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 
 /**
- * Location service class.
+ * Calculates location in 3 dimensional space.
  */
 public class LocationService3D implements ILocationService {
     private IObserverService iObserverService;
@@ -25,7 +25,7 @@ public class LocationService3D implements ILocationService {
         List<ObservationModel> obs = beacon.getObservations();
 
         if (!obs.isEmpty()) {
-            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon.getMinVolume(), new ArrayList<>(), obs, iObserverService);
+            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs, iObserverService);
 
             // gotten location in form of [x,y,z]
             double[] centroid = optimum.getPoint().toArray();
