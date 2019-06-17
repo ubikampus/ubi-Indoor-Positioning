@@ -10,7 +10,6 @@ import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.btls.io.UbiMqttProvider;
-import org.bouncycastle.asn1.BERApplicationSpecific;
 
 /**
  * MqttService.
