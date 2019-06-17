@@ -10,13 +10,19 @@ import fi.helsinki.btls.io.UbiMqttProvider;
 import fi.helsinki.btls.services.IMqttService;
 import fi.helsinki.btls.services.LocationService;
 import fi.helsinki.btls.services.MqttService;
+import fi.helsinki.btls.utils.PropertiesHandler;
 
 import java.util.List;
 
 public class App {
     public static void main(String[] args) {
-        IMqttProvider provider = new UbiMqttProvider();
-        IMqttService mqttService = new MqttService(provider);
+        PropertiesHandler handler = new PropertiesHandler("config/mqttConfig.properties");
+
+        String subscribeTopic = handler.getProperty("subscribeTopic");
+        String publishTopic = handler.getProperty("publishTopic");
+        String mqttUrl = handler.getProperty("mqttUrl");
+
+        IMqttService mqttService = new MqttService(mqttUrl,subscribeTopic,publishTopic);
         LocationService service = new LocationService(mqttService);
         while(true) {
 
