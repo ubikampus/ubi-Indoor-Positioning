@@ -1,9 +1,8 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.domain.LocationModel;
@@ -72,9 +71,14 @@ public class MqttService implements IMqttService{
     }
 
     @Override
+    public void publish(List<LocationModel> locationModels) {
+        this.provider.publish(gson.toJson(locationModels));
+        System.out.println("Published: " + locationModels);
+    }
+
+    @Override
     public void publish(LocationModel locationModel) {
-        this.provider.publish(gson.toJson(locationModel));
-        System.out.println("Published: " + locationModel);
+        publish(Collections.singletonList(locationModel));
     }
 
     @Override

@@ -36,7 +36,6 @@ public class LocationServiceTest {
         observers.addObserver(new Observer(id, c.x, c.y));
     }
 
-
     private void setUp3D() {
         observers = new ObserverService(3);
         rasps = new HashMap<>();
@@ -76,16 +75,19 @@ public class LocationServiceTest {
         beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000);
 
-        obs.add(new ObservationModel("rasp-1", beacon.getId(), euclideanDistance2D(wanted, rasps.get("rasp-1"))));
-        obs.add(new ObservationModel("rasp-2", beacon.getId(), euclideanDistance2D(wanted, rasps.get("rasp-2"))));
-        obs.add(new ObservationModel("rasp-3", beacon.getId(), euclideanDistance2D(wanted, rasps.get("rasp-3"))));
-        obs.add(new ObservationModel("rasp-4", beacon.getId(), euclideanDistance2D(wanted, rasps.get("rasp-4"))));
+        obs.add(createObservation2D("rasp-1", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
         LocationModel locationModel = locationService.calculateLocation(beacon);
 
         assertNotNull(locationModel);
-        System.out.println(locationModel);
+        assertEquals(wanted.x, locationModel.getX(), 0.05);
+        assertEquals(wanted.y, locationModel.getY(), 0.05);
+        assertTrue(locationModel.getXr() < 0.5);
+        assertTrue(locationModel.getYr() < 0.5);
     }
 
     @Test
@@ -98,20 +100,344 @@ public class LocationServiceTest {
         beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000, 3500);
 
-        obs.add(new ObservationModel("rasp-1", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-1"))));
-        obs.add(new ObservationModel("rasp-2", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-2"))));
-        obs.add(new ObservationModel("rasp-3", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-3"))));
-        obs.add(new ObservationModel("rasp-4", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-4"))));
-        obs.add(new ObservationModel("rasp-5", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-5"))));
-        obs.add(new ObservationModel("rasp-6", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-6"))));
-        obs.add(new ObservationModel("rasp-7", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-7"))));
-        obs.add(new ObservationModel("rasp-8", beacon.getId(), euclideanDistance3D(wanted, rasps.get("rasp-8"))));
+        obs.add(createObservation3D("rasp-1", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
+
+        beacon.setObservations(obs);
+        Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
+
+        assertNotNull(locationModel);
+        assertEquals(wanted.x, locationModel.getX(), 0.05);
+        assertEquals(wanted.y, locationModel.getY(), 0.05);
+        assertEquals(wanted.z, locationModel.getZ(), 0.05);
+        assertTrue(locationModel.getXr() < 0.5);
+        assertTrue(locationModel.getYr() < 0.5);
+        assertTrue(locationModel.getZr() < 0.5);
+    }
+
+    @Test
+    public void onlyCaresAboutLatest2D() {
+        setUp2D();
+        ILocationService locationService = new LocationService2D(observers);
+
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        Cord first = new Cord(2000, 5000);
+        Cord wanted = new Cord(18795, 76533);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), first));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), first));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), first));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), first));
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), wanted));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
         LocationModel locationModel = locationService.calculateLocation(beacon);
 
         assertNotNull(locationModel);
-        System.out.println(locationModel);
+        assertEquals(wanted.x, locationModel.getX(), 0.05);
+        assertEquals(wanted.y, locationModel.getY(), 0.05);
+        assertTrue(locationModel.getXr() < 0.5);
+        assertTrue(locationModel.getYr() < 0.5);
+    }
+
+    @Test
+    public void onlyCaresAboutLatest3D() {
+        setUp3D();
+        ILocationService locationService = new LocationService3D(observers);
+
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        Cord first = new Cord(2000, 5000, 3500);
+        Cord wanted = new Cord(100, 66800, 30002);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), first));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), first));
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), wanted));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
+
+        beacon.setObservations(obs);
+        Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
+
+        assertNotNull(locationModel);
+        assertEquals(wanted.x, locationModel.getX(), 0.05);
+        assertEquals(wanted.y, locationModel.getY(), 0.05);
+        assertEquals(wanted.z, locationModel.getZ(), 0.05);
+        assertTrue(locationModel.getXr() < 0.5);
+        assertTrue(locationModel.getYr() < 0.5);
+        assertTrue(locationModel.getZr() < 0.5);
+    }
+
+    @Test
+    public void locationCannotBeCalculatedWithoutObs2D() {
+        setUp2D();
+        ILocationService locationService = new LocationService2D(observers);
+
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        beacon.setObservations(obs);
+
+        LocationModel locationModel = locationService.calculateLocation(beacon);
+        assertNull(locationModel);
+    }
+
+    @Test
+    public void locationCannotBeCalculatedWithoutObs3D() {
+        setUp3D();
+        ILocationService locationService = new LocationService3D(observers);
+
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        beacon.setObservations(obs);
+
+        LocationModel locationModel = locationService.calculateLocation(beacon);
+        assertNull(locationModel);
+    }
+
+    @Test
+    public void calculateAllLocations2D() {
+        setUp2D();
+        ILocationService locationService = new LocationService2D(observers);
+        List<Cord> wanted = new ArrayList<>();
+        List<Beacon> beacons = new ArrayList<>();
+
+        // Beacons.
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        Cord cord = new Cord(1657, 94519);
+        wanted.add(cord);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-2");
+        beacon.setMinRSSI(0);
+        cord = new Cord(55767, 20000);
+        wanted.add(cord);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-3");
+        beacon.setMinRSSI(0);
+        cord = new Cord(101, 99878);
+        wanted.add(cord);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-4");
+        beacon.setMinRSSI(0);
+        cord = new Cord(54791, 75682);
+        wanted.add(cord);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-5");
+        beacon.setMinRSSI(0);
+        cord = new Cord(4300, 6888);
+        wanted.add(cord);
+
+        obs.add(createObservation2D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        // Assertion.
+        List<LocationModel> locationModels = locationService.calculateAllLocations(beacons);
+
+        for (int i = 0; i < locationModels.size(); i++) {
+            Cord real = wanted.get(i);
+            LocationModel loc = locationModels.get(i);
+
+            assertNotNull(loc);
+            assertEquals(real.x, loc.getX(), 0.05);
+            assertEquals(real.y, loc.getY(), 0.05);
+            assertTrue(loc.getXr() < 0.5);
+            assertTrue(loc.getYr() < 0.5);
+        }
+    }
+
+    @Test
+    public void calculateAllLocations3D() {
+        setUp3D();
+        ILocationService locationService = new LocationService3D(observers);
+        List<Cord> wanted = new ArrayList<>();
+        List<Beacon> beacons = new ArrayList<>();
+
+        // Beacons.
+        List<ObservationModel> obs = new ArrayList<>();
+        Beacon beacon = new Beacon("beacon-1");
+        beacon.setMinRSSI(0);
+        Cord cord = new Cord(2000, 5000, 3500);
+        wanted.add(cord);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-2");
+        beacon.setMinRSSI(0);
+        cord = new Cord(29000, 14567, 31);
+        wanted.add(cord);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-3");
+        beacon.setMinRSSI(0);
+        cord = new Cord(93126, 14544, 18999);
+        wanted.add(cord);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-4");
+        beacon.setMinRSSI(0);
+        cord = new Cord(1200, 56222, 7843);
+        wanted.add(cord);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        obs = new ArrayList<>();
+        beacon = new Beacon("beacon-5");
+        beacon.setMinRSSI(0);
+        cord = new Cord(4300, 6888, 50030);
+        wanted.add(cord);
+
+        obs.add(createObservation3D("rasp-1", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-2", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-3", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-4", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-5", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-6", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-7", beacon.getId(), cord));
+        obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
+
+        beacon.setObservations(obs);
+        beacons.add(beacon);
+
+        // Assertion.
+        List<LocationModel> locationModels = locationService.calculateAllLocations(beacons);
+
+        for (int i = 0; i < locationModels.size(); i++) {
+            Cord real = wanted.get(i);
+            LocationModel loc = locationModels.get(i);
+
+            assertNotNull(loc);
+            assertEquals(Location3D.class, loc.getClass());
+            Location3D ddd = (Location3D) loc;
+
+            assertEquals(real.x, ddd.getX(), 0.05);
+            assertEquals(real.y, ddd.getY(), 0.05);
+            assertEquals(real.z, ddd.getZ(), 0.05);
+            assertTrue(ddd.getXr() < 0.5);
+            assertTrue(ddd.getYr() < 0.5);
+            assertTrue(ddd.getZr() < 0.5);
+        }
+    }
+
+    private ObservationModel createObservation2D(String raspId, String beaconId, Cord wanted) {
+        return new ObservationModel(raspId, beaconId, euclideanDistance2D(wanted, rasps.get(raspId)));
+    }
+
+    private ObservationModel createObservation3D(String raspId, String beaconId, Cord wanted) {
+        return new ObservationModel(raspId, beaconId, euclideanDistance3D(wanted, rasps.get(raspId)));
     }
 
     private double euclideanDistance2D(Cord c1, Cord c2) {

@@ -30,14 +30,17 @@ public class Beacon {
      */
    public void setObservations(List<ObservationModel> observations) {
         this.observations = observations;
-        double minVol = observations
-                .stream()
-                .map(ObservationModel::getRssi)
-                .min(Comparator.comparing(Double::valueOf))
-                .get();
 
-        if (minVol < this.minRSSI) {
-            this.minRSSI = minVol;
+        if (!observations.isEmpty()) {
+            double minVol = observations
+                    .stream()
+                    .map(ObservationModel::getRssi)
+                    .min(Comparator.comparing(Double::valueOf))
+                    .get();
+
+            if (minVol < this.minRSSI) {
+                this.minRSSI = minVol;
+            }
         }
     }
 }

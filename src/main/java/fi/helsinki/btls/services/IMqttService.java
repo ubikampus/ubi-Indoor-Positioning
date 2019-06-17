@@ -11,7 +11,8 @@ import fi.helsinki.btls.domain.ObservationModel;
  */
 public interface IMqttService {
     public List<ObservationModel> getObservations();
-
-    public void publish(LocationModel locationModel);
     public List<Beacon> getBeacons();
+
+    public void publish(List<LocationModel> locationModels);
+    public void publish(LocationModel locationModel);
 }

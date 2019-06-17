@@ -17,7 +17,8 @@ import fi.helsinki.btls.utils.PropertiesHandler;
 public class App {
     public static void main(String[] args) {
         IMqttProvider provider = new UbiMqttProvider();
-        IMqttService mqttService = new MqttService(provider, new Gson());
+        Gson gson = new Gson();
+        IMqttService mqttService = new MqttService(provider, gson);
 
         int positionsDimension = 2;
         IObserverService observerService = new ObserverService(positionsDimension);
@@ -48,10 +49,7 @@ public class App {
                 Thread.sleep(1000);
 
                 List<LocationModel> locations = service.calculateAllLocations(mqttService.getBeacons());
-
-                for (LocationModel location : locations) {
-                    mqttService.publish(location);
-                }
+                mqttService.publish(locations);
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
