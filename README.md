@@ -21,7 +21,7 @@ Easiest way to get a development server running is to use docker-compose.
 Before running necessary properties files must be created. 
 To achieve this you can use from projects root a [bash script](https://github.com/ubikampus/Bluetooth-location-server/blob/master/scripts/createProperties.sh) with command './scripts/createProperties.sh' 
 to automatically create all the needed properties and give them a default value that can be used directly or changed if wanted.
-Set up the development environment with `docker-compose up`.
+Set up the development environment with `docker-compose up -d mqtt` and `docker-compose up btls`.
 You should now have both the location server and an mqtt server running.
 The mqtt server has port 1883 exposed, so you can also connect to it from the outside.
 

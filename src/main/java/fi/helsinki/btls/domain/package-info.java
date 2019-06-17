@@ -1,4 +1,4 @@
 /**
- * Package to contain all data models.
+ * Package to contain all data models needed for trilaterion.
  */
 package fi.helsinki.btls.domain;

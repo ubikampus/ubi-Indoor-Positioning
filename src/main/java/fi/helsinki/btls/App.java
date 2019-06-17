@@ -11,11 +11,10 @@ import fi.helsinki.btls.services.IMqttService;
 import fi.helsinki.btls.services.LocationService;
 import fi.helsinki.btls.services.MqttService;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         IMqttProvider provider = new UbiMqttProvider();
         IMqttService mqttService = new MqttService(provider, new Gson());
         LocationService service = new LocationService(mqttService);
@@ -24,6 +23,7 @@ public class App {
             try {
                 Thread.sleep(1000);
                 List<Beacon> beacons = mqttService.getBeacons();
+
                 for (int i = 0; i < beacons.size(); i++) {
                     mqttService.publish(service.calculateBeaconLocation2D(beacons.get(i)));
                 }
@@ -33,19 +33,5 @@ public class App {
                 System.out.println(ex.toString());
             }
         }
-
-
-        //String json = "{ 'raspId':'f8fe6w739fweuy', 'beaconId':'s6383f47f364', 'volume':129 }";
-        //Gson gson = new Gson();
-        //ObservationModel user = gson.fromJson(json, ObservationModel.class);
-
-        //System.out.println("Observation json to model:");
-        //System.out.println("json: " + json);
-        //System.out.println(user);
-
-        //System.out.println();
-        //System.out.println("LocationModel to json:");
-        //LocationModel model = new LocationModel("7fa98fyr97hg3h983f34hfu", 200, 200, 34, 21);
-        //System.out.println(model);
     }
 }
