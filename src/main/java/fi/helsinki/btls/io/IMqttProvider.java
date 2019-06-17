@@ -9,5 +9,4 @@ public interface IMqttProvider {
     void publish(String message);
     void setListener(IUbiMessageListener listener);
     void connect();
-    boolean isDebugMode();
 }

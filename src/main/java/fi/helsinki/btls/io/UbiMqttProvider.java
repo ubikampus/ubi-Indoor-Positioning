@@ -14,7 +14,6 @@ public class UbiMqttProvider implements IMqttProvider {
     private final String subscribeTopic;
     private final String publishTopic;
     private IUbiMessageListener listener;
-    private boolean debug = false;
 
     /**
      * Wrapper for UbiMqtt class.
@@ -26,29 +25,7 @@ public class UbiMqttProvider implements IMqttProvider {
     public UbiMqttProvider(String mqttUrl, String subscribeTopic, String publishTopic) {
         this.subscribeTopic = subscribeTopic;
         this.publishTopic = publishTopic;
-
-        PropertiesHandler handler = new PropertiesHandler("config/mqttConfig.properties");
-        debug = Boolean.parseBoolean(handler.getProperty("debug"));
         instance  = new UbiMqtt(mqttUrl);
-    }
-
-    /**
-     * Wrapper for UbiMqtt class.
-     */
-    public UbiMqttProvider() {
-        PropertiesHandler handler = new PropertiesHandler("config/mqttConfig.properties");
-
-        this.subscribeTopic = handler.getProperty("subscribeTopic");
-        this.publishTopic = handler.getProperty("publishTopic");
-
-        String mqttUrl = handler.getProperty("mqttUrl");
-        debug = Boolean.parseBoolean(handler.getProperty("debug"));
-        instance  = new UbiMqtt(mqttUrl);
-    }
-
-    @Override
-    public boolean isDebugMode() {
-        return this.debug;
     }
 
     /**

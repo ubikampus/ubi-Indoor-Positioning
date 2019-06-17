@@ -1,9 +1,7 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.domain.LocationModel;
@@ -19,8 +17,6 @@ public class MqttService implements IMqttService{
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
-
-
 
     /**
      * Creates MqttService.
@@ -58,22 +54,12 @@ public class MqttService implements IMqttService{
     public MqttService(IMqttProvider provider, List<Beacon> beacons) {
         this.provider = provider;
         this.beacons = new HashMap<>();
-        if (beacons != null) {
-            for (Beacon beacon : beacons) {
-                this.beacons.put(beacon.getId(), beacon);
-            }
-        }
-        this.gson = new Gson();
 
-        if (this.provider.isDebugMode()) {
-            addObservation(new ObservationModel("rasp-1", "1", -80));
-            addObservation(new ObservationModel("rasp-1", "2", -70));
-            addObservation(new ObservationModel("rasp-2", "1", -90));
-            addObservation(new ObservationModel("rasp-2", "2", -50));
-            addObservation(new ObservationModel("rasp-3", "1", -30));
-            addObservation(new ObservationModel("rasp-3", "2", -60));
-            addObservation(new ObservationModel("rasp-2", "2", -75));
+        if (beacons != null) {
+            beacons.forEach(beacon -> this.beacons.put(beacon.getId(), beacon));
         }
+
+        this.gson = new Gson();
 
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
@@ -91,6 +77,7 @@ public class MqttService implements IMqttService{
         if (!beacons.containsKey(observationModel.getBeaconId())) {
             beacons.put(observationModel.getBeaconId(), new Beacon(observationModel.getBeaconId()));
         }
+
         beacons.get(observationModel.getBeaconId()).getObservations().add(observationModel);
     }
 
@@ -106,9 +93,14 @@ public class MqttService implements IMqttService{
     }
 
     @Override
+    public void publish(List<LocationModel> locationModels) {
+        this.provider.publish(gson.toJson(locationModels));
+        System.out.println("Published: " + locationModels);
+    }
+
+    @Override
     public void publish(LocationModel locationModel) {
-        this.provider.publish(gson.toJson(locationModel));
-        System.out.println("Published: " + locationModel);
+        publish(Collections.singletonList(locationModel));
     }
 
     @Override

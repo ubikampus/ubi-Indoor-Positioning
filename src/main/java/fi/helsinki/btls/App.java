@@ -3,16 +3,16 @@
  */
 package fi.helsinki.btls;
 
-import com.google.gson.Gson;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.io.IMqttProvider;
-import fi.helsinki.btls.io.UbiMqttProvider;
-import fi.helsinki.btls.services.IMqttService;
-import fi.helsinki.btls.services.LocationService;
-import fi.helsinki.btls.services.MqttService;
-import fi.helsinki.btls.utils.PropertiesHandler;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import fi.helsinki.btls.domain.Beacon;
+import fi.helsinki.btls.domain.LocationModel;
+import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.domain.Observer;
+import fi.helsinki.btls.services.*;
+import fi.helsinki.btls.utils.PropertiesHandler;
 
 public class App {
     public static void main(String[] args) {
@@ -21,23 +21,74 @@ public class App {
         String subscribeTopic = handler.getProperty("subscribeTopic");
         String publishTopic = handler.getProperty("publishTopic");
         String mqttUrl = handler.getProperty("mqttUrl");
+        boolean debug = Boolean.parseBoolean(handler.getProperty("debug"));
 
         IMqttService mqttService = new MqttService(mqttUrl,subscribeTopic,publishTopic);
-        LocationService service = new LocationService(mqttService);
-        while(true) {
 
+        int positionsDimension = 2;
+        IObserverService observerService = new ObserverService(positionsDimension);
+        Map<String, String> allProperties = new PropertiesHandler("config/rasps.properties").getAllProperties();
+        List<Observer> all = new ArrayList<>();
+
+        allProperties.forEach((key, value) -> {
+            String[] rasp = value.split(":");
+            double[] temp = new double[positionsDimension];
+
+            for (int i = 0; i < positionsDimension; i++) {
+                temp[i] = Double.parseDouble(rasp[i]);
+            }
+
+            Observer obs = new Observer(key);
+            obs.setPosition(temp);
+            all.add(obs);
+        });
+
+        if (!observerService.addAllObservers(all)) {
+            return;
+        }
+
+        ILocationService service = new LocationService2D(observerService);
+        while (true) {
             try {
                 Thread.sleep(1000);
-                List<Beacon> beacons = mqttService.getBeacons();
+                List<Beacon> beacons;
 
-                for (int i = 0; i < beacons.size(); i++) {
-                    mqttService.publish(service.calculateBeaconLocation2D(beacons.get(i)));
+                if (debug) {
+                    beacons = createData();
+                } else {
+                    beacons = mqttService.getBeacons();
                 }
-                //service.calculateLocation2D();
-                }
-            catch (Exception ex) {
+
+                List<LocationModel> locations = service.calculateAllLocations(beacons);
+                mqttService.publish(locations);
+            } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
         }
+    }
+
+    private static List<Beacon> createData() {
+        List<Beacon> beacons = new ArrayList<>();
+
+        Beacon first = new Beacon("1");
+        first.setMinRSSI(0);
+        List<ObservationModel> obsFirst = new ArrayList<>();
+        obsFirst.add(new ObservationModel("rasp-1", "1", -80));
+        obsFirst.add(new ObservationModel("rasp-2", "1", -90));
+        obsFirst.add(new ObservationModel("rasp-3", "1", -30));
+        first.setObservations(obsFirst);
+
+        Beacon second = new Beacon("2");
+        second.setMinRSSI(0);
+        List<ObservationModel> obsSecond = new ArrayList<>();
+        obsSecond.add(new ObservationModel("rasp-1", "2", -70));
+        obsSecond.add(new ObservationModel("rasp-2", "2", -50));
+        obsSecond.add(new ObservationModel("rasp-3", "2", -60));
+        obsSecond.add(new ObservationModel("rasp-2", "2", -75));
+        second.setObservations(obsSecond);
+
+        beacons.add(first);
+        beacons.add(second);
+        return beacons;
     }
 }
