@@ -48,11 +48,6 @@ public class DummyMqttProvider implements IMqttProvider {
         return message;
     }
 
-    @Override
-    public boolean isDebugMode() {
-        return false;
-    }
-
     public void simulateBusInvalid() {
         try {
             MqttMessage message = new MqttMessage();

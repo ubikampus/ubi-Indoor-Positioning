@@ -1,7 +1,6 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
-
 import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.domain.Beacon;

@@ -6,8 +6,7 @@ import static org.junit.Assert.*;
 import com.google.gson.Gson;
 import org.junit.*;
 import org.mockito.InOrder;
-
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import fi.helsinki.btls.domain.*;
 import fi.helsinki.btls.io.UbiMqttProvider;
@@ -39,7 +38,7 @@ public class MqttServiceTest {
         LocationModel location = new Location2D("raspi", 1, 1, 1, 1, 1);
 
         service.publish(location);
-        inOrder.verify(provider).publish(new Gson().toJson(location));
+        inOrder.verify(provider).publish(new Gson().toJson(Collections.singletonList(location)));
     }
     @Test
     public void getBeaconsReturnsBeaconsWhenObservationsArePresent() {

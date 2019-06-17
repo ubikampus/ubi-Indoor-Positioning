@@ -71,14 +71,16 @@ public class App {
         List<Beacon> beacons = new ArrayList<>();
 
         Beacon first = new Beacon("1");
-        List<ObservationModel> obsFirst = first.getObservations();
+        first.setMinRSSI(0);
+        List<ObservationModel> obsFirst = new ArrayList<>();
         obsFirst.add(new ObservationModel("rasp-1", "1", -80));
         obsFirst.add(new ObservationModel("rasp-2", "1", -90));
         obsFirst.add(new ObservationModel("rasp-3", "1", -30));
         first.setObservations(obsFirst);
 
         Beacon second = new Beacon("2");
-        List<ObservationModel> obsSecond = first.getObservations();
+        second.setMinRSSI(0);
+        List<ObservationModel> obsSecond = new ArrayList<>();
         obsSecond.add(new ObservationModel("rasp-1", "2", -70));
         obsSecond.add(new ObservationModel("rasp-2", "2", -50));
         obsSecond.add(new ObservationModel("rasp-3", "2", -60));
