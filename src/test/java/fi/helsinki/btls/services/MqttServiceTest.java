@@ -24,7 +24,7 @@ public class MqttServiceTest {
     @Before
     public void setUp() throws Exception {
         provider = mock(UbiMqttProvider.class);
-        service = new MqttService(provider, new Gson());
+        service = new MqttService(provider);
         inOrder = inOrder(provider);
     }
 
@@ -39,12 +39,12 @@ public class MqttServiceTest {
         LocationModel location = new Location2D("raspi", 1, 1, 1, 1, 1);
 
         service.publish(location);
-        //inOrder.verify(provider).publish(new Gson().toJson(location));
+        inOrder.verify(provider).publish(new Gson().toJson(location));
     }
     @Test
     public void getBeaconsReturnsBeaconsWhenObservationsArePresent() {
         DummyMqttProvider provider = new DummyMqttProvider();
-        service = new MqttService(provider, new Gson());
+        service = new MqttService(provider);
         provider.simulateBus();
         List<Beacon> beacons = service.getBeacons();
         assertFalse(beacons.isEmpty());
@@ -52,7 +52,7 @@ public class MqttServiceTest {
     @Test
     public void getObservationsReturnsObservationsWhenObservationsArePresent() {
         DummyMqttProvider provider = new DummyMqttProvider();
-        service = new MqttService(provider, new Gson());
+        service = new MqttService(provider);
         provider.simulateBus();
         List<ObservationModel> obs = service.getObservations();
         assertFalse(obs.isEmpty());
@@ -60,7 +60,7 @@ public class MqttServiceTest {
     @Test
     public void listenerHandlesInvalidData() { //TODO(andeem): change system out to ByteArrayOutputStream and verifiy the exception is printed
         DummyMqttProvider provider = new DummyMqttProvider();
-        service = new MqttService(provider, new Gson());
+        service = new MqttService(provider);
         provider.simulateBusInvalid();
     }
 }

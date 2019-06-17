@@ -1,5 +1,6 @@
 package fi.helsinki.btls.domain;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class Beacon {
     public Beacon(String id) {
         this.id = id;
         this.minRSSI = Double.MAX_VALUE;
+        this.observations = new ArrayList<>();
     }
 
     /**

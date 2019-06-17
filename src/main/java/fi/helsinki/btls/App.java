@@ -3,22 +3,27 @@
  */
 package fi.helsinki.btls;
 
-import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import fi.helsinki.btls.domain.Beacon;
 import fi.helsinki.btls.domain.LocationModel;
+import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.domain.Observer;
-import fi.helsinki.btls.io.IMqttProvider;
-import fi.helsinki.btls.io.UbiMqttProvider;
 import fi.helsinki.btls.services.*;
 import fi.helsinki.btls.utils.PropertiesHandler;
 
 public class App {
     public static void main(String[] args) {
-        IMqttProvider provider = new UbiMqttProvider();
-        Gson gson = new Gson();
-        IMqttService mqttService = new MqttService(provider, gson);
+        PropertiesHandler handler = new PropertiesHandler("config/mqttConfig.properties");
+
+        String subscribeTopic = handler.getProperty("subscribeTopic");
+        String publishTopic = handler.getProperty("publishTopic");
+        String mqttUrl = handler.getProperty("mqttUrl");
+        boolean debug = Boolean.parseBoolean(handler.getProperty("debug"));
+
+        IMqttService mqttService = new MqttService(mqttUrl,subscribeTopic,publishTopic);
 
         int positionsDimension = 2;
         IObserverService observerService = new ObserverService(positionsDimension);
@@ -43,16 +48,45 @@ public class App {
         }
 
         ILocationService service = new LocationService2D(observerService);
-
         while (true) {
             try {
                 Thread.sleep(1000);
+                List<Beacon> beacons;
 
-                List<LocationModel> locations = service.calculateAllLocations(mqttService.getBeacons());
+                if (debug) {
+                    beacons = createData();
+                } else {
+                    beacons = mqttService.getBeacons();
+                }
+
+                List<LocationModel> locations = service.calculateAllLocations(beacons);
                 mqttService.publish(locations);
             } catch (Exception ex) {
                 System.out.println(ex.toString());
             }
         }
+    }
+
+    private static List<Beacon> createData() {
+        List<Beacon> beacons = new ArrayList<>();
+
+        Beacon first = new Beacon("1");
+        List<ObservationModel> obsFirst = first.getObservations();
+        obsFirst.add(new ObservationModel("rasp-1", "1", -80));
+        obsFirst.add(new ObservationModel("rasp-2", "1", -90));
+        obsFirst.add(new ObservationModel("rasp-3", "1", -30));
+        first.setObservations(obsFirst);
+
+        Beacon second = new Beacon("2");
+        List<ObservationModel> obsSecond = first.getObservations();
+        obsSecond.add(new ObservationModel("rasp-1", "2", -70));
+        obsSecond.add(new ObservationModel("rasp-2", "2", -50));
+        obsSecond.add(new ObservationModel("rasp-3", "2", -60));
+        obsSecond.add(new ObservationModel("rasp-2", "2", -75));
+        second.setObservations(obsSecond);
+
+        beacons.add(first);
+        beacons.add(second);
+        return beacons;
     }
 }
