@@ -35,7 +35,7 @@ public interface ILocationService {
 
             // preventing double value for rasps
             if (!observersChecked.contains(model.getRaspId())) {
-                dist.add(Math.abs(model.getVolume()) - minRSSI); // Needs scaling on minimum value of RSSI.
+                dist.add(Math.abs(model.getRssi()) - minRSSI); // Needs scaling on minimum value of RSSI.
                 pos.add(observerService.getObserver(model.getRaspId()).getPosition());
                 observersChecked.add(model.getRaspId());
             }

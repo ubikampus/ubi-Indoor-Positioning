@@ -18,6 +18,8 @@ plugins {
 
     // Apply the application plugin to add support for building an application
     id 'application'
+
+    id "com.github.johnrengelman.shadow" version "5.0.0"
 }
 
 jacoco {
@@ -47,8 +49,10 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testCompile group: 'org.mockito', name: 'mockito-core', version: '2.1.0'
-}
 
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+}
 
 test {
     testLogging.showStandardStreams = true

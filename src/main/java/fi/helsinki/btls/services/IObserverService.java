@@ -4,7 +4,7 @@ import java.util.List;
 import fi.helsinki.btls.domain.Observer;
 
 /**
- * Interface to abstract storing and handling of observers while application is running,
+ * Interface to abstract storing and handling of observers while application is running.
  */
 public interface IObserverService {
     boolean addObserver(Observer observer);

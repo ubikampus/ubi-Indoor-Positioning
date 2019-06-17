@@ -71,11 +71,9 @@ public class MqttService implements IMqttService{
                 .collect(Collectors.toList());
     }
 
-
-
     @Override
     public void publish(LocationModel locationModel) {
-        this.provider.publish(locationModel.toString());
+        this.provider.publish(gson.toJson(locationModel));
         System.out.println("Published: " + locationModel);
     }
 

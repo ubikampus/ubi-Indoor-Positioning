@@ -46,6 +46,7 @@ public class App {
         while (true) {
             try {
                 Thread.sleep(1000);
+
                 List<LocationModel> locations = service.calculateAllLocations(mqttService.getBeacons());
 
                 for (LocationModel location : locations) {

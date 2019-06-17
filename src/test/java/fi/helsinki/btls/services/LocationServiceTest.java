@@ -1,16 +1,12 @@
 package fi.helsinki.btls.services;
 
 import static org.junit.Assert.*;
-
-import fi.helsinki.btls.domain.Observer;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.domain.LocationModel;
-import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.domain.*;
 
 /**
  * Test class for location services.
@@ -49,7 +45,7 @@ public class LocationServiceTest {
 
         createObserver(100000, 0, 0, "rasp-2");
         createObserver(0, 100000, 0, "rasp-3");
-        createObserver(0, 0,100000, "rasp-4");
+        createObserver(0, 0, 100000, "rasp-4");
         createObserver(100000, 100000, 0, "rasp-5");
         createObserver(0, 100000, 100000, "rasp-6");
         createObserver(100000, 0, 100000, "rasp-7");
@@ -57,7 +53,7 @@ public class LocationServiceTest {
 
         createObserver(50000, 0, 0, "rasp-9");
         createObserver(0, 50000, 0, "rasp-10");
-        createObserver(0, 0,50000, "rasp-11");
+        createObserver(0, 0, 50000, "rasp-11");
         createObserver(50000, 50000, 0, "rasp-12");
         createObserver(0, 50000, 50000, "rasp-13");
         createObserver(50000, 0, 50000, "rasp-14");

@@ -50,7 +50,7 @@ public class ObserverServiceTest {
     }
 
     @Test
-    public void NotAllAreAdded() {
+    public void notAllAreAdded() {
         IObserverService s = new ObserverService(2);
 
         for (int i = 1; i < Math.pow(2, 6); i *= 2) {

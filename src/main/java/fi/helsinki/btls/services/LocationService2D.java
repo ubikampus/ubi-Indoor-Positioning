@@ -7,9 +7,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import java.util.*;
 import java.util.stream.Collectors;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.domain.LocationModel;
-import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.domain.*;
 
 
 /**
@@ -57,9 +55,9 @@ public class LocationService2D implements ILocationService {
             double[] asArray = principal.toArray();
             double arctan = Math.atan(asArray[0] / asArray[1]); // uncertain which way should be the division...
 
-            return new LocationModel(beacon.getId(),
-                    centroid[0], centroid[1], 0,
-                    standardDeviation[0], standardDeviation[1], 0, arctan);
+            return new Location2D(beacon.getId(),
+                    centroid[0], centroid[1],
+                    standardDeviation[0], standardDeviation[1], arctan);
         }
 
         return null;

@@ -43,7 +43,7 @@ public class DummyMqttProvider implements IMqttProvider {
         MqttMessage message =  new MqttMessage();
         String json = "{ \"raspId\": \"" + observationModel.getRaspId()
                 + "\", \"beaconId\": \"" + observationModel.getBeaconId()
-                + "\", \"volume\": \"" + observationModel.getVolume() + "\" }";
+                + "\", \"volume\": \"" + observationModel.getRssi() + "\" }";
         message.setPayload(json.getBytes());
         return message;
     }
