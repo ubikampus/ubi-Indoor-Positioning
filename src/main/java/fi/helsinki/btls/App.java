@@ -16,7 +16,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         IMqttProvider provider = new UbiMqttProvider();
-        IMqttService mqttService = new MqttService(provider, new Gson());
+        IMqttService mqttService = new MqttService(provider);
         LocationService service = new LocationService(mqttService);
         while(true) {
 
