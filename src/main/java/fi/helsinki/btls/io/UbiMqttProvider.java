@@ -19,14 +19,15 @@ public class UbiMqttProvider implements IMqttProvider {
     /**
      * Wrapper for UbiMqtt class.
      *
-     * @param subscribeTopic subscribeTopic to listen
+     * @param mqttUrl Mqtt bus URL.
+     * @param subscribeTopic topic to listen.
+     * @param publishTopic topic to publish.
      */
-    public UbiMqttProvider(String subscribeTopic, String publishTopic) {
+    public UbiMqttProvider(String mqttUrl, String subscribeTopic, String publishTopic) {
         this.subscribeTopic = subscribeTopic;
         this.publishTopic = publishTopic;
 
         PropertiesHandler handler = new PropertiesHandler("config/mqttConfig.properties");
-        String mqttUrl = handler.getProperty("mqttUrl");
         debug = Boolean.parseBoolean(handler.getProperty("debug"));
         instance  = new UbiMqtt(mqttUrl);
     }

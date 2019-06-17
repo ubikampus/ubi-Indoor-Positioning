@@ -10,7 +10,6 @@ import fi.helsinki.btls.domain.LocationModel;
 import fi.helsinki.btls.domain.ObservationModel;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.btls.io.UbiMqttProvider;
-import org.bouncycastle.asn1.BERApplicationSpecific;
 
 /**
  * MqttService.
@@ -31,7 +30,7 @@ public class MqttService implements IMqttService{
      * @param beacons initial Beacon information.
      */
     public MqttService(String mqttUrl, String subTopic, String pubTopic, List<Beacon> beacons) {
-        this(new UbiMqttProvider(subTopic, pubTopic), beacons);
+        this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic), beacons);
     }
     /**
      * Creates MqttService.
@@ -40,7 +39,7 @@ public class MqttService implements IMqttService{
      * @param pubTopic Topic to publish.
      */
     public MqttService(String mqttUrl, String subTopic, String pubTopic) {
-        this(new UbiMqttProvider(subTopic, pubTopic));
+        this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic));
     }
 
     /**
