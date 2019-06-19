@@ -1,4 +1,4 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Location2D extends LocationModel {
+public class Location2D extends Location {
     private double alignment;
 
     public Location2D(String beaconId, double x, double y, double xr, double yr, double alignment) {

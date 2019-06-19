@@ -1,7 +1,6 @@
 package fi.helsinki.btls.io;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import fi.helsinki.btls.utils.PropertiesHandler;
 import fi.helsinki.ubimqtt.IUbiActionListener;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
 import fi.helsinki.ubimqtt.UbiMqtt;

@@ -1,4 +1,4 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
 import lombok.*;
 
@@ -10,7 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class Location3D extends LocationModel {
+public class Location3D extends Location {
     private double z;
     private double zr;
 

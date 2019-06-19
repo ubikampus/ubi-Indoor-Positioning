@@ -6,24 +6,22 @@ import org.apache.commons.math3.linear.RealMatrix;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import fi.helsinki.btls.domain.*;
+import fi.helsinki.btls.datamodels.*;
 
 /**
  * Calculates location in 3 dimensional space.
  */
-public class LocationService3D implements ILocationService {
-    private IObserverService iObserverService;
-
+public class LocationService3D extends LocationService {
     public LocationService3D(IObserverService iObserverService) {
         this.iObserverService = iObserverService;
     }
 
     @Override
-    public LocationModel calculateLocation(Beacon beacon) {
-        List<ObservationModel> obs = beacon.getObservations();
+    public Location calculateLocation(Beacon beacon) {
+        List<Observation> obs = beacon.getObservations();
 
         if (!obs.isEmpty()) {
-            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs, iObserverService);
+            LeastSquaresOptimizer.Optimum optimum = createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs);
 
             // gotten location in form of [x,y,z]
             double[] centroid = optimum.getPoint().toArray();
@@ -43,7 +41,7 @@ public class LocationService3D implements ILocationService {
     }
 
     @Override
-    public List<LocationModel> calculateAllLocations(List<Beacon> beacons) {
+    public List<Location> calculateAllLocations(List<Beacon> beacons) {
         return beacons.stream().map(this::calculateLocation).collect(Collectors.toList());
     }
 }

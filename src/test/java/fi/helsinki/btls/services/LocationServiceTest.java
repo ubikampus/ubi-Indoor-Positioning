@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import fi.helsinki.btls.domain.*;
+import fi.helsinki.btls.datamodels.*;
 
 /**
  * Test class for location services.
@@ -70,7 +70,7 @@ public class LocationServiceTest {
         setUp2D();
         ILocationService locationService = new LocationService2D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000);
@@ -81,13 +81,13 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        LocationModel locationModel = locationService.calculateLocation(beacon);
+        Location location = locationService.calculateLocation(beacon);
 
-        assertNotNull(locationModel);
-        assertEquals(wanted.x, locationModel.getX(), 0.05);
-        assertEquals(wanted.y, locationModel.getY(), 0.05);
-        assertTrue(locationModel.getXr() < 0.5);
-        assertTrue(locationModel.getYr() < 0.5);
+        assertNotNull(location);
+        assertEquals(wanted.x, location.getX(), 0.05);
+        assertEquals(wanted.y, location.getY(), 0.05);
+        assertTrue(location.getXr() < 0.5);
+        assertTrue(location.getYr() < 0.5);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class LocationServiceTest {
         setUp3D();
         ILocationService locationService = new LocationService3D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000, 3500);
@@ -126,7 +126,7 @@ public class LocationServiceTest {
         setUp2D();
         ILocationService locationService = new LocationService2D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord first = new Cord(2000, 5000);
@@ -143,13 +143,13 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        LocationModel locationModel = locationService.calculateLocation(beacon);
+        Location location = locationService.calculateLocation(beacon);
 
-        assertNotNull(locationModel);
-        assertEquals(wanted.x, locationModel.getX(), 0.05);
-        assertEquals(wanted.y, locationModel.getY(), 0.05);
-        assertTrue(locationModel.getXr() < 0.5);
-        assertTrue(locationModel.getYr() < 0.5);
+        assertNotNull(location);
+        assertEquals(wanted.x, location.getX(), 0.05);
+        assertEquals(wanted.y, location.getY(), 0.05);
+        assertTrue(location.getXr() < 0.5);
+        assertTrue(location.getYr() < 0.5);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class LocationServiceTest {
         setUp3D();
         ILocationService locationService = new LocationService3D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord first = new Cord(2000, 5000, 3500);
@@ -198,13 +198,13 @@ public class LocationServiceTest {
         setUp2D();
         ILocationService locationService = new LocationService2D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         beacon.setObservations(obs);
 
-        LocationModel locationModel = locationService.calculateLocation(beacon);
-        assertNull(locationModel);
+        Location location = locationService.calculateLocation(beacon);
+        assertNull(location);
     }
 
     @Test
@@ -212,13 +212,13 @@ public class LocationServiceTest {
         setUp3D();
         ILocationService locationService = new LocationService3D(observers);
 
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         beacon.setObservations(obs);
 
-        LocationModel locationModel = locationService.calculateLocation(beacon);
-        assertNull(locationModel);
+        Location location = locationService.calculateLocation(beacon);
+        assertNull(location);
     }
 
     @Test
@@ -229,7 +229,7 @@ public class LocationServiceTest {
         List<Beacon> beacons = new ArrayList<>();
 
         // Beacons.
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord cord = new Cord(1657, 94519);
@@ -300,11 +300,11 @@ public class LocationServiceTest {
         beacons.add(beacon);
 
         // Assertion.
-        List<LocationModel> locationModels = locationService.calculateAllLocations(beacons);
+        List<Location> locations = locationService.calculateAllLocations(beacons);
 
-        for (int i = 0; i < locationModels.size(); i++) {
+        for (int i = 0; i < locations.size(); i++) {
             Cord real = wanted.get(i);
-            LocationModel loc = locationModels.get(i);
+            Location loc = locations.get(i);
 
             assertNotNull(loc);
             assertEquals(real.x, loc.getX(), 0.05);
@@ -322,7 +322,7 @@ public class LocationServiceTest {
         List<Beacon> beacons = new ArrayList<>();
 
         // Beacons.
-        List<ObservationModel> obs = new ArrayList<>();
+        List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
         beacon.setMinRSSI(0);
         Cord cord = new Cord(2000, 5000, 3500);
@@ -413,11 +413,11 @@ public class LocationServiceTest {
         beacons.add(beacon);
 
         // Assertion.
-        List<LocationModel> locationModels = locationService.calculateAllLocations(beacons);
+        List<Location> locations = locationService.calculateAllLocations(beacons);
 
-        for (int i = 0; i < locationModels.size(); i++) {
+        for (int i = 0; i < locations.size(); i++) {
             Cord real = wanted.get(i);
-            LocationModel loc = locationModels.get(i);
+            Location loc = locations.get(i);
 
             assertNotNull(loc);
             assertEquals(Location3D.class, loc.getClass());
@@ -432,12 +432,12 @@ public class LocationServiceTest {
         }
     }
 
-    private ObservationModel createObservation2D(String raspId, String beaconId, Cord wanted) {
-        return new ObservationModel(raspId, beaconId, euclideanDistance2D(wanted, rasps.get(raspId)));
+    private Observation createObservation2D(String raspId, String beaconId, Cord wanted) {
+        return new Observation(raspId, beaconId, euclideanDistance2D(wanted, rasps.get(raspId)));
     }
 
-    private ObservationModel createObservation3D(String raspId, String beaconId, Cord wanted) {
-        return new ObservationModel(raspId, beaconId, euclideanDistance3D(wanted, rasps.get(raspId)));
+    private Observation createObservation3D(String raspId, String beaconId, Cord wanted) {
+        return new Observation(raspId, beaconId, euclideanDistance3D(wanted, rasps.get(raspId)));
     }
 
     private double euclideanDistance2D(Cord c1, Cord c2) {

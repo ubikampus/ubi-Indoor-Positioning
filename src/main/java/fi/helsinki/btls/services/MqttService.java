@@ -3,9 +3,9 @@ package fi.helsinki.btls.services;
 import com.google.gson.Gson;
 import java.util.*;
 import java.util.stream.Collectors;
-import fi.helsinki.btls.domain.Beacon;
-import fi.helsinki.btls.domain.LocationModel;
-import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.datamodels.Beacon;
+import fi.helsinki.btls.datamodels.Location;
+import fi.helsinki.btls.datamodels.Observation;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.btls.io.UbiMqttProvider;
 
@@ -63,7 +63,7 @@ public class MqttService implements IMqttService{
 
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
-                ObservationModel obs = gson.fromJson(mqttMessage.toString(), ObservationModel.class);
+                Observation obs = gson.fromJson(mqttMessage.toString(), Observation.class);
                 addObservation(obs);
             } catch (Exception ex) {
                 System.out.println(ex.toString());
@@ -73,17 +73,17 @@ public class MqttService implements IMqttService{
         this.provider.connect();
     }
 
-    private void addObservation(ObservationModel observationModel) {
-        if (!beacons.containsKey(observationModel.getBeaconId())) {
-            beacons.put(observationModel.getBeaconId(), new Beacon(observationModel.getBeaconId()));
+    private void addObservation(Observation observation) {
+        if (!beacons.containsKey(observation.getBeaconId())) {
+            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId()));
         }
 
-        beacons.get(observationModel.getBeaconId()).getObservations().add(observationModel);
+        beacons.get(observation.getBeaconId()).getObservations().add(observation);
     }
 
 
     @Override
-    public List<ObservationModel> getObservations() {
+    public List<Observation> getObservations() {
         return beacons
                 .values()
                 .stream()
@@ -93,14 +93,14 @@ public class MqttService implements IMqttService{
     }
 
     @Override
-    public void publish(List<LocationModel> locationModels) {
-        this.provider.publish(gson.toJson(locationModels));
-        System.out.println("Published: " + locationModels);
+    public void publish(List<Location> locations) {
+        this.provider.publish(gson.toJson(locations));
+        System.out.println("Published: " + locations);
     }
 
     @Override
-    public void publish(LocationModel locationModel) {
-        publish(Collections.singletonList(locationModel));
+    public void publish(Location location) {
+        publish(Collections.singletonList(location));
     }
 
     @Override

@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import fi.helsinki.btls.domain.Observer;
+import fi.helsinki.btls.datamodels.Observer;
 
 
 /**

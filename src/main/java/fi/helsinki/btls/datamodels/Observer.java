@@ -1,4 +1,4 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
 import lombok.Data;
 

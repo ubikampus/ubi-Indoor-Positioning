@@ -1,7 +1,7 @@
 package fi.helsinki.btls.services;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import fi.helsinki.btls.domain.ObservationModel;
+import fi.helsinki.btls.datamodels.Observation;
 import fi.helsinki.btls.io.IMqttProvider;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
 
@@ -26,24 +26,24 @@ public class DummyMqttProvider implements IMqttProvider {
 
     public void simulateBus() {
         try {
-            listener.messageArrived("", serialize(new ObservationModel("rasp-1", "1", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-2", "1", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-3", "1", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-4", "1", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-1", "2", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-2", "2", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-3", "2", -80)), "");
-            listener.messageArrived("", serialize(new ObservationModel("rasp-4", "2", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-1", "1", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-2", "1", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-3", "1", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-4", "1", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-1", "2", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-2", "2", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-3", "2", -80)), "");
+            listener.messageArrived("", serialize(new Observation("rasp-4", "2", -80)), "");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private MqttMessage serialize(ObservationModel observationModel) {
+    private MqttMessage serialize(Observation observation) {
         MqttMessage message =  new MqttMessage();
-        String json = "{ \"raspId\": \"" + observationModel.getRaspId()
-                + "\", \"beaconId\": \"" + observationModel.getBeaconId()
-                + "\", \"volume\": \"" + observationModel.getRssi() + "\" }";
+        String json = "{ \"raspId\": \"" + observation.getRaspId()
+                + "\", \"beaconId\": \"" + observation.getBeaconId()
+                + "\", \"volume\": \"" + observation.getRssi() + "\" }";
         message.setPayload(json.getBytes());
         return message;
     }

@@ -1,7 +1,7 @@
 package fi.helsinki.btls.services;
 
 import java.util.List;
-import fi.helsinki.btls.domain.Observer;
+import fi.helsinki.btls.datamodels.Observer;
 
 /**
  * Interface to abstract storing and handling of observers while application is running.

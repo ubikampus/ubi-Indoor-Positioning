@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import fi.helsinki.btls.domain.*;
+import fi.helsinki.btls.datamodels.*;
 
 /**
  * Test class for making sure that data models work as they should.
@@ -14,7 +14,7 @@ import fi.helsinki.btls.domain.*;
 public class TestDataModels {
     @Test
     public void testEmptyConstructor2D() {
-        LocationModel model = new Location2D();
+        Location model = new Location2D();
 
         assertEquals(model.getClass(), Location2D.class);
         assertNull(model.getBeaconId());
@@ -25,7 +25,7 @@ public class TestDataModels {
 
     @Test
     public void testEmptyConstructor3D() {
-        LocationModel model = new Location3D();
+        Location model = new Location3D();
 
         assertEquals(model.getClass(), Location3D.class);
         assertNull(model.getBeaconId());
@@ -36,7 +36,7 @@ public class TestDataModels {
 
     @Test
     public void testFullConstructor2D() {
-        LocationModel model = get2Dmodel("test beacon", 100, 200.134, 3.567, 0.1, 0);
+        Location model = get2Dmodel("test beacon", 100, 200.134, 3.567, 0.1, 0);
 
         assertEquals(model.getClass(), Location2D.class);
         assertEquals("test beacon", model.getBeaconId());
@@ -47,7 +47,7 @@ public class TestDataModels {
 
     @Test
     public void testFullConstructor3D() {
-        LocationModel model = get3Dmodel("fail", 1, 4, 5.1212, 6, 2, 3);
+        Location model = get3Dmodel("fail", 1, 4, 5.1212, 6, 2, 3);
 
         assertEquals(model.getClass(), Location3D.class);
         assertEquals("fail", model.getBeaconId());
@@ -58,13 +58,13 @@ public class TestDataModels {
 
     @Test
     public void equalsWorks2Dand3D() {
-        LocationModel one = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
-        LocationModel two = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
-        LocationModel three = get2Dmodel("notEz", 0, 1, 0.001, 0.234, 5.1);
+        Location one = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
+        Location two = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
+        Location three = get2Dmodel("notEz", 0, 1, 0.001, 0.234, 5.1);
 
-        LocationModel uno = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
-        LocationModel dos = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
-        LocationModel tres = get3Dmodel("ez", 0, 1, 0.723, 0.2, 0.001, 0.723);
+        Location uno = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
+        Location dos = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
+        Location tres = get3Dmodel("ez", 0, 1, 0.723, 0.2, 0.001, 0.723);
 
         assertEquals(one, two);
         assertEquals(uno, dos);
@@ -81,13 +81,13 @@ public class TestDataModels {
 
     @Test
     public void hashCodeWorks2Dand3D() {
-        LocationModel one = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
-        LocationModel two = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
-        LocationModel three = get2Dmodel("notEz", 0, 1, 0.001, 0.234, 5.1);
+        Location one = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
+        Location two = get2Dmodel("ez", 0, 1, 0.2, 0.001, 0.723);
+        Location three = get2Dmodel("notEz", 0, 1, 0.001, 0.234, 5.1);
 
-        LocationModel uno = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
-        LocationModel dos = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
-        LocationModel tres = get3Dmodel("ez", 0, 1, 0.723, 0.2, 0.001, 0.723);
+        Location uno = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
+        Location dos = get3Dmodel("notEz", 0, 1, 5, 0.001, 0.234, 0.1);
+        Location tres = get3Dmodel("ez", 0, 1, 0.723, 0.2, 0.001, 0.723);
 
         assertEquals(one.hashCode(), two.hashCode());
         assertEquals(uno.hashCode(), dos.hashCode());
@@ -172,11 +172,11 @@ public class TestDataModels {
         double min =  Double.MAX_VALUE;
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
 
-        List<ObservationModel> observations = createObservations();
+        List<Observation> observations = createObservations();
         beacon.setObservations(observations);
 
         min = Double.MAX_VALUE;
-        for (ObservationModel obs : observations) {
+        for (Observation obs : observations) {
             min = min <= obs.getRssi() ? min : obs.getRssi();
         }
 
@@ -186,7 +186,7 @@ public class TestDataModels {
         beacon.setObservations(observations);
 
         min = beacon.getMinRSSI();
-        for (ObservationModel obs : observations) {
+        for (Observation obs : observations) {
             min = min <= obs.getRssi() ? min : obs.getRssi();
         }
 
@@ -196,14 +196,14 @@ public class TestDataModels {
         beacon.setObservations(observations);
 
         min = beacon.getMinRSSI();
-        for (ObservationModel obs : observations) {
+        for (Observation obs : observations) {
             min = min <= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
     }
 
-    private List<ObservationModel> createObservations() {
+    private List<Observation> createObservations() {
         return IntStream.range(0, 50)
                 .mapToObj(i -> createObservation("beacon-" + i, "rasp-" + i, Math.random() * 10000))
                 .collect(Collectors.toList());
@@ -240,7 +240,7 @@ public class TestDataModels {
         return new Beacon(s, 0, new ArrayList<>());
     }
 
-    private ObservationModel createObservation(String rasp, String beacon, double v) {
-        return new ObservationModel(rasp, beacon, v);
+    private Observation createObservation(String rasp, String beacon, double v) {
+        return new Observation(rasp, beacon, v);
     }
 }

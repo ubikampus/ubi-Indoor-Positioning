@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import fi.helsinki.btls.domain.Observer;
+import fi.helsinki.btls.datamodels.Observer;
 
 /**
  * Handles everything related to keeping observers ready for use all the time.
