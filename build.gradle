@@ -19,7 +19,7 @@ plugins {
 version = '0.1.0'
 
 jacoco {
-    toolVersion = "0.8.2"
+    toolVersion = "0.8.3"
     reportsDir = file("$buildDir/JacocoReports")
 }
 
@@ -62,7 +62,7 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it, exclude: [
-                    'fi/helsinki/btls/io/UbiMqttProvider.class'
+                    '**/*UbiMqttProvider.*', '**/*UbiMqttProvider$*.*'
             ])
         })
     }
