@@ -8,6 +8,9 @@
 
 plugins {
     id 'java-library'
+    
+    //For jitback
+    id 'maven'
 
     //Test Coverage
     id 'jacoco'
