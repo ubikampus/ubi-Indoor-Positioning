@@ -9,7 +9,7 @@ import org.mockito.InOrder;
 import java.util.Collections;
 import java.util.List;
 import fi.helsinki.btls.datamodels.*;
-import fi.helsinki.btls.io.UbiMqttProvider;
+import fi.helsinki.btls.UbiMqttProvider;
 
 
 /**

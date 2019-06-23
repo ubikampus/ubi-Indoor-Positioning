@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls;
 
 import java.util.ArrayList;
 import java.util.HashMap;

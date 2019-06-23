@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls;
 
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;

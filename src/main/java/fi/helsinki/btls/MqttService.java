@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls;
 
 import com.google.gson.Gson;
 import java.util.*;
@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.Beacon;
 import fi.helsinki.btls.datamodels.Location;
 import fi.helsinki.btls.datamodels.Observation;
-import fi.helsinki.btls.io.IMqttProvider;
-import fi.helsinki.btls.io.UbiMqttProvider;
 
 /**
  * MqttService.
