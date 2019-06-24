@@ -42,6 +42,16 @@ public class LocationService3D extends LocationService {
 
     @Override
     public List<Location> calculateAllLocations(List<Beacon> beacons) {
-        return beacons.stream().map(this::calculateLocation).collect(Collectors.toList());
+        List<Location> list = new ArrayList<>();
+
+        beacons.forEach(beacon -> {
+            try {
+                Location location = calculateLocation(beacon);
+                list.add(location);
+            } catch (Exception e) {
+            }
+        });
+
+        return list;
     }
 }
