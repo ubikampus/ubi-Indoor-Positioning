@@ -243,4 +243,62 @@ public class TestDataModels {
     private Observation createObservation(String rasp, String beacon, double v) {
         return new Observation(rasp, beacon, v);
     }
+
+    @Test
+    public void testObservationModel() {
+        Observation b1 = createObservation("STA-12", "twin", -56);
+        Observation b2 = createObservation("STA-12", "twin", -56);
+        Observation b3 = createObservation("w21", "lonely", -90);
+
+        assertEquals(b1, b2);
+        assertNotEquals(b1, b3);
+
+        assertEquals(b1.hashCode(), b2.hashCode());
+        assertNotEquals(b2.hashCode(), b3.hashCode());
+
+        b2.setBeaconId("troll");
+        b3.setRssi(0);
+
+        Observation b4 = createObservation("w21", "lonely", -90);
+
+        assertNotEquals(b1, b2);
+        assertNotEquals(b4, b3);
+
+        assertNotEquals(b1.hashCode(), b2.hashCode());
+        assertNotEquals(b4.hashCode(), b3.hashCode());
+
+        assertTrue(b3.toString().contains("raspId=w21"));
+        assertTrue(b1.toString().contains("rssi=-56"));
+    }
+
+    @Test
+    public void testObserverModel() {
+        Observer b1 = createObserver("STA-12", 200, 1000);
+        Observer b2 = createObserver("STA-12", 200, 1000);
+        Observer b3 = createObserver("w21", 5756, 0);
+
+        assertEquals(b1, b2);
+        assertNotEquals(b1, b3);
+
+        assertEquals(b1.hashCode(), b2.hashCode());
+        assertNotEquals(b2.hashCode(), b3.hashCode());
+
+        b2.setObserverId("troll");
+        b3.setPosition(new double[]{7233, 5748});
+
+        Observer b4 = createObserver("w21", 5756, -90);
+
+        assertNotEquals(b1, b2);
+        assertNotEquals(b4, b3);
+
+        assertNotEquals(b1.hashCode(), b2.hashCode());
+        assertNotEquals(b4.hashCode(), b3.hashCode());
+
+        assertTrue(b3.toString().contains("observerId=w21"));
+        assertTrue(b1.toString().contains("position"));
+    }
+
+    private Observer createObserver(String rasp, double x, double y) {
+        return new Observer(rasp, x, y);
+    }
 }
