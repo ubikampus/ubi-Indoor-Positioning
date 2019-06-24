@@ -13,7 +13,7 @@ import fi.helsinki.btls.io.UbiMqttProvider;
  * MqttService.
  */
 public class MqttService implements IMqttService{
-    private static final int MAX_OBSERVATIONS = 10000;
+    public static final int MAX_OBSERVATIONS = 10000;
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
@@ -78,7 +78,13 @@ public class MqttService implements IMqttService{
             beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId()));
         }
 
-        beacons.get(observation.getBeaconId()).getObservations().add(observation);
+        List<Observation> observations = beacons.get(observation.getBeaconId()).getObservations();
+
+        if (observations.size() >= MAX_OBSERVATIONS) {
+            observations.remove(0);
+        }
+
+        observations.add(observation);
     }
 
 

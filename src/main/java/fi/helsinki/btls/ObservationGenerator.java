@@ -6,27 +6,28 @@ import java.util.List;
 import java.util.Map;
 import fi.helsinki.btls.datamodels.Beacon;
 import fi.helsinki.btls.datamodels.Observation;
+import fi.helsinki.btls.services.MqttService;
 
 /**
  * Mocker class to create realistic observation data.
  */
-public class ObservationMocker {
-    private static Map<String, Beacon> beacons = new HashMap<>();
+public class ObservationGenerator {
+    private Map<String, Beacon> beacons = new HashMap<>();
     private int maxBeacons;
     private int newOnesPerCall;
     private List<String> observerKeys;
 
-    public ObservationMocker(int maxBeacons, int newOnesPerCall, List<String> observerKeys) {
+    public ObservationGenerator(int maxBeacons, int newOnesPerCall, List<String> observerKeys) {
         this.maxBeacons = maxBeacons;
         this.newOnesPerCall = newOnesPerCall;
         this.observerKeys = observerKeys;
     }
 
-    public ObservationMocker(int newOnesPerCall, List<String> observerKeys) {
+    public ObservationGenerator(int newOnesPerCall, List<String> observerKeys) {
         this(8, newOnesPerCall, observerKeys);
     }
 
-    public ObservationMocker(List<String> observerKeys) {
+    public ObservationGenerator(List<String> observerKeys) {
         this(8, 20, observerKeys);
     }
 
@@ -57,6 +58,11 @@ public class ObservationMocker {
 
             Observation newONe = new Observation(o, k, rssi);
             b.getObservations().add(newONe);
+
+            if (b.getObservations().size() >= MqttService.MAX_OBSERVATIONS) {
+                b.getObservations().remove(0);
+            }
+
             beacons.put(b.getId(), b);
         }
 
