@@ -46,8 +46,7 @@ public class LocationService3D extends LocationService {
 
         beacons.forEach(beacon -> {
             try {
-                Location location = calculateLocation(beacon);
-                list.add(location);
+                list.add(calculateLocation(beacon));
             } catch (Exception e) {
             }
         });
