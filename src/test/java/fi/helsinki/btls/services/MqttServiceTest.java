@@ -8,7 +8,7 @@ import org.junit.*;
 import org.mockito.InOrder;
 import java.util.Collections;
 import java.util.List;
-import fi.helsinki.btls.domain.*;
+import fi.helsinki.btls.datamodels.*;
 import fi.helsinki.btls.io.UbiMqttProvider;
 
 
@@ -35,7 +35,7 @@ public class MqttServiceTest {
 
     @Test
     public void publishCallsProviderPublish() {
-        LocationModel location = new Location2D("raspi", 1, 1, 1, 1, 1);
+        Location location = new Location2D("raspi", 1, 1, 1, 1, 1);
 
         service.publish(location);
         inOrder.verify(provider).publish(new Gson().toJson(Collections.singletonList(location)));
@@ -53,7 +53,7 @@ public class MqttServiceTest {
         DummyMqttProvider provider = new DummyMqttProvider();
         service = new MqttService(provider);
         provider.simulateBus();
-        List<ObservationModel> obs = service.getObservations();
+        List<Observation> obs = service.getObservations();
         assertFalse(obs.isEmpty());
     }
     @Test

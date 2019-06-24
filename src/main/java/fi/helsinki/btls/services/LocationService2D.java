@@ -5,27 +5,26 @@ import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
-import fi.helsinki.btls.domain.*;
+import fi.helsinki.btls.datamodels.*;
 
 
 /**
  * Calculates location in two dimensional space.
  */
-public class LocationService2D implements ILocationService {
-    private IObserverService iObserverService;
-
+public class LocationService2D extends LocationService {
     public LocationService2D(IObserverService iObserverService) {
         this.iObserverService = iObserverService;
     }
 
     @Override
-    public LocationModel calculateLocation(Beacon beacon) {
-        List<ObservationModel> obs = beacon.getObservations();
+    public Location calculateLocation(Beacon beacon) {
+        List<Observation> obs = beacon.getObservations();
 
         if (!obs.isEmpty()) {
-            LeastSquaresOptimizer.Optimum optimum = ILocationService.createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs, iObserverService);
+            LeastSquaresOptimizer.Optimum optimum = createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs);
 
             // gotten location in form of [x,y]
             double[] centroid = optimum.getPoint().toArray();
@@ -64,7 +63,7 @@ public class LocationService2D implements ILocationService {
     }
 
     @Override
-    public List<LocationModel> calculateAllLocations(List<Beacon> beacons) {
+    public List<Location> calculateAllLocations(List<Beacon> beacons) {
         return beacons.stream().map(this::calculateLocation).collect(Collectors.toList());
     }
 }

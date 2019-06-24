@@ -1,4 +1,4 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Beacon {
     private String id;
     private double minRSSI;
-    private List<ObservationModel> observations;
+    private List<Observation> observations;
 
     public Beacon(String id) {
         this.id = id;
@@ -30,13 +30,13 @@ public class Beacon {
      *
      * @param observations list of observations.
      */
-   public void setObservations(List<ObservationModel> observations) {
+   public void setObservations(List<Observation> observations) {
         this.observations = observations;
 
         if (!observations.isEmpty()) {
             double minVol = observations
                     .stream()
-                    .map(ObservationModel::getRssi)
+                    .map(Observation::getRssi)
                     .min(Comparator.comparing(Double::valueOf))
                     .get();
 

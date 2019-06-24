@@ -318,9 +318,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     </module>
 
-    <!-- COnfiguration file for suppressing classes -->
-    <module name="SuppressionFilter">
-        <property name="file" value="${config_loc}/skipped_files.xml" />
-    </module>
+
 
 </module>

@@ -1,6 +1,5 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
-import com.google.gson.Gson;
 import lombok.*;
 
 /**
@@ -10,7 +9,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class LocationModel {
+public abstract class Location {
     protected String beaconId;
     protected double x;
     protected double y;

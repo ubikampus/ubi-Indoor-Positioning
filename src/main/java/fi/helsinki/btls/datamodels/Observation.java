@@ -1,4 +1,4 @@
-package fi.helsinki.btls.domain;
+package fi.helsinki.btls.datamodels;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ObservationModel {
+public class Observation {
     private String raspId;
     private String beaconId;
     private double rssi;
