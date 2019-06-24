@@ -40,6 +40,7 @@ public class ObservationGenerator {
     public List<Beacon> getBeacons() {
         for (int i = 0; i < newOnesPerCall; i++) {
             String k = randomBeacon();
+            String o = randomObserver();
             Beacon b = beacons.getOrDefault(k, null);
             double rssi;
 
@@ -47,22 +48,34 @@ public class ObservationGenerator {
                 b = new Beacon(k);
                 b.setMinRSSI(0);
 
-                rssi = Math.random() * -100;
+                rssi = Math.random() * -150;
             } else {
-                double change = Math.random() * 2 - 1;
-                double previous = b.getObservations().get(b.getObservations().size() - 1).getRssi();
+                Observation latest = null;
 
-                rssi = previous + change;
+                for (Observation s : b.getObservations()) {
+                    if (s.getRaspId().equals(o)) {
+                        latest = s;
+                    }
+                }
+
+                if (latest == null) {
+                    rssi = Math.random() * -150;
+                } else {
+                    double change = Math.random() * 2 - 1;
+                    double previous = latest.getRssi();
+
+                    rssi = previous + change;
+                }
             }
 
-            Observation newONe = new Observation(randomObserver(), k, rssi);
+            Observation newONe = new Observation(o, k, rssi);
             b.getObservations().add(newONe);
 
             if (b.getObservations().size() >= MqttService.MAX_OBSERVATIONS) {
                 b.getObservations().remove(0);
             }
 
-            beacons.put(b.getId(), b);
+            beacons.put(k, b);
         }
 
         return new ArrayList<>(beacons.values());
