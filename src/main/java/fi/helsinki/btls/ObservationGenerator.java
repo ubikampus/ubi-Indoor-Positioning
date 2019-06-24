@@ -59,7 +59,7 @@ public class ObservationGenerator {
                 }
 
                 if (latest == null) {
-                    rssi = Math.random() * -150;
+                    rssi = Math.random() * -100;
                 } else {
                     double change = Math.random() * 2 - 1;
                     double previous = latest.getRssi();
