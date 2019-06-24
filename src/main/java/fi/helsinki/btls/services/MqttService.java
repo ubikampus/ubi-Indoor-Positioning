@@ -1,6 +1,7 @@
 package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.Beacon;
@@ -59,7 +60,7 @@ public class MqttService implements IMqttService{
             beacons.forEach(beacon -> this.beacons.put(beacon.getId(), beacon));
         }
 
-        this.gson = new Gson();
+        this.gson = createGson();
 
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
@@ -71,6 +72,16 @@ public class MqttService implements IMqttService{
         });
 
         this.provider.connect();
+    }
+
+    private Gson createGson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.serializeSpecialFloatingPointValues();
+        gb.enableComplexMapKeySerialization();
+        gb.serializeNulls();
+        gb.setLenient();
+
+        return gb.create();
     }
 
     private void addObservation(Observation observation) {
