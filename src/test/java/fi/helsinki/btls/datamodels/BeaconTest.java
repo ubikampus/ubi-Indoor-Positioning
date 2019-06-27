@@ -1,7 +1,6 @@
 package fi.helsinki.btls.datamodels;
 
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDateTime;
@@ -45,7 +44,6 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", -30, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", -90, LocalDateTime.now()));
         b.setObservations(obs);
-        System.out.println(b.getMinRSSI());
         assertTrue(b.getMinRSSI() == -30);
     }
 
