@@ -47,5 +47,14 @@ public class BeaconTest {
         assertTrue(b.getMinRSSI() == -30);
     }
 
+    @Test
+    public void setObservationsUpdatesMinRssiAccordinglyWhenMinRssiShouldNotBeChanged() {
+        obs.add(new Observation("raspi", "beacon", -150, LocalDateTime.now()));
+        obs.add(new Observation("raspi", "beacon", -160, LocalDateTime.now()));
+        obs.add(new Observation("raspi", "beacon", -130, LocalDateTime.now()));
+        obs.add(new Observation("raspi", "beacon", -190, LocalDateTime.now()));
+        b.setObservations(obs);
+        assertTrue(b.getMinRSSI() == -100);
+    }
 
 }
