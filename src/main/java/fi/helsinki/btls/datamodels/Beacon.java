@@ -27,7 +27,7 @@ public class Beacon {
 
     public Beacon(String id, int maxLifetime) {
         this.id = id;
-        this.minRSSI = Double.MIN_VALUE;
+        this.minRSSI = -Double.MAX_VALUE;
         this.observations = new ArrayList<>();
         this.maxLifetime = maxLifetime;
     }
