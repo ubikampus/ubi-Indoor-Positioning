@@ -2,6 +2,7 @@ package fi.helsinki.btls.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.Beacon;
@@ -95,6 +96,7 @@ public class MqttService implements IMqttService{
             observations.remove(0);
         }
 
+        observation.setTimestamp(LocalDateTime.now());
         observations.add(observation);
     }
 
