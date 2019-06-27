@@ -238,7 +238,7 @@ public class TestDataModels {
     }
 
     private Beacon createBeacon(String s) {
-        return new Beacon(s, 0, new ArrayList<>());
+        return new Beacon(s, 0, new ArrayList<>(), 30);
     }
 
     private Observation createObservation(String rasp, String beacon, double v) {
