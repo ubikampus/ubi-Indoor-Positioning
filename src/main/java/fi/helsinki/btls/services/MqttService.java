@@ -90,7 +90,9 @@ public class MqttService implements IMqttService{
             beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId()));
         }
 
-        List<Observation> observations = beacons.get(observation.getBeaconId()).getObservations();
+
+        Beacon beacon = beacons.get(observation.getBeaconId());
+        List<Observation> observations = beacon.getObservations();
 
         if (observations.size() >= MAX_OBSERVATIONS) {
             observations.remove(0);
@@ -98,6 +100,7 @@ public class MqttService implements IMqttService{
 
         observation.setTimestamp(LocalDateTime.now());
         observations.add(observation);
+        beacon.setObservations(observations);
     }
 
 
