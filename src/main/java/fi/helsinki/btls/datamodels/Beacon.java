@@ -27,7 +27,7 @@ public class Beacon {
 
     public Beacon(String id, int maxLifetime) {
         this.id = id;
-        this.minRSSI = Double.MAX_VALUE;
+        this.minRSSI = Double.MIN_VALUE;
         this.observations = new ArrayList<>();
         this.maxLifetime = maxLifetime;
     }
@@ -45,10 +45,10 @@ public class Beacon {
             double minVol = observations
                     .stream()
                     .map(Observation::getRssi)
-                    .min(Comparator.comparing(Double::valueOf))
+                    .max(Comparator.comparing(Double::valueOf))
                     .get();
 
-            if (minVol < this.minRSSI) {
+            if (minVol > this.minRSSI) {
                 this.minRSSI = minVol;
             }
         }
