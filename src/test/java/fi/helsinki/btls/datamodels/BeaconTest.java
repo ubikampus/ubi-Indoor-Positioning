@@ -56,5 +56,4 @@ public class BeaconTest {
         b.setObservations(obs);
         assertTrue(b.getMinRSSI() == -100);
     }
-
 }
