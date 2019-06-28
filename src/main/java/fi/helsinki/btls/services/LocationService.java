@@ -31,7 +31,7 @@ abstract class LocationService implements ILocationService {
 
             // preventing double value for rasps
             if (!observersChecked.contains(model.getRaspId())) {
-                dist.add(Math.abs(model.getRssi()) - minRSSI); // Needs scaling on minimum value of RSSI.
+                dist.add(getDistanceFromRssi(model.getRssi(), minRSSI)); // Needs scaling on minimum value of RSSI.
                 pos.add(iObserverService.getObserver(model.getRaspId()).getPosition());
                 observersChecked.add(model.getRaspId());
             }
@@ -51,5 +51,11 @@ abstract class LocationService implements ILocationService {
         NonLinearLeastSquaresSolver solver;
         solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
         return solver.solve();
+    }
+
+    double getDistanceFromRssi(double rssi, double minRssi) {
+        rssi = minRssi - rssi;
+        double result = Math.pow(10, rssi/(10*2));
+        return result;
     }
 }
