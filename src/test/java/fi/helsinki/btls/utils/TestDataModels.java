@@ -168,17 +168,16 @@ public class TestDataModels {
     @Test
     public void testBeaconsObservationAdd() {
         Beacon beacon = new Beacon("ATS-1");
-        assertEquals(Double.MAX_VALUE, beacon.getMinRSSI(), 0.0000001);
+        assertEquals(-Double.MAX_VALUE, beacon.getMinRSSI(), 0.0000001);
 
-        double min =  Double.MAX_VALUE;
+        double min =  -Double.MAX_VALUE;
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
 
         List<Observation> observations = createObservations();
         beacon.setObservations(observations);
 
-        min = Double.MAX_VALUE;
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
@@ -188,7 +187,7 @@ public class TestDataModels {
 
         min = beacon.getMinRSSI();
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
@@ -198,7 +197,7 @@ public class TestDataModels {
 
         min = beacon.getMinRSSI();
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
