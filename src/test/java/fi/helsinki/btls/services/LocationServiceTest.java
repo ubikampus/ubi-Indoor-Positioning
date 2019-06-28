@@ -435,6 +435,13 @@ public class LocationServiceTest {
         }
     }
 
+    @Test
+    public void getDistanceFromRssiWorks() {
+
+        LocationService locationService = new LocationService2D(observers);
+        System.out.println(locationService.getDistanceFromRssi(-80, -69));
+    }
+
     private Observation createObservation2D(String raspId, String beaconId, Cord wanted) {
         return new Observation(raspId, beaconId, euclideanDistance2D(wanted, rasps.get(raspId)));
     }
