@@ -72,7 +72,6 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000);
 
         obs.add(createObservation2D("rasp-1", beacon.getId(), wanted));
@@ -81,6 +80,8 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
+
         Location location = locationService.calculateLocation(beacon);
 
         assertNotNull(location);
@@ -97,7 +98,6 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord wanted = new Cord(2000, 5000, 3500);
 
         obs.add(createObservation3D("rasp-1", beacon.getId(), wanted));
@@ -110,6 +110,8 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
+
         Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
 
         assertNotNull(locationModel);
@@ -128,7 +130,6 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord first = new Cord(2000, 5000);
         Cord wanted = new Cord(18795, 76533);
 
@@ -143,6 +144,8 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
+
         Location location = locationService.calculateLocation(beacon);
 
         assertNotNull(location);
@@ -159,7 +162,6 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord first = new Cord(2000, 5000, 3500);
         Cord wanted = new Cord(100, 66800, 30002);
 
@@ -182,6 +184,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
 
         assertNotNull(locationModel);
@@ -231,7 +234,6 @@ public class LocationServiceTest {
         // Beacons.
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord cord = new Cord(1657, 94519);
         wanted.add(cord);
 
@@ -241,11 +243,11 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-2");
-        beacon.setMinRSSI(0);
         cord = new Cord(55767, 20000);
         wanted.add(cord);
 
@@ -255,11 +257,11 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-3");
-        beacon.setMinRSSI(0);
         cord = new Cord(101, 99878);
         wanted.add(cord);
 
@@ -269,11 +271,11 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-4");
-        beacon.setMinRSSI(0);
         cord = new Cord(54791, 75682);
         wanted.add(cord);
 
@@ -283,11 +285,11 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-5");
-        beacon.setMinRSSI(0);
         cord = new Cord(4300, 6888);
         wanted.add(cord);
 
@@ -297,6 +299,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         // Assertion.
@@ -324,7 +327,6 @@ public class LocationServiceTest {
         // Beacons.
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
         Cord cord = new Cord(2000, 5000, 3500);
         wanted.add(cord);
 
@@ -338,11 +340,11 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-2");
-        beacon.setMinRSSI(0);
         cord = new Cord(29000, 14567, 31);
         wanted.add(cord);
 
@@ -356,11 +358,11 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-3");
-        beacon.setMinRSSI(0);
         cord = new Cord(93126, 14544, 18999);
         wanted.add(cord);
 
@@ -374,11 +376,11 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-4");
-        beacon.setMinRSSI(0);
         cord = new Cord(1200, 56222, 7843);
         wanted.add(cord);
 
@@ -392,11 +394,11 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
         beacon = new Beacon("beacon-5");
-        beacon.setMinRSSI(0);
         cord = new Cord(4300, 6888, 50030);
         wanted.add(cord);
 
@@ -410,6 +412,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
+        beacon.setMinRSSI(0);
         beacons.add(beacon);
 
         // Assertion.

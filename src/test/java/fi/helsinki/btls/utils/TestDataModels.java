@@ -2,6 +2,7 @@ package fi.helsinki.btls.utils;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -167,17 +168,16 @@ public class TestDataModels {
     @Test
     public void testBeaconsObservationAdd() {
         Beacon beacon = new Beacon("ATS-1");
-        assertEquals(Double.MAX_VALUE, beacon.getMinRSSI(), 0.0000001);
+        assertEquals(-Double.MAX_VALUE, beacon.getMinRSSI(), 0.0000001);
 
-        double min =  Double.MAX_VALUE;
+        double min =  -Double.MAX_VALUE;
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
 
         List<Observation> observations = createObservations();
         beacon.setObservations(observations);
 
-        min = Double.MAX_VALUE;
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
@@ -187,7 +187,7 @@ public class TestDataModels {
 
         min = beacon.getMinRSSI();
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
@@ -197,7 +197,7 @@ public class TestDataModels {
 
         min = beacon.getMinRSSI();
         for (Observation obs : observations) {
-            min = min <= obs.getRssi() ? min : obs.getRssi();
+            min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
         assertEquals(min, beacon.getMinRSSI(), 0.000001);
@@ -237,18 +237,22 @@ public class TestDataModels {
     }
 
     private Beacon createBeacon(String s) {
-        return new Beacon(s, 0, new ArrayList<>());
+        return new Beacon(s, 0, new ArrayList<>(), 30);
     }
 
     private Observation createObservation(String rasp, String beacon, double v) {
-        return new Observation(rasp, beacon, v);
+        return new Observation(rasp, beacon, v, LocalDateTime.now());
+    }
+    private Observation createObservation(String rasp, String beacon, double v, LocalDateTime dateTime) {
+        return new Observation(rasp, beacon, v, dateTime);
     }
 
     @Test
     public void testObservationModel() {
-        Observation b1 = createObservation("STA-12", "twin", -56);
-        Observation b2 = createObservation("STA-12", "twin", -56);
-        Observation b3 = createObservation("w21", "lonely", -90);
+        LocalDateTime dateTime = LocalDateTime.now();
+        Observation b1 = createObservation("STA-12", "twin", -56, dateTime);
+        Observation b2 = createObservation("STA-12", "twin", -56, dateTime);
+        Observation b3 = createObservation("w21", "lonely", -90, dateTime);
 
         assertEquals(b1, b2);
         assertNotEquals(b1, b3);
