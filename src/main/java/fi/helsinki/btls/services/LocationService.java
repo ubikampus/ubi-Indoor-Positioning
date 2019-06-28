@@ -56,6 +56,6 @@ abstract class LocationService implements ILocationService {
     double getDistanceFromRssi(double rssi, double minRssi) {
         rssi = minRssi - rssi;
         double result = Math.pow(10, rssi/(10*2));
-        return result;
+        return result*1000;
     }
 }
