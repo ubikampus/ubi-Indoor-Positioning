@@ -53,7 +53,7 @@ abstract class LocationService implements ILocationService {
         return solver.solve();
     }
 
-    double getDistanceFromRssi(double rssi, double minRssi) {
+    public double getDistanceFromRssi(double rssi, double minRssi) {
         rssi = minRssi - rssi;
         double result = Math.pow(10, rssi/(10*2));
         return result*1000;
