@@ -10,6 +10,7 @@ import fi.helsinki.btls.datamodels.*;
 
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
+    boolean calculateDistance;
 
     /**
      * Static method to create solution for trilaterion task.
@@ -53,9 +54,17 @@ abstract class LocationService implements ILocationService {
         return solver.solve();
     }
 
+    public void setCalculateDistance(boolean calculateDistance) {
+        this.calculateDistance = calculateDistance;
+    }
+
     public double getDistanceFromRssi(double rssi, double minRssi) {
-        rssi = minRssi - rssi;
-        double result = Math.pow(10, rssi/(10*2));
-        return result*1000;
+        if (this.calculateDistance) {
+            rssi = minRssi - rssi;
+            double result = Math.pow(10, rssi / (10 * 2));
+            return result * 1000;
+        } else {
+            return rssi - minRssi;
+        }
     }
 }

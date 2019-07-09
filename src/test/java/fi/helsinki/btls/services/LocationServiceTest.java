@@ -145,10 +145,12 @@ public class LocationServiceTest {
 
         beacon.setObservations(obs);
         beacon.setMinRSSI(0);
-
+        locationService.setCalculateDistance(false);
         Location location = locationService.calculateLocation(beacon);
 
         assertNotNull(location);
+        System.out.println(wanted.x + " " + wanted.y);
+        System.out.println(location);
         assertEquals(wanted.x, location.getX(), 0.05);
         assertEquals(wanted.y, location.getY(), 0.05);
         assertTrue(location.getXr() < 0.5);
@@ -437,9 +439,9 @@ public class LocationServiceTest {
 
     @Test
     public void getDistanceFromRssiWorks() {
-
         LocationService locationService = new LocationService2D(observers);
-        System.out.println(locationService.getDistanceFromRssi(-80, -69));
+        locationService.setCalculateDistance(true);
+        assertEquals(locationService.getDistanceFromRssi(-80, -69), 3548.1, 0.10);
     }
 
     private Observation createObservation2D(String raspId, String beaconId, Cord wanted) {
