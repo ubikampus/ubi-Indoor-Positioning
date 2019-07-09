@@ -15,6 +15,6 @@ public interface IMqttService {
 
     void publish(List<Location> locations);
     void publish(Location location);
-    void setObservationLifeTime(int observationLifeTime);
+    void setObservationLifetime(int observationLifetime);
     int getObservationLifetime();
 }
