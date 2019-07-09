@@ -1,5 +1,5 @@
 
-package fi.helsinki.btls.trilaterion;
+package fi.helsinki.btls.trilateration;
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.linear.EigenDecomposition;

@@ -1,4 +1,4 @@
-package fi.helsinki.btls.trilaterion;
+package fi.helsinki.btls.trilateration;
 
 import java.util.*;
 import fi.helsinki.btls.datamodels.*;
