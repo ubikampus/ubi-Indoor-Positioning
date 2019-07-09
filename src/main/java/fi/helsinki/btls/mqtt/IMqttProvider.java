@@ -1,4 +1,4 @@
-package fi.helsinki.btls.io;
+package fi.helsinki.btls.mqtt;
 
 import fi.helsinki.ubimqtt.IUbiMessageListener;
 

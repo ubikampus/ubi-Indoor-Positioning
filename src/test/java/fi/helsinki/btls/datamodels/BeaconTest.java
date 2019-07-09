@@ -1,6 +1,6 @@
 package fi.helsinki.btls.datamodels;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import java.time.LocalDateTime;
@@ -11,13 +11,13 @@ import java.util.List;
  * Test class for beacon.
  */
 public class BeaconTest {
+    private Beacon b;
+    private List<Observation> obs;
 
-    Beacon b;
-    List<Observation> obs;
     @Before
     public void setUp() {
         b = new Beacon("1", -100, null, 1);
-        obs = new ArrayList();
+        obs = new ArrayList<>();
     }
 
     @Test
@@ -25,7 +25,7 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", 50, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", 50, LocalDateTime.now().minusMinutes(1)));
         b.setObservations(obs);
-        assertTrue(b.getObservations().size() == 1);
+        assertEquals(1, b.getObservations().size());
     }
 
     @Test
@@ -34,7 +34,7 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", 50, LocalDateTime.now()));
         b.setObservations(obs);
         Thread.sleep(1000);
-        assertTrue(b.getObservations().size() == 0);
+        assertEquals(0, b.getObservations().size());
     }
 
     @Test
@@ -44,7 +44,7 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", -30, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", -90, LocalDateTime.now()));
         b.setObservations(obs);
-        assertTrue(b.getMinRSSI() == -30);
+        assertEquals(b.getMinRSSI(), -30, 0.0);
     }
 
     @Test
@@ -54,6 +54,6 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", -130, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", -190, LocalDateTime.now()));
         b.setObservations(obs);
-        assertTrue(b.getMinRSSI() == -100);
+        assertEquals(b.getMinRSSI(), -100, 0.0);
     }
 }

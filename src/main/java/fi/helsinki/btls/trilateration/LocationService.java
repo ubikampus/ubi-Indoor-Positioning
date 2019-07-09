@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls.trilateration;
 
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
@@ -7,12 +7,13 @@ import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.btls.datamodels.*;
+import fi.helsinki.btls.utils.IObserverService;
 
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
 
     /**
-     * Static method to create solution for trilaterion task.
+     * Static method to create solution for trilateration task.
      *
      * @param minRSSI minimum RSSI observations can get to.
      * @param observersChecked rasps that have been already gone through.
