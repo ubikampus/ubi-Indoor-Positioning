@@ -1,8 +1,7 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import fi.helsinki.btls.datamodels.Observation;
-import fi.helsinki.btls.IMqttProvider;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
 
 /**

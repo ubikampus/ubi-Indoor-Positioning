@@ -1,6 +1,8 @@
 package fi.helsinki.btls;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.Beacon;
@@ -11,7 +13,7 @@ import fi.helsinki.btls.datamodels.Observation;
  * MqttService.
  */
 public class MqttService implements IMqttService{
-    private static final int MAX_OBSERVATIONS = 10000;
+    public static final int MAX_OBSERVATIONS = 10000;
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
@@ -57,7 +59,7 @@ public class MqttService implements IMqttService{
             beacons.forEach(beacon -> this.beacons.put(beacon.getId(), beacon));
         }
 
-        this.gson = new Gson();
+        this.gson = createGson();
 
         this.provider.setListener((topic, mqttMessage, listenerId) -> {
             try {
@@ -71,12 +73,32 @@ public class MqttService implements IMqttService{
         this.provider.connect();
     }
 
+    private Gson createGson() {
+        GsonBuilder gb = new GsonBuilder();
+        gb.serializeSpecialFloatingPointValues();
+        gb.enableComplexMapKeySerialization();
+        gb.serializeNulls();
+        gb.setLenient();
+
+        return gb.create();
+    }
+
     private void addObservation(Observation observation) {
         if (!beacons.containsKey(observation.getBeaconId())) {
             beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId()));
         }
 
-        beacons.get(observation.getBeaconId()).getObservations().add(observation);
+
+        Beacon beacon = beacons.get(observation.getBeaconId());
+        List<Observation> observations = beacon.getObservations();
+
+        if (observations.size() >= MAX_OBSERVATIONS) {
+            observations.remove(0);
+        }
+
+        observation.setTimestamp(LocalDateTime.now());
+        observations.add(observation);
+        beacon.setObservations(observations);
     }
 
 

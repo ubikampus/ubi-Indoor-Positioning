@@ -1,5 +1,7 @@
 package fi.helsinki.btls.datamodels;
 
+import java.util.Objects;
+
 /**
  * Representation of specific beacons location on two dimensional space.
  * With information about locations standard error.
@@ -66,18 +68,38 @@ public abstract class Location {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Location)) return false;
+        if (o == this) {
+            return true;
+        }
+        
+        if (!(o instanceof Location)) {
+            return false;
+        }
+        
         final Location other = (Location) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$beaconId = this.getBeaconId();
-        final Object other$beaconId = other.getBeaconId();
-        if (this$beaconId == null ? other$beaconId != null : !this$beaconId.equals(other$beaconId)) return false;
-        if (Double.compare(this.getX(), other.getX()) != 0) return false;
-        if (Double.compare(this.getY(), other.getY()) != 0) return false;
-        if (Double.compare(this.getXr(), other.getXr()) != 0) return false;
-        if (Double.compare(this.getYr(), other.getYr()) != 0) return false;
-        return true;
+        if (!other.canEqual((Object) this)) {
+            return false;
+        }
+        
+        final Object thisBeaconId = this.getBeaconId();
+        final Object otherBeaconId = other.getBeaconId();
+        if (!Objects.equals(thisBeaconId, otherBeaconId)) {
+            return false;
+        }
+        
+        if (Double.compare(this.getX(), other.getX()) != 0) {
+            return false;
+        }
+        
+        if (Double.compare(this.getY(), other.getY()) != 0) {
+            return false;
+        }
+        
+        if (Double.compare(this.getXr(), other.getXr()) != 0) {
+            return false;
+        }
+        
+        return Double.compare(this.getYr(), other.getYr()) == 0;
     }
 
     protected boolean canEqual(final Object other) {
@@ -85,22 +107,24 @@ public abstract class Location {
     }
 
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = 1;
-        final Object $beaconId = this.getBeaconId();
-        result = result * PRIME + ($beaconId == null ? 43 : $beaconId.hashCode());
-        final long $x = Double.doubleToLongBits(this.getX());
-        result = result * PRIME + (int) ($x >>> 32 ^ $x);
-        final long $y = Double.doubleToLongBits(this.getY());
-        result = result * PRIME + (int) ($y >>> 32 ^ $y);
-        final long $xr = Double.doubleToLongBits(this.getXr());
-        result = result * PRIME + (int) ($xr >>> 32 ^ $xr);
-        final long $yr = Double.doubleToLongBits(this.getYr());
-        result = result * PRIME + (int) ($yr >>> 32 ^ $yr);
+        final Object thisBeaconId = this.getBeaconId();
+        result = result * prime + (thisBeaconId == null ? 43 : thisBeaconId.hashCode());
+        final long thisX = Double.doubleToLongBits(this.getX());
+        result = result * prime + (int) (thisX >>> 32 ^ thisX);
+        final long thisY = Double.doubleToLongBits(this.getY());
+        result = result * prime + (int) (thisY >>> 32 ^ thisY);
+        final long thisXr = Double.doubleToLongBits(this.getXr());
+        result = result * prime + (int) (thisXr >>> 32 ^ thisXr);
+        final long thisYr = Double.doubleToLongBits(this.getYr());
+        result = result * prime + (int) (thisYr >>> 32 ^ thisYr);
         return result;
     }
 
     public String toString() {
-        return "Location(beaconId=" + this.getBeaconId() + ", x=" + this.getX() + ", y=" + this.getY() + ", xr=" + this.getXr() + ", yr=" + this.getYr() + ")";
+        return "Location(beaconId=" + this.getBeaconId() + ", x=" + this.getX() +
+                ", y=" + this.getY() + ", xr=" + this.getXr() +
+                ", yr=" + this.getYr() + ")";
     }
 }

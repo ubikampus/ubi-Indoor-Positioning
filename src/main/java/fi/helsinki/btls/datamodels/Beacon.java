@@ -1,10 +1,13 @@
 package fi.helsinki.btls.datamodels;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
-/***
+/**
  * Class representation of one beacon.
  */
 //@Data
@@ -14,11 +17,17 @@ public class Beacon {
     private String id;
     private double minRSSI;
     private List<Observation> observations;
+    private int maxLifetime;
 
     public Beacon(String id) {
+        this(id, 30);
+    }
+
+    public Beacon(String id, int maxLifetime) {
         this.id = id;
-        this.minRSSI = Double.MAX_VALUE;
+        this.minRSSI = -Double.MAX_VALUE;
         this.observations = new ArrayList<>();
+        this.maxLifetime = maxLifetime;
     }
 
     public Beacon(String id, double minRSSI, List<Observation> observations) {
@@ -27,8 +36,24 @@ public class Beacon {
         this.observations = observations;
     }
 
+    public Beacon(String id, double minRSSI, List<Observation> observations, int maxLifetime) {
+        this.id = id;
+        this.minRSSI = minRSSI;
+        this.observations = observations;
+        this.maxLifetime = maxLifetime;
+    }
+
     public Beacon() {
     }
+
+    public List<Observation> getObservations() {
+        observations = observations
+                .stream()
+                .filter(x -> x.getTimestamp().isAfter(LocalDateTime.now().minusSeconds(maxLifetime)))
+                .collect(Collectors.toList());
+        return observations;
+    }
+
 
     /**
      * Set observations of the beacon.
@@ -36,17 +61,17 @@ public class Beacon {
      *
      * @param observations list of observations.
      */
-   public void setObservations(List<Observation> observations) {
+    public void setObservations(List<Observation> observations) {
         this.observations = observations;
 
         if (!observations.isEmpty()) {
             double minVol = observations
                     .stream()
                     .map(Observation::getRssi)
-                    .min(Comparator.comparing(Double::valueOf))
+                    .max(Comparator.comparing(Double::valueOf))
                     .get();
 
-            if (minVol < this.minRSSI) {
+            if (minVol > this.minRSSI) {
                 this.minRSSI = minVol;
             }
         }
@@ -60,8 +85,8 @@ public class Beacon {
         return this.minRSSI;
     }
 
-    public List<Observation> getObservations() {
-        return this.observations;
+    public int getMaxLifetime() {
+        return this.maxLifetime;
     }
 
     public void setId(String id) {
@@ -72,20 +97,41 @@ public class Beacon {
         this.minRSSI = minRSSI;
     }
 
+    public void setMaxLifetime(int maxLifetime) {
+        this.maxLifetime = maxLifetime;
+    }
+
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Beacon)) return false;
-        final Beacon other = (Beacon) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$id = this.getId();
-        final Object other$id = other.getId();
-        if (this$id == null ? other$id != null : !this$id.equals(other$id)) return false;
-        if (Double.compare(this.getMinRSSI(), other.getMinRSSI()) != 0) return false;
-        final Object this$observations = this.getObservations();
-        final Object other$observations = other.getObservations();
-        if (this$observations == null ? other$observations != null : !this$observations.equals(other$observations))
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Beacon)) {
             return false;
-        return true;
+        }
+
+        final Beacon other = (Beacon) o;
+        if (!other.canEqual((Object) this)) {
+            return false;
+        }
+        
+        final Object thisId = this.getId();
+        final Object otherId = other.getId();
+        if (!Objects.equals(thisId, otherId)) {
+            return false;
+        }
+        
+        if (Double.compare(this.getMinRSSI(), other.getMinRSSI()) != 0) {
+            return false;
+        }
+        
+        final Object thisObservations = this.getObservations();
+        final Object otherObservations = other.getObservations();
+        if (!Objects.equals(thisObservations, otherObservations)) {
+            return false;
+        }
+
+        return this.getMaxLifetime() == other.getMaxLifetime();
     }
 
     protected boolean canEqual(final Object other) {
@@ -93,18 +139,21 @@ public class Beacon {
     }
 
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = 1;
-        final Object $id = this.getId();
-        result = result * PRIME + ($id == null ? 43 : $id.hashCode());
-        final long $minRSSI = Double.doubleToLongBits(this.getMinRSSI());
-        result = result * PRIME + (int) ($minRSSI >>> 32 ^ $minRSSI);
-        final Object $observations = this.getObservations();
-        result = result * PRIME + ($observations == null ? 43 : $observations.hashCode());
+        final Object thisId = this.getId();
+        result = result * prime + (thisId == null ? 43 : thisId.hashCode());
+        final long thisMinRSSI = Double.doubleToLongBits(this.getMinRSSI());
+        result = result * prime + (int) (thisMinRSSI >>> 32 ^ thisMinRSSI);
+        final Object thisObservations = this.getObservations();
+        result = result * prime + (thisObservations == null ? 43 : thisObservations.hashCode());
+        result = result * prime + this.getMaxLifetime();
         return result;
     }
 
     public String toString() {
-        return "Beacon(id=" + this.getId() + ", minRSSI=" + this.getMinRSSI() + ", observations=" + this.getObservations() + ")";
+        return "Beacon(id=" + this.getId() + ", minRSSI=" + this.getMinRSSI() +
+                ", observations=" + this.getObservations() +
+                ", maxLifetime=" + this.getMaxLifetime() + ")";
     }
 }

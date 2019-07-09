@@ -1,5 +1,7 @@
 package fi.helsinki.btls.datamodels;
 
+import java.util.Objects;
+
 /**
  * Data model for observers location.
  */
@@ -39,16 +41,26 @@ public class Observer {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Observer)) return false;
-        final Observer other = (Observer) o;
-        if (!other.canEqual((Object) this)) return false;
-        final Object this$observerId = this.getObserverId();
-        final Object other$observerId = other.getObserverId();
-        if (this$observerId == null ? other$observerId != null : !this$observerId.equals(other$observerId))
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Observer)) {
             return false;
-        if (!java.util.Arrays.equals(this.getPosition(), other.getPosition())) return false;
-        return true;
+        }
+
+        final Observer other = (Observer) o;
+        if (!other.canEqual((Object) this)) {
+            return false;
+        }
+
+        final Object thisObserverId = this.getObserverId();
+        final Object otherObserverId = other.getObserverId();
+        if (!Objects.equals(thisObserverId, otherObserverId)) {
+            return false;
+        }
+
+        return java.util.Arrays.equals(this.getPosition(), other.getPosition());
     }
 
     protected boolean canEqual(final Object other) {
@@ -56,15 +68,16 @@ public class Observer {
     }
 
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = 1;
-        final Object $observerId = this.getObserverId();
-        result = result * PRIME + ($observerId == null ? 43 : $observerId.hashCode());
-        result = result * PRIME + java.util.Arrays.hashCode(this.getPosition());
+        final Object thisObserverId = this.getObserverId();
+        result = result * prime + (thisObserverId == null ? 43 : thisObserverId.hashCode());
+        result = result * prime + java.util.Arrays.hashCode(this.getPosition());
         return result;
     }
 
     public String toString() {
-        return "Observer(observerId=" + this.getObserverId() + ", position=" + java.util.Arrays.toString(this.getPosition()) + ")";
+        return "Observer(observerId=" + this.getObserverId() +
+                ", position=" + java.util.Arrays.toString(this.getPosition()) + ")";
     }
 }

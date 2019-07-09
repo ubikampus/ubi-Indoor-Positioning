@@ -38,14 +38,28 @@ public class Location3D extends Location {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Location3D)) return false;
+        if (o == this) {
+            return true;
+        }
+        
+        if (!(o instanceof Location3D)) {
+            return false;
+        }
+        
         final Location3D other = (Location3D) o;
-        if (!other.canEqual((Object) this)) return false;
-        if (!super.equals(o)) return false;
-        if (Double.compare(this.getZ(), other.getZ()) != 0) return false;
-        if (Double.compare(this.getZr(), other.getZr()) != 0) return false;
-        return true;
+        if (!other.canEqual((Object) this)) {
+            return false;
+        }
+        
+        if (!super.equals(o)) {
+            return false;
+        }
+        
+        if (Double.compare(this.getZ(), other.getZ()) != 0) {
+            return false;
+        }
+
+        return Double.compare(this.getZr(), other.getZr()) == 0;
     }
 
     protected boolean canEqual(final Object other) {
@@ -53,12 +67,12 @@ public class Location3D extends Location {
     }
 
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = super.hashCode();
-        final long $z = Double.doubleToLongBits(this.getZ());
-        result = result * PRIME + (int) ($z >>> 32 ^ $z);
-        final long $zr = Double.doubleToLongBits(this.getZr());
-        result = result * PRIME + (int) ($zr >>> 32 ^ $zr);
+        final long thisZ = Double.doubleToLongBits(this.getZ());
+        result = result * prime + (int) (thisZ >>> 32 ^ thisZ);
+        final long thisZr = Double.doubleToLongBits(this.getZr());
+        result = result * prime + (int) (thisZr >>> 32 ^ thisZr);
         return result;
     }
 

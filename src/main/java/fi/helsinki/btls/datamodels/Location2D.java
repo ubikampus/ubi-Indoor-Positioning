@@ -28,13 +28,24 @@ public class Location2D extends Location {
     }
 
     public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Location2D)) return false;
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof Location2D)) {
+            return false;
+        }
+
         final Location2D other = (Location2D) o;
-        if (!other.canEqual((Object) this)) return false;
-        if (!super.equals(o)) return false;
-        if (Double.compare(this.getAlignment(), other.getAlignment()) != 0) return false;
-        return true;
+        if (!other.canEqual((Object) this)) {
+            return false;
+        }
+
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        return Double.compare(this.getAlignment(), other.getAlignment()) == 0;
     }
 
     protected boolean canEqual(final Object other) {
@@ -42,10 +53,10 @@ public class Location2D extends Location {
     }
 
     public int hashCode() {
-        final int PRIME = 59;
+        final int prime = 59;
         int result = super.hashCode();
-        final long $alignment = Double.doubleToLongBits(this.getAlignment());
-        result = result * PRIME + (int) ($alignment >>> 32 ^ $alignment);
+        final long thisAlignment = Double.doubleToLongBits(this.getAlignment());
+        result = result * prime + (int) (thisAlignment >>> 32 ^ thisAlignment);
         return result;
     }
 
