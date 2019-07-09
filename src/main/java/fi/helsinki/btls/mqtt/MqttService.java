@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.mqtt;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

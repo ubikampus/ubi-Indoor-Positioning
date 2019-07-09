@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.utils;
 
 import java.util.List;
 import fi.helsinki.btls.datamodels.Observer;

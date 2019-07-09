@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.mqtt;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

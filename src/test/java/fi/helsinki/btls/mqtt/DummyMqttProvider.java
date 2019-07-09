@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import fi.helsinki.btls.datamodels.Observation;

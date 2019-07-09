@@ -1,5 +1,5 @@
 
-package fi.helsinki.btls;
+package fi.helsinki.btls.trilaterion;
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.linear.EigenDecomposition;
@@ -7,8 +7,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.*;
+import fi.helsinki.btls.utils.IObserverService;
 
 
 /**

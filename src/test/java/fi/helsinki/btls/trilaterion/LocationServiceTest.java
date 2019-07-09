@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.trilaterion;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import fi.helsinki.btls.datamodels.*;
+import fi.helsinki.btls.utils.IObserverService;
+import fi.helsinki.btls.utils.ObserverService;
 
 /**
  * Test class for location services.

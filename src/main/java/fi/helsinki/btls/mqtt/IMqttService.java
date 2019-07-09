@@ -1,5 +1,5 @@
 
-package fi.helsinki.btls;
+package fi.helsinki.btls.mqtt;
 
 import java.util.List;
 import fi.helsinki.btls.datamodels.Beacon;

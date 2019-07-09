@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.trilaterion;
 
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
@@ -7,6 +7,7 @@ import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.btls.datamodels.*;
+import fi.helsinki.btls.utils.IObserverService;
 
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;

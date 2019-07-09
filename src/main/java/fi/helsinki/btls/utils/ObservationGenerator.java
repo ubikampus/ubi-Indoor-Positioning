@@ -1,4 +1,4 @@
-package fi.helsinki.btls;
+package fi.helsinki.btls.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import fi.helsinki.btls.datamodels.Beacon;
 import fi.helsinki.btls.datamodels.Observation;
+import fi.helsinki.btls.mqtt.MqttService;
 
 /**
  * Mocker class to create realistic observation data.
