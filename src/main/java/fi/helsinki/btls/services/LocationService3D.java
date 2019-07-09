@@ -13,6 +13,7 @@ import fi.helsinki.btls.datamodels.*;
  */
 public class LocationService3D extends LocationService {
     public LocationService3D(IObserverService iObserverService) {
+        super();
         this.iObserverService = iObserverService;
     }
 

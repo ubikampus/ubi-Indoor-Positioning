@@ -149,8 +149,6 @@ public class LocationServiceTest {
         Location location = locationService.calculateLocation(beacon);
 
         assertNotNull(location);
-        System.out.println(wanted.x + " " + wanted.y);
-        System.out.println(location);
         assertEquals(wanted.x, location.getX(), 0.05);
         assertEquals(wanted.y, location.getY(), 0.05);
         assertTrue(location.getXr() < 0.5);

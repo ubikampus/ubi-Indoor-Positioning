@@ -20,6 +20,7 @@ public class MqttService implements IMqttService{
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
+    private int observationLifetime;
 
 
     /**
@@ -74,7 +75,7 @@ public class MqttService implements IMqttService{
                 System.out.println(ex.toString());
             }
         });
-
+        this.observationLifetime = BEACON_LIFETIME;
         this.provider.connect();
     }
 
@@ -90,7 +91,7 @@ public class MqttService implements IMqttService{
 
     private void addObservation(Observation observation) {
         if (!beacons.containsKey(observation.getBeaconId())) {
-            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId(), BEACON_LIFETIME));
+            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId(), observationLifetime));
         }
 
 
@@ -132,5 +133,13 @@ public class MqttService implements IMqttService{
     public List<Beacon> getBeacons() {
         return new ArrayList<>(beacons
                 .values());
+    }
+
+    public void setObservationLifetime(int observationLifetime) {
+        this.observationLifetime = observationLifetime;
+    }
+
+    public int getObservationLifetime() {
+        return observationLifetime;
     }
 }

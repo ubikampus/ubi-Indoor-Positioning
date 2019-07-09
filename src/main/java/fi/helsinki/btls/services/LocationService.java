@@ -11,6 +11,13 @@ import fi.helsinki.btls.datamodels.*;
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
     boolean calculateDistance;
+    int enviromentalFactor;
+
+
+    LocationService() {
+        this.calculateDistance = false;
+        this.enviromentalFactor = 2;
+    }
 
     /**
      * Static method to create solution for trilaterion task.
@@ -61,10 +68,18 @@ abstract class LocationService implements ILocationService {
     public double getDistanceFromRssi(double rssi, double minRssi) {
         if (this.calculateDistance) {
             rssi = minRssi - rssi;
-            double result = Math.pow(10, rssi / (10 * 2));
+            double result = Math.pow(10, rssi / (10 * this.enviromentalFactor));
             return result * 1000;
         } else {
             return rssi - minRssi;
         }
+    }
+
+    public int getEnviromentalFactor() {
+        return enviromentalFactor;
+    }
+
+    public void setEnviromentalFactor(int enviromentalFactor) {
+        this.enviromentalFactor = enviromentalFactor;
     }
 }
