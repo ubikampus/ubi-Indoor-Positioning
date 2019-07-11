@@ -13,6 +13,7 @@ import fi.helsinki.ubipositioning.utils.IObserverService;
  */
 public class LocationService3D extends LocationService {
     public LocationService3D(IObserverService iObserverService) {
+        super();
         this.iObserverService = iObserverService;
     }
 

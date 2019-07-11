@@ -14,9 +14,12 @@ import fi.helsinki.ubipositioning.datamodels.Observation;
  */
 public class MqttService implements IMqttService{
     public static final int MAX_OBSERVATIONS = 10000;
+    private static final int BEACON_LIFETIME = 5;
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
+    private int observationLifetime;
+
 
     /**
      * Creates MqttService.
@@ -55,6 +58,7 @@ public class MqttService implements IMqttService{
         this.provider = provider;
         this.beacons = new HashMap<>();
 
+
         if (beacons != null) {
             beacons.forEach(beacon -> this.beacons.put(beacon.getId(), beacon));
         }
@@ -68,7 +72,7 @@ public class MqttService implements IMqttService{
             } catch (Exception ex) {
             }
         });
-
+        this.observationLifetime = BEACON_LIFETIME;
         this.provider.connect();
     }
 
@@ -84,7 +88,7 @@ public class MqttService implements IMqttService{
 
     private void addObservation(Observation observation) {
         if (!beacons.containsKey(observation.getBeaconId())) {
-            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId()));
+            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId(), observationLifetime));
         }
 
 
@@ -124,5 +128,13 @@ public class MqttService implements IMqttService{
     @Override
     public List<Beacon> getBeacons() {
         return new ArrayList<>(beacons.values());
+    }
+
+    public void setObservationLifetime(int observationLifetime) {
+        this.observationLifetime = observationLifetime;
+    }
+
+    public int getObservationLifetime() {
+        return observationLifetime;
     }
 }
