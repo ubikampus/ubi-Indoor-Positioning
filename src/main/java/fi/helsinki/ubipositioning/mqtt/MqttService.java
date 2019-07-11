@@ -137,4 +137,12 @@ public class MqttService implements IMqttService{
     public int getObservationLifetime() {
         return observationLifetime;
     }
+
+    public void setObservationLifetime(int observationLifetime) {
+        this.observationLifetime = observationLifetime;
+    }
+
+    public int getObservationLifetime() {
+        return observationLifetime;
+    }
 }
