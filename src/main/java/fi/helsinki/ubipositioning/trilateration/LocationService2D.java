@@ -25,7 +25,7 @@ public class LocationService2D extends LocationService {
         List<Observation> obs = beacon.getObservations();
 
         if (!obs.isEmpty()) {
-            LeastSquaresOptimizer.Optimum optimum = createOptimum(beacon.getMinRSSI(), new ArrayList<>(), obs);
+            LeastSquaresOptimizer.Optimum optimum = createOptimum(beacon.getMeasuredPower(), new ArrayList<>(), obs);
 
             // gotten location in form of [x,y]
             double[] centroid = optimum.getPoint().toArray();

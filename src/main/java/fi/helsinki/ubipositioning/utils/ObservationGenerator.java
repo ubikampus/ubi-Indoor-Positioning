@@ -46,7 +46,7 @@ public class ObservationGenerator {
 
             if (b == null) {
                 b = new Beacon(k);
-                b.setMinRSSI(0);
+                b.setMeasuredPower(0);
 
                 rssi = Math.random() * -150;
             } else {

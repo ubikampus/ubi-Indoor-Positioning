@@ -23,13 +23,13 @@ abstract class LocationService implements ILocationService {
     /**
      * Static method to create solution for trilateration task.
      *
-     * @param minRSSI minimum RSSI observations can get to.
+     * @param measuredPower minimum RSSI observations can get to.
      * @param observersChecked rasps that have been already gone through.
      * @param obs observations related to beacon.
      *
      * @return Optimum object which contains the result for problem in raw form.
      */
-    LeastSquaresOptimizer.Optimum createOptimum(double minRSSI, List<String> observersChecked,
+    LeastSquaresOptimizer.Optimum createOptimum(double measuredPower, List<String> observersChecked,
                                                 List<Observation> obs) {
         List<double[]> pos = new ArrayList<>();
         List<Double> dist = new ArrayList<>();
@@ -40,7 +40,7 @@ abstract class LocationService implements ILocationService {
 
             // preventing double value for rasps
             if (!observersChecked.contains(model.getRaspId())) {
-                dist.add(getDistanceFromRssi(model.getRssi(), minRSSI)); // Needs scaling on minimum value of RSSI.
+                dist.add(getDistanceFromRssi(model.getRssi(), measuredPower)); // Needs scaling on minimum value of RSSI.
                 pos.add(iObserverService.getObserver(model.getRaspId()).getPosition());
                 observersChecked.add(model.getRaspId());
             }
@@ -66,21 +66,21 @@ abstract class LocationService implements ILocationService {
         this.calculateDistance = calculateDistance;
     }
 
-    public double getDistanceFromRssi(double rssi, double minRssi) {
+    public double getDistanceFromRssi(double rssi, double measuredPower) {
+        rssi = measuredPower - rssi;
+
         if (this.calculateDistance) {
-            rssi = minRssi - rssi;
-            double result = Math.pow(10, rssi / (10 * this.enviromentalFactor));
-            return result * 1000;
+            return Math.pow(10, rssi / (10 * this.enviromentalFactor)) * 1000;
         } else {
-            return rssi - minRssi;
+            return rssi;
         }
     }
 
-    public int getEnviromentalFactor() {
+    public int getEnvironmentalFactor() {
         return enviromentalFactor;
     }
 
-    public void setEnviromentalFactor(int enviromentalFactor) {
-        this.enviromentalFactor = enviromentalFactor;
+    public void setEnvironmentalFactor(int environmentalFactor) {
+        this.enviromentalFactor = environmentalFactor;
     }
 }
