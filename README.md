@@ -1,7 +1,7 @@
 # Bluetooth Location Server
 
 [![Build Status](https://travis-ci.org/ubikampus/Bluetooth-location-server.svg?branch=master)](https://travis-ci.org/ubikampus/Bluetooth-location-server)
-[![codecov](https://codecov.io/gh/ubikampus/Bluetooth-location-server/branch/master/graph/badge.svg)](https://codecov.io/gh/ubikampus/Bluetooth-location-server)
+[![codecov](https://codecov.io/gh/ubikampus/Bluetooth-location-server/branch/master/graph/badge.svg)](https://codecov.io/gh/#ubikampus/Bluetooth-location-server)
 [![Release](https://jitpack.io/v/User/Repo.svg)](https://jitpack.io/ubikampus/ubi-Indoor-Positioning)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
