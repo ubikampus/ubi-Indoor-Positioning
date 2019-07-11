@@ -1,21 +1,16 @@
 # Bluetooth Location Server
 
 [![Build Status](https://travis-ci.org/ubikampus/Bluetooth-location-server.svg?branch=master)](https://travis-ci.org/ubikampus/Bluetooth-location-server)
-[![codecov](https://codecov.io/gh/ubikampus/Bluetooth-location-server/branch/master/graph/badge.svg)](https://codecov.io/gh/ubikampus/Bluetooth-location-server)
-[![Release](https://jitpack.io/v/User/Repo.svg)](https://jitpack.io/#ubikampus/ubi-Indoor-Positioning)
+[![codecov](https://codecov.io/gh/ubikampus/ubi-Indoor-Positioning/branch/master/graph/badge.svg)](https://codecov.io/gh/ubikampus/ubi-Indoor-Positioning)
+[![](https://jitpack.io/v/ubikampus/ubi-Indoor-Positioning.svg)](https://jitpack.io/#ubikampus/ubi-Indoor-Positioning)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 <!-- TODO: Description -->
 
 ## Table of Contents <a name="table-of-contents"/>
-*  [Local Development](#local-development)
 *  [Usage](#usage)
 *  [Contributors](#contributors)
 *  [Documentation](#documentation)
-
-## Local Development
-
-
 
 ## Usage
 
