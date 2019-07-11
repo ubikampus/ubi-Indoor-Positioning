@@ -10,9 +10,11 @@ import fi.helsinki.btls.datamodels.Observation;
  * Interface for mqtt service.
  */
 public interface IMqttService {
-    public List<Observation> getObservations();
-    public List<Beacon> getBeacons();
+    List<Observation> getObservations();
+    List<Beacon> getBeacons();
 
-    public void publish(List<Location> locations);
-    public void publish(Location location);
+    void publish(List<Location> locations);
+    void publish(Location location);
+    void setObservationLifetime(int observationLifetime);
+    int getObservationLifetime();
 }

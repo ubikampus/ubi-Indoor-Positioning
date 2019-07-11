@@ -11,6 +11,14 @@ import fi.helsinki.btls.utils.IObserverService;
 
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
+    boolean calculateDistance;
+    int enviromentalFactor;
+
+
+    LocationService() {
+        this.calculateDistance = false;
+        this.enviromentalFactor = 2;
+    }
 
     /**
      * Static method to create solution for trilateration task.
@@ -32,7 +40,7 @@ abstract class LocationService implements ILocationService {
 
             // preventing double value for rasps
             if (!observersChecked.contains(model.getRaspId())) {
-                dist.add(Math.abs(model.getRssi()) - minRSSI); // Needs scaling on minimum value of RSSI.
+                dist.add(getDistanceFromRssi(model.getRssi(), minRSSI)); // Needs scaling on minimum value of RSSI.
                 pos.add(iObserverService.getObserver(model.getRaspId()).getPosition());
                 observersChecked.add(model.getRaspId());
             }
@@ -52,5 +60,27 @@ abstract class LocationService implements ILocationService {
         NonLinearLeastSquaresSolver solver;
         solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
         return solver.solve();
+    }
+
+    public void setCalculateDistance(boolean calculateDistance) {
+        this.calculateDistance = calculateDistance;
+    }
+
+    public double getDistanceFromRssi(double rssi, double minRssi) {
+        if (this.calculateDistance) {
+            rssi = minRssi - rssi;
+            double result = Math.pow(10, rssi / (10 * this.enviromentalFactor));
+            return result * 1000;
+        } else {
+            return rssi - minRssi;
+        }
+    }
+
+    public int getEnviromentalFactor() {
+        return enviromentalFactor;
+    }
+
+    public void setEnviromentalFactor(int enviromentalFactor) {
+        this.enviromentalFactor = enviromentalFactor;
     }
 }
