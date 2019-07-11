@@ -1,0 +1,90 @@
+package fi.helsinki.ubipositioning.mqtt;
+
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import fi.helsinki.ubimqtt.IUbiActionListener;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
+import fi.helsinki.ubimqtt.UbiMqtt;
+
+/**
+ * Wrapper for UbiMqtt class.
+ */
+class UbiMqttProvider implements IMqttProvider {
+    private final UbiMqtt instance;
+    private final String subscribeTopic;
+    private final String publishTopic;
+    private IUbiMessageListener listener;
+
+    /**
+     * Wrapper for UbiMqtt class.
+     *
+     * @param mqttUrl Mqtt bus URL.
+     * @param subscribeTopic topic to listen.
+     * @param publishTopic topic to publish.
+     */
+    public UbiMqttProvider(String mqttUrl, String subscribeTopic, String publishTopic) {
+        this.subscribeTopic = subscribeTopic;
+        this.publishTopic = publishTopic;
+        instance  = new UbiMqtt(mqttUrl);
+    }
+
+    /**
+     * Connects to Mqtt bus.
+     */
+    @Override
+    public void connect() {
+        if (listener == null) {
+            throw new NullPointerException("MessageListener not set");
+        }
+
+        instance.connect(new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                instance.subscribe(subscribeTopic, listener, new IUbiActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        throw new RuntimeException(exception);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
+    }
+
+    /**
+     * Publish message.
+     * @param message
+     */
+    @Override
+    public void publish(String message) {
+        instance.publish(publishTopic, message, new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
+    }
+
+    /**
+     * Adds IUbiMessageListener.
+     * @param listener listener to add.
+     */
+    @Override
+    public void setListener(IUbiMessageListener listener) {
+        this.listener = listener;
+    }
+
+}
