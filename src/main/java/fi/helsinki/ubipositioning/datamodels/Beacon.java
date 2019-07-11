@@ -8,14 +8,18 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Class representation of one beacon.
+ * Model for BLE device. Wraps up devices name, lifetime,
+ * data as observations that has been collected about it
+ * and it's measured power when in 1 meter distances of device that it's listening.
+ *
+ * @see Observation
  */
 //@Data
 //@NoArgsConstructor
 //@AllArgsConstructor
 public class Beacon {
     private String id;
-    private double minRSSI;
+    private double measuredPower;
     private List<Observation> observations;
     private int maxLifetime;
 
@@ -25,20 +29,20 @@ public class Beacon {
 
     public Beacon(String id, int maxLifetime) {
         this.id = id;
-        this.minRSSI = -Double.MAX_VALUE;
+        this.measuredPower = -Double.MAX_VALUE;
         this.observations = new ArrayList<>();
         this.maxLifetime = maxLifetime;
     }
 
-    public Beacon(String id, double minRSSI, List<Observation> observations) {
+    public Beacon(String id, double measuredPower, List<Observation> observations) {
         this.id = id;
-        this.minRSSI = minRSSI;
+        this.measuredPower = measuredPower;
         this.observations = observations;
     }
 
-    public Beacon(String id, double minRSSI, List<Observation> observations, int maxLifetime) {
+    public Beacon(String id, double measuredPower, List<Observation> observations, int maxLifetime) {
         this.id = id;
-        this.minRSSI = minRSSI;
+        this.measuredPower = measuredPower;
         this.observations = observations;
         this.maxLifetime = maxLifetime;
     }
@@ -65,14 +69,14 @@ public class Beacon {
         this.observations = observations;
 
         if (!observations.isEmpty()) {
-            double minVol = observations
+            double measuredPower = observations
                     .stream()
                     .map(Observation::getRssi)
                     .max(Comparator.comparing(Double::valueOf))
                     .get();
 
-            if (minVol > this.minRSSI) {
-                this.minRSSI = minVol;
+            if (measuredPower > this.measuredPower) {
+                this.measuredPower = measuredPower;
             }
         }
     }
@@ -81,8 +85,8 @@ public class Beacon {
         return this.id;
     }
 
-    public double getMinRSSI() {
-        return this.minRSSI;
+    public double getMeasuredPower() {
+        return this.measuredPower;
     }
 
     public int getMaxLifetime() {
@@ -93,8 +97,8 @@ public class Beacon {
         this.id = id;
     }
 
-    public void setMinRSSI(double minRSSI) {
-        this.minRSSI = minRSSI;
+    public void setMeasuredPower(double measuredPower) {
+        this.measuredPower = measuredPower;
     }
 
     public void setMaxLifetime(int maxLifetime) {
@@ -121,7 +125,7 @@ public class Beacon {
             return false;
         }
         
-        if (Double.compare(this.getMinRSSI(), other.getMinRSSI()) != 0) {
+        if (Double.compare(this.getMeasuredPower(), other.getMeasuredPower()) != 0) {
             return false;
         }
         
@@ -143,8 +147,8 @@ public class Beacon {
         int result = 1;
         final Object thisId = this.getId();
         result = result * prime + (thisId == null ? 43 : thisId.hashCode());
-        final long thisMinRSSI = Double.doubleToLongBits(this.getMinRSSI());
-        result = result * prime + (int) (thisMinRSSI >>> 32 ^ thisMinRSSI);
+        final long thisMeasuredPower = Double.doubleToLongBits(this.getMeasuredPower());
+        result = result * prime + (int) (thisMeasuredPower >>> 32 ^ thisMeasuredPower);
         final Object thisObservations = this.getObservations();
         result = result * prime + (thisObservations == null ? 43 : thisObservations.hashCode());
         result = result * prime + this.getMaxLifetime();
@@ -152,7 +156,7 @@ public class Beacon {
     }
 
     public String toString() {
-        return "Beacon(id=" + this.getId() + ", minRSSI=" + this.getMinRSSI() +
+        return "Beacon(id=" + this.getId() + ", measuredPower=" + this.getMeasuredPower() +
                 ", observations=" + this.getObservations() +
                 ", maxLifetime=" + this.getMaxLifetime() + ")";
     }

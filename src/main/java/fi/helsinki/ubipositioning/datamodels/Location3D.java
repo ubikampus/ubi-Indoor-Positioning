@@ -3,6 +3,8 @@ package fi.helsinki.ubipositioning.datamodels;
 /**
  * Representation of specific beacons location on three dimensional space.
  * With information about locations standard error.
+ *
+ * @see fi.helsinki.ubipositioning.datamodels.Location
  */
 //@Data
 //@NoArgsConstructor

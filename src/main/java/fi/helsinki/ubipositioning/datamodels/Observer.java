@@ -3,7 +3,7 @@ package fi.helsinki.ubipositioning.datamodels;
 import java.util.Objects;
 
 /**
- * Data model for observers location.
+ * representation for BLE listener. contains the listeners name and its static location.
  */
 //@Data
 public class Observer {

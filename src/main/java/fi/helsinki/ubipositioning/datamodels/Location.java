@@ -3,7 +3,7 @@ package fi.helsinki.ubipositioning.datamodels;
 import java.util.Objects;
 
 /**
- * Representation of specific beacons location on two dimensional space.
+ * Representation of specific location on two dimensional space.
  * With information about locations standard error.
  */
 //@Data
