@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Bluetooth-location-server</name>
-	<comment>Project Bluetooth-location-server created by Buildship.</comment>
+	<name> ubi-Indoor-Positioning</name>
+	<comment>Indoor positioning library for calculating location of BLE device.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
