@@ -1,4 +1,4 @@
-package fi.helsinki.btls.utils;
+package fi.helsinki.btls.datamodels;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import fi.helsinki.btls.datamodels.*;
 
 /**
  * Test class for making sure that data models work as they should.

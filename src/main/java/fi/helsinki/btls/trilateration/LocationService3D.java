@@ -1,12 +1,12 @@
 
-package fi.helsinki.btls.services;
+package fi.helsinki.btls.trilateration;
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.linear.RealMatrix;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import fi.helsinki.btls.datamodels.*;
+import fi.helsinki.btls.utils.IObserverService;
 
 /**
  * Calculates location in 3 dimensional space.

@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls.mqtt;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -9,7 +9,6 @@ import org.mockito.InOrder;
 import java.util.Collections;
 import java.util.List;
 import fi.helsinki.btls.datamodels.*;
-import fi.helsinki.btls.io.UbiMqttProvider;
 
 
 /**

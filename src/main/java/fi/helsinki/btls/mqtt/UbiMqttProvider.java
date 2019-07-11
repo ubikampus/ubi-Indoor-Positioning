@@ -1,4 +1,4 @@
-package fi.helsinki.btls.io;
+package fi.helsinki.btls.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import fi.helsinki.ubimqtt.IUbiActionListener;
@@ -8,7 +8,7 @@ import fi.helsinki.ubimqtt.UbiMqtt;
 /**
  * Wrapper for UbiMqtt class.
  */
-public class UbiMqttProvider implements IMqttProvider {
+class UbiMqttProvider implements IMqttProvider {
     private final UbiMqtt instance;
     private final String subscribeTopic;
     private final String publishTopic;

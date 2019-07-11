@@ -1,4 +1,4 @@
-package fi.helsinki.btls.services;
+package fi.helsinki.btls.utils;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import fi.helsinki.btls.datamodels.Observer;
-
 
 /**
  * Test class for observer service.
