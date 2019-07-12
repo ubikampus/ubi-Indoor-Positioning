@@ -20,7 +20,7 @@ public class MqttService implements IMqttService {
     /**
      * Default buffer for storing data that comes from subscribed topic.
      */
-    public static final int MAX_MESSAGES_TO_STORE = 10000;
+    private static final int MAX_MESSAGES_TO_STORE = 10000;
     /**
      * Default lifetime for beacons.
      */

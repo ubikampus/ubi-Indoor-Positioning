@@ -11,10 +11,9 @@ import fi.helsinki.ubipositioning.utils.IObserverService;
 
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
-    boolean calculateDistance;
-    int enviromentalFactor;
-
-
+    private boolean calculateDistance;
+    private int enviromentalFactor;
+    
     LocationService() {
         this.calculateDistance = false;
         this.enviromentalFactor = 2;
@@ -67,12 +66,10 @@ abstract class LocationService implements ILocationService {
     }
 
     public double getDistanceFromRssi(double rssi, double measuredPower) {
-        rssi = measuredPower - rssi;
-
         if (this.calculateDistance) {
-            return Math.pow(10, rssi / (10 * this.enviromentalFactor)) * 1000;
+            return Math.pow(10, (measuredPower - rssi) / (10 * this.enviromentalFactor)) * 1000;
         } else {
-            return rssi;
+            return rssi - measuredPower;
         }
     }
 
