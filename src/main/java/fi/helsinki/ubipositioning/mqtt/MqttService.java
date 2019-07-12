@@ -10,49 +10,64 @@ import fi.helsinki.ubipositioning.datamodels.Location;
 import fi.helsinki.ubipositioning.datamodels.Observation;
 
 /**
- * MqttService.
+ * Implementation of interface to provide consumer possibility to
+ * get all the messages that have been sent to subscribed topic after start up
+ * and to publish data in messages into a another topic.
+ *
+ * @see IMqttProvider
  */
-public class MqttService implements IMqttService{
-    public static final int MAX_OBSERVATIONS = 10000;
+public class MqttService implements IMqttService {
+    /**
+     * Default buffer for storing data that comes from subscribed topic.
+     */
+    public static final int MAX_MESSAGES_TO_STORE = 10000;
+    /**
+     * Default lifetime for beacons.
+     */
     private static final int BEACON_LIFETIME = 5;
+
     private IMqttProvider provider;
     private Gson gson;
     private HashMap<String, Beacon> beacons;
     private int observationLifetime;
-
+    private int maxMessages;
 
     /**
-     * Creates MqttService.
-     * @param mqttUrl Mqtt server URL.
-     * @param subTopic Topic to subscribe.
-     * @param pubTopic Topic to publish.
-     * @param beacons initial Beacon information.
+     * Creates instance of the class.
+     *
+     * @param mqttUrl Mqtt servers URL.
+     * @param subTopic Topic to subscribe to.
+     * @param pubTopic Topic to publish messages to.
+     * @param beacons Initial Beacon information.
      */
     public MqttService(String mqttUrl, String subTopic, String pubTopic, List<Beacon> beacons) {
         this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic), beacons);
     }
     /**
-     * Creates MqttService.
-     * @param mqttUrl Mqtt server URL.
-     * @param subTopic Topic to subscribe.
-     * @param pubTopic Topic to publish.
+     * Creates instance of the class.
+     *
+     * @param mqttUrl Mqtt servers URL.
+     * @param subTopic Topic to subscribe to.
+     * @param pubTopic Topic to publish messages to.
      */
     public MqttService(String mqttUrl, String subTopic, String pubTopic) {
         this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic));
     }
 
     /**
-     * Creates MqttService.
-     * @param provider MqttProvider to subscribe and publish to mqtt bus.
+     * Creates instance of the class.
+     *
+     * @param provider Implementation of the interface that supports listening and publishing to MQTT bus topics.
      */
     public MqttService(IMqttProvider provider) {
         this(provider, new ArrayList<Beacon>());
     }
 
     /**
-     * Creates MqttService.
-     * @param provider MqttProvider to subscribe and publish to mqtt bus.
-     * @param beacons initial Beacon information.
+     * Creates instance of the class.
+     *
+     * @param provider Implementation of the interface that supports listening and publishing to MQTT bus topics.
+     * @param beacons Initial Beacon information.
      */
     public MqttService(IMqttProvider provider, List<Beacon> beacons) {
         this.provider = provider;
@@ -72,10 +87,17 @@ public class MqttService implements IMqttService{
             } catch (Exception ex) {
             }
         });
+
         this.observationLifetime = BEACON_LIFETIME;
+        this.maxMessages = MAX_MESSAGES_TO_STORE;
         this.provider.connect();
     }
 
+    /**
+     * Creates Gson instance that serializes data that doesn't fit into JSONs specs.
+     *
+     * @return Gson object.
+     */
     private Gson createGson() {
         GsonBuilder gb = new GsonBuilder();
         gb.serializeSpecialFloatingPointValues();
@@ -91,11 +113,10 @@ public class MqttService implements IMqttService{
             beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId(), observationLifetime));
         }
 
-
         Beacon beacon = beacons.get(observation.getBeaconId());
         List<Observation> observations = beacon.getObservations();
 
-        if (observations.size() >= MAX_OBSERVATIONS) {
+        if (observations.size() >= this.maxMessages) {
             observations.remove(0);
         }
 
@@ -103,7 +124,6 @@ public class MqttService implements IMqttService{
         observations.add(observation);
         beacon.setObservations(observations);
     }
-
 
     @Override
     public List<Observation> getObservations() {
@@ -115,11 +135,21 @@ public class MqttService implements IMqttService{
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Sends list of location data as string in json array format using Gson to MQTT bus.
+     *
+     * @param locations list of data points to publish into MQTT bus.
+     */
     @Override
     public void publish(List<Location> locations) {
         this.provider.publish(gson.toJson(locations));
     }
 
+    /**
+     * Sends single location object as string in json array format to MQTT bus.
+     *
+     * @param location data to be send
+     */
     @Override
     public void publish(Location location) {
         publish(Collections.singletonList(location));
@@ -130,11 +160,23 @@ public class MqttService implements IMqttService{
         return new ArrayList<>(beacons.values());
     }
 
+    @Override
     public void setObservationLifetime(int observationLifetime) {
         this.observationLifetime = observationLifetime;
     }
 
+    @Override
     public int getObservationLifetime() {
         return observationLifetime;
+    }
+
+    @Override
+    public void setMaxMessages(int maxMessages) {
+        this.maxMessages = maxMessages;
+    }
+
+    @Override
+    public int getMaxMessages() {
+        return maxMessages;
     }
 }

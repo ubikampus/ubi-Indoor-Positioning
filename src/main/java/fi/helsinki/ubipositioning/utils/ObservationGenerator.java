@@ -71,7 +71,7 @@ public class ObservationGenerator {
             Observation newONe = new Observation(o, k, rssi);
             b.getObservations().add(newONe);
 
-            if (b.getObservations().size() >= MqttService.MAX_OBSERVATIONS) {
+            if (b.getObservations().size() >= MqttService.MAX_MESSAGES_TO_STORE) {
                 b.getObservations().remove(0);
             }
 
