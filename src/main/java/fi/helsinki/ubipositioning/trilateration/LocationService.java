@@ -1,6 +1,5 @@
 package fi.helsinki.ubipositioning.trilateration;
 
-
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import java.util.*;
@@ -9,22 +8,32 @@ import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.ubipositioning.datamodels.*;
 import fi.helsinki.ubipositioning.utils.IObserverService;
 
+/**
+ * Base logic for trilateration calculation that find solution if possible in n-dimensional space.
+ */
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
     private boolean calculateDistance;
-    private int enviromentalFactor;
-    
+    private int environmentalFactor;
+
+    /**
+     * Sets environmental factor to half way of possible values so that rssi distance conversation is possible.
+     * also sets false that rssi would equal distance.
+     */
     LocationService() {
         this.calculateDistance = false;
-        this.enviromentalFactor = 2;
+        this.environmentalFactor = 2;
     }
 
     /**
-     * Static method to create solution for trilateration task.
+     * Create solution for trilateration task.
      *
-     * @param measuredPower minimum RSSI observations can get to.
-     * @param observersChecked rasps that have been already gone through.
-     * @param obs observations related to beacon.
+     * @param measuredPower Base power of BLE listener.
+     * @param observersChecked Observers to ignore because are already checked or irrelevant.
+     * @param obs Data on which position localization is done.
+     *
+     * @throws org.apache.commons.math3.linear.SingularMatrixException if covariance doesn't have solution.
+     * @throws IllegalArgumentException if signal strength values are from less then two observers.
      *
      * @return Optimum object which contains the result for problem in raw form.
      */
@@ -33,24 +42,24 @@ abstract class LocationService implements ILocationService {
         List<double[]> pos = new ArrayList<>();
         List<Double> dist = new ArrayList<>();
 
-        // Go through observations from newest to latest
+        // Go through observations from newest to latest.
         for (int i = obs.size() - 1; i >= 0; i--) {
             Observation model = obs.get(i);
 
-            // preventing double value for rasps
+            // preventing double value from observers.
             if (!observersChecked.contains(model.getRaspId())) {
-                dist.add(getDistanceFromRssi(model.getRssi(), measuredPower)); // Needs scaling on minimum value of RSSI.
+                dist.add(getDistanceFromRssi(model.getRssi(), measuredPower)); // changing rssi into millimeters distance.
                 pos.add(iObserverService.getObserver(model.getRaspId()).getPosition());
                 observersChecked.add(model.getRaspId());
             }
         }
 
-        double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observation posts.
-        double[] distances = new double[dist.size()]; // Distances from observation post that's coordinates are in same index in positions array.
+        double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observers (BLE listeners).
+        double[] distances = new double[dist.size()]; // Distances from each observer to target BLE device.
 
         // Move from ArrayList to array so that empty slots can be avoided.
-        // Otherwise covariance throws singularity exception as it doesn't allow same value to be present at same column in different rows
-        // at least if this includes all the rows same time. Not sure about other scenarios.
+        // Otherwise covariance throws singularity exception
+        // as there is no solution if one dimension contains multiple same values.
         for (int i = 0; i < dist.size(); i++) {
             positions[i] = pos.get(i);
             distances[i] = dist.get(i);
@@ -65,19 +74,27 @@ abstract class LocationService implements ILocationService {
         this.calculateDistance = calculateDistance;
     }
 
+    /**
+     * COnverts rssi value into distance of millimeters.
+     *
+     * @param rssi signal strength that BLE listener has picked up..
+     * @param measuredPower Base power of BLE listener.
+     *
+     * @return distance in millimeters of device which rssi is given.
+     */
     public double getDistanceFromRssi(double rssi, double measuredPower) {
         if (this.calculateDistance) {
-            return Math.pow(10, (measuredPower - rssi) / (10 * this.enviromentalFactor)) * 1000;
+            return Math.pow(10, (measuredPower - rssi) / (10 * this.environmentalFactor)) * 1000;
         } else {
             return rssi - measuredPower;
         }
     }
 
     public int getEnvironmentalFactor() {
-        return enviromentalFactor;
+        return environmentalFactor;
     }
 
     public void setEnvironmentalFactor(int environmentalFactor) {
-        this.enviromentalFactor = environmentalFactor;
+        this.environmentalFactor = environmentalFactor;
     }
 }
