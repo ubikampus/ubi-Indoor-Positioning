@@ -32,7 +32,7 @@ public class LocationService3D extends LocationService {
     public Location calculateLocation(Beacon beacon) {
         List<Observation> obs = beacon.getObservations();
 
-        if (!obs.isEmpty()) {
+        if (obs.isEmpty()) {
             throw new IllegalArgumentException("BLE device must have been seen by at least one observer!");
         }
 

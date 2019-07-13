@@ -8,7 +8,7 @@ import java.util.List;
 import fi.helsinki.ubipositioning.datamodels.*;
 
 /**
- * Tests for observation mocker.
+ * Tests for mocker to generate observations.
  */
 public class ObservationGeneratorTest {
     private List<String> obsKeys;

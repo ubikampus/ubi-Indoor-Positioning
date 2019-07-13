@@ -11,7 +11,7 @@ import fi.helsinki.ubipositioning.utils.IObserverService;
 import fi.helsinki.ubipositioning.utils.ObserverService;
 
 /**
- * Test class for location services.
+ * Tests for locations trilateration calculations.
  */
 public class LocationServiceTest {
     private IObserverService observers;
@@ -208,8 +208,12 @@ public class LocationServiceTest {
         beacon.setMeasuredPower(0);
         beacon.setObservations(obs);
 
-        Location location = locationService.calculateLocation(beacon);
-        assertNull(location);
+        try {
+            Location location = locationService.calculateLocation(beacon);
+            fail("Exception wasn't thrown!");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
     }
 
     @Test
@@ -222,8 +226,12 @@ public class LocationServiceTest {
         beacon.setMeasuredPower(0);
         beacon.setObservations(obs);
 
-        Location location = locationService.calculateLocation(beacon);
-        assertNull(location);
+        try {
+            Location location = locationService.calculateLocation(beacon);
+            fail("Exception wasn't thrown!");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
     }
 
     @Test

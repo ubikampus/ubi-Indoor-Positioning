@@ -1,4 +1,4 @@
 /**
- * Package to contain all test classes for data models needed for trilateration.
+ * Package to contain all the tests for data models.
  */
 package fi.helsinki.ubipositioning.datamodels;

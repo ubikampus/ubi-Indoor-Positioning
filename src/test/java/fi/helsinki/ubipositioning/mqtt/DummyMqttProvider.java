@@ -5,7 +5,7 @@ import fi.helsinki.ubimqtt.IUbiMessageListener;
 import fi.helsinki.ubipositioning.datamodels.Observation;
 
 /**
- * Dummy provider for testing.
+ * Class to mock mqtt provider for testing.
  */
 public class DummyMqttProvider implements IMqttProvider {
     private IUbiMessageListener listener;
