@@ -65,24 +65,25 @@ Code is under the [MIT License](https://github.com/ubikampus/ubi-Indoor-Position
 
 ## Contributors
 
-<!-- TODO: Text and arrange links -->
-
-* [Atte Haarni](https://github.com/Ajhaa)
 * [Aleksander Matikainen](https://github.com/alemati)
-* [Emil Andersson](https://github.com/andeem)
+* [Atte Haarni](https://github.com/Ajhaa)
 * [Elizabeth Berg](https://github.com/reykjaviks)
-* [Joni Kokko](https://github.com/Jhoneagle)
+* [Emil Andersson](https://github.com/andeem)
 * [Jere Lahelma](https://github.com/je-l)
+* [Joni Kokko](https://github.com/Jhoneagle)
 * [Matti Riekkinen](https://github.com/mriekkin)
 
 ## Generally about the project
 
-<!-- TODO: Text and arrange links -->
+This trilateration library is part of larger project to create comprehensive implementation of bluetooth positioning system for ubikampus. 
+The system consist of [Server](https://github.com/ubikampus/server_program) which uses this library to calculate location of BLE devices using rssi collected by Rasperries, 
+[visualizer](https://github.com/ubikampus/bluetooth-dev-visualizer) for using location data gotten from server, 
+[Rasperry scanner](https://github.com/ubikampus/bluetooth-raspberry-scanner) to scan for BLE devices and to collect their signal strength and 
+[Rasperry control tool](https://github.com/ubikampus/raspberry-config-cli) to scale grid which Rasperries form.
+
+### Project related links
 
 * [Hours](https://docs.google.com/spreadsheets/d/1pgeD1oTm5cBeNS73Hs8ie4iGBln6UkSQHe_rVjXCOTo/edit?usp=sharing)
 * [Backlog](https://docs.google.com/spreadsheets/d/1dOJzTgOaNfIl2t6UdaIPswVt-OaKmjpm_03oe0t5R6o/edit?usp=sharing)
-* [Program that uses the library](https://github.com/ubikampus/server_program)
-* [Visualizer for development](https://github.com/ubikampus/bluetooth-dev-visualizer)
-* [Rasperry scanner](https://github.com/ubikampus/bluetooth-raspberry-scanner)
-* [Rasperry control tool](https://github.com/ubikampus/raspberry-config-cli)
+
 
