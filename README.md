@@ -8,13 +8,19 @@
 <!-- TODO: Description -->
 
 ## Table of Contents <a name="table-of-contents"/>
-*  [Usage](#usage)
-*  [Contributors](#contributors)
 *  [Documentation](#documentation)
+*  [Where can I get the latest release?](#where-can-i-get-the-latest-release)
+*  [Licence](#licence)
+*  [Contributors](#contributors)
+*  [Generally about the project](#generally-about-the-project)
 
-## Usage
+## Documentation
 
-To use the library you need to have follwing things added to build gradle
+<!-- TODO: Documentation -->
+
+## Where can I get the latest release?
+
+Gradle
 
 ```
 repositories {
@@ -27,7 +33,34 @@ dependencies {
 }
 ```
 
+Maven
+
+```
+<repositories>
+	<repository>
+	    <id>jitpack.io</id>
+	    <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+	
+<dependency>
+    <groupId>com.github.ubikampus</groupId>
+    <artifactId>ubi-Indoor-Positioning</artifactId>
+    <version>v0.1.0</version>
+</dependency>
+```
+
+Alternatively source code is also available in [GitHub releases](https://github.com/ubikampus/ubi-Indoor-Positioning/releases).
+
+Project uses [semantic versioning](https://semver.org/) in defining releases.
+
+## Licence
+
+<!-- TODO: Licence info -->
+
 ## Contributors
+
+<!-- TODO: Text and arrange links -->
 
 * [Atte Haarni](https://github.com/Ajhaa)
 * [Aleksander Matikainen](https://github.com/alemati)
@@ -37,7 +70,9 @@ dependencies {
 * [Jere Lahelma](https://github.com/je-l)
 * [Matti Riekkinen](https://github.com/mriekkin)
 
-## Documentation
+## Generally about the project
+
+<!-- TODO: Text and arrange links -->
 
 * [Hours](https://docs.google.com/spreadsheets/d/1pgeD1oTm5cBeNS73Hs8ie4iGBln6UkSQHe_rVjXCOTo/edit?usp=sharing)
 * [Backlog](https://docs.google.com/spreadsheets/d/1dOJzTgOaNfIl2t6UdaIPswVt-OaKmjpm_03oe0t5R6o/edit?usp=sharing)
