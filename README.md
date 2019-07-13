@@ -10,13 +10,18 @@
 ## Table of Contents <a name="table-of-contents"/>
 *  [Documentation](#documentation)
 *  [Where can I get the latest release?](#where-can-i-get-the-latest-release)
-*  [Licence](#licence)
+*  [License](#license)
 *  [Contributors](#contributors)
 *  [Generally about the project](#generally-about-the-project)
 
 ## Documentation
 
 <!-- TODO: Documentation -->
+
+
+
+<!-- replace javadoc link with this when next release out: https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/latest/javadoc/ -->
+[javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/feature~README-1767b69a64-1/javadoc/fi/helsinki/ubipositioning/datamodels/Location2D.html)
 
 ## Where can I get the latest release?
 
@@ -54,9 +59,9 @@ Alternatively source code is also available in [GitHub releases](https://github.
 
 Project uses [semantic versioning](https://semver.org/) in defining releases.
 
-## Licence
+## License
 
-<!-- TODO: Licence info -->
+Code is under the [MIT License](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/feature/README/LICENSE)
 
 ## Contributors
 
