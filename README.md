@@ -1,13 +1,14 @@
-# Bluetooth Location Server
+# Ubi Indoor Positioning
 
 [![Build Status](https://travis-ci.org/ubikampus/ubi-Indoor-Positioning.svg?branch=master)](https://travis-ci.org/ubikampus/ubi-Indoor-Positioning)
 [![codecov](https://codecov.io/gh/ubikampus/ubi-Indoor-Positioning/branch/master/graph/badge.svg)](https://codecov.io/gh/ubikampus/ubi-Indoor-Positioning)
 [![](https://jitpack.io/v/ubikampus/ubi-Indoor-Positioning.svg)](https://jitpack.io/#ubikampus/ubi-Indoor-Positioning)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-<!-- TODO: Description -->
+Ubi Indoor Positioning is a java library that can be used to perform trilateration in n-dimensional space and to listen/publish messages in MQTT buss. Main functionality rotates around finding position of device with detected signal strength. However there is still build in integration for subscribing to MQTT buss topics and to publish into them.
 
 ## Table of Contents <a name="table-of-contents"/>
+
 *  [Documentation](#documentation)
 *  [Where can I get the latest release?](#where-can-i-get-the-latest-release)
 *  [License](#license)
@@ -16,12 +17,9 @@
 
 ## Documentation
 
-<!-- TODO: Documentation -->
-
-
-
 <!-- replace javadoc link with this when next release out: https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/latest/javadoc/ -->
-[javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/feature~README-1767b69a64-1/javadoc/fi/helsinki/ubipositioning/datamodels/Location2D.html)
+* [API Javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/feature~README-1767b69a64-1/javadoc/): Documentation for the current release.
+* [Change log](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/feature/README/CHANGELOG.md): Changes in the recent versions.
 
 ## Where can I get the latest release?
 
