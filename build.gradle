@@ -10,7 +10,7 @@ plugins {
     id 'java-library'
     
     //For jitback
-    id 'maven'
+    id 'maven-publish'
 
     //Test Coverage
     id 'jacoco'
@@ -19,6 +19,7 @@ plugins {
     id 'checkstyle'
 }
 
+group = 'com.github.ubikampus'
 version = '0.1.0'
 
 jacoco {
