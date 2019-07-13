@@ -75,7 +75,7 @@ abstract class LocationService implements ILocationService {
     }
 
     /**
-     * COnverts rssi value into distance of millimeters.
+     * Converts rssi value into distance of millimeters.
      *
      * @param rssi signal strength that BLE listener has picked up..
      * @param measuredPower Base power of BLE listener.
