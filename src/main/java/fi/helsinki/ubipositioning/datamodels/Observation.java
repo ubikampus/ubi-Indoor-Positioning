@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Model class for observation data.
+ * Wrapper for individual observation collected by listener about BLE device.
  */
 //@Data
 //@NoArgsConstructor

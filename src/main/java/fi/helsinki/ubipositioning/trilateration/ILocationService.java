@@ -4,7 +4,7 @@ import java.util.*;
 import fi.helsinki.ubipositioning.datamodels.*;
 
 /**
- * Interface for location calculation service.
+ * Interface for trilateration calculation in n-dimensional space.
  */
 public interface ILocationService {
     Location calculateLocation(Beacon beacon);

@@ -9,33 +9,54 @@ import fi.helsinki.ubipositioning.datamodels.Observation;
 import fi.helsinki.ubipositioning.mqtt.MqttService;
 
 /**
- * Mocker class to create realistic observation data.
+ * BLE data generator for mocking data that BLE listeners produce.
+ * Generator intends to mimic real data by randomly generating new observation using old ones as base for them.
  */
 public class ObservationGenerator {
-    private Map<String, Beacon> beacons = new HashMap<>();
+    private Map<String, Beacon> beacons;
     private int maxBeacons;
     private int newOnesPerCall;
     private List<String> observerKeys;
 
+    /**
+     * Initializes the mock generator.
+     *
+     * @param maxBeacons How many BLE devices at max can there be.
+     * @param newOnesPerCall How many new observations generated during every call.
+     * @param observerKeys List of BLE listeners names.
+     */
     public ObservationGenerator(int maxBeacons, int newOnesPerCall, List<String> observerKeys) {
         this.maxBeacons = maxBeacons;
         this.newOnesPerCall = newOnesPerCall;
         this.observerKeys = observerKeys;
+        beacons = new HashMap<>();
     }
 
+    /**
+     * Initializes the mock generator giving default values for amount of BLE devices can be.
+     *
+     * @param newOnesPerCall How many new observations generated during every call.
+     * @param observerKeys List of BLE listeners names.
+     */
     public ObservationGenerator(int newOnesPerCall, List<String> observerKeys) {
         this(8, newOnesPerCall, observerKeys);
     }
 
+    /**
+     * Initializes the mock generator giving default values for
+     *  amount of BLE devices can be and for amount of new observations to be generate during call.
+     *
+     * @param observerKeys List of BLE listeners names.
+     */
     public ObservationGenerator(List<String> observerKeys) {
         this(8, 20, observerKeys);
     }
 
     /**
-     * get all beacons with their data.
-     * Also creates more/new observations during every call.
+     * Get all beacons with their data.
+     * Also generates more/new data during every call.
      *
-     * @return updated observation data about mock beacons.
+     * @return Updated BLE mock data for usage.
      */
     public List<Beacon> getBeacons() {
         for (int i = 0; i < newOnesPerCall; i++) {
@@ -46,7 +67,7 @@ public class ObservationGenerator {
 
             if (b == null) {
                 b = new Beacon(k);
-                b.setMinRSSI(0);
+                b.setMeasuredPower(0);
 
                 rssi = Math.random() * -150;
             } else {
@@ -71,7 +92,7 @@ public class ObservationGenerator {
             Observation newONe = new Observation(o, k, rssi);
             b.getObservations().add(newONe);
 
-            if (b.getObservations().size() >= MqttService.MAX_OBSERVATIONS) {
+            if (b.getObservations().size() >= 10000) {
                 b.getObservations().remove(0);
             }
 

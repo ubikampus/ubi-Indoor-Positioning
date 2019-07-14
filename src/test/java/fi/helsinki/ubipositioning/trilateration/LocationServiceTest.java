@@ -11,7 +11,7 @@ import fi.helsinki.ubipositioning.utils.IObserverService;
 import fi.helsinki.ubipositioning.utils.ObserverService;
 
 /**
- * Test class for location services.
+ * Tests for locations trilateration calculations.
  */
 public class LocationServiceTest {
     private IObserverService observers;
@@ -82,7 +82,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
 
         Location location = locationService.calculateLocation(beacon);
 
@@ -112,7 +112,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
 
         Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
 
@@ -146,7 +146,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         locationService.setCalculateDistance(false);
         Location location = locationService.calculateLocation(beacon);
 
@@ -186,7 +186,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), wanted));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
 
         assertNotNull(locationModel);
@@ -205,11 +205,15 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacon.setObservations(obs);
 
-        Location location = locationService.calculateLocation(beacon);
-        assertNull(location);
+        try {
+            Location location = locationService.calculateLocation(beacon);
+            fail("Exception wasn't thrown!");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
     }
 
     @Test
@@ -219,11 +223,15 @@ public class LocationServiceTest {
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacon.setObservations(obs);
 
-        Location location = locationService.calculateLocation(beacon);
-        assertNull(location);
+        try {
+            Location location = locationService.calculateLocation(beacon);
+            fail("Exception wasn't thrown!");
+        } catch (IllegalArgumentException e) {
+            assertTrue(true);
+        }
     }
 
     @Test
@@ -245,7 +253,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -259,7 +267,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -273,7 +281,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -287,7 +295,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -301,7 +309,7 @@ public class LocationServiceTest {
         obs.add(createObservation2D("rasp-4", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         // Assertion.
@@ -342,7 +350,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -360,7 +368,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -378,7 +386,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -396,7 +404,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         obs = new ArrayList<>();
@@ -414,7 +422,7 @@ public class LocationServiceTest {
         obs.add(createObservation3D("rasp-8", beacon.getId(), cord));
 
         beacon.setObservations(obs);
-        beacon.setMinRSSI(0);
+        beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
         // Assertion.

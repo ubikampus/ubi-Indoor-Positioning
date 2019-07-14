@@ -167,10 +167,10 @@ public class TestDataModels {
     @Test
     public void testBeaconsObservationAdd() {
         Beacon beacon = new Beacon("ATS-1");
-        assertEquals(-Double.MAX_VALUE, beacon.getMinRSSI(), 0.0000001);
+        assertEquals(-Double.MAX_VALUE, beacon.getMeasuredPower(), 0.0000001);
 
         double min =  -Double.MAX_VALUE;
-        assertEquals(min, beacon.getMinRSSI(), 0.000001);
+        assertEquals(min, beacon.getMeasuredPower(), 0.000001);
 
         List<Observation> observations = createObservations();
         beacon.setObservations(observations);
@@ -179,27 +179,27 @@ public class TestDataModels {
             min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
-        assertEquals(min, beacon.getMinRSSI(), 0.000001);
+        assertEquals(min, beacon.getMeasuredPower(), 0.000001);
 
         observations = createObservations();
         beacon.setObservations(observations);
 
-        min = beacon.getMinRSSI();
+        min = beacon.getMeasuredPower();
         for (Observation obs : observations) {
             min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
-        assertEquals(min, beacon.getMinRSSI(), 0.000001);
+        assertEquals(min, beacon.getMeasuredPower(), 0.000001);
 
         observations = createObservations();
         beacon.setObservations(observations);
 
-        min = beacon.getMinRSSI();
+        min = beacon.getMeasuredPower();
         for (Observation obs : observations) {
             min = min >= obs.getRssi() ? min : obs.getRssi();
         }
 
-        assertEquals(min, beacon.getMinRSSI(), 0.000001);
+        assertEquals(min, beacon.getMeasuredPower(), 0.000001);
     }
 
     private List<Observation> createObservations() {
@@ -220,7 +220,7 @@ public class TestDataModels {
         assertEquals(b1.hashCode(), b2.hashCode());
         assertNotEquals(b2.hashCode(), b3.hashCode());
 
-        b2.setMinRSSI(300.21);
+        b2.setMeasuredPower(300.21);
         b3.getObservations().add(createObservation("rasp", "beacon", 43.001));
 
         Beacon b4 = createBeacon("w21");
@@ -232,7 +232,7 @@ public class TestDataModels {
         assertNotEquals(b4.hashCode(), b3.hashCode());
 
         assertTrue(b3.toString().contains("id=w21"));
-        assertTrue(b1.toString().contains("minRSSI=0"));
+        assertTrue(b1.toString().contains("measuredPower=0"));
     }
 
     private Beacon createBeacon(String s) {

@@ -1,11 +1,11 @@
 package fi.helsinki.ubipositioning.mqtt;
 
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import fi.helsinki.ubipositioning.datamodels.Observation;
 import fi.helsinki.ubimqtt.IUbiMessageListener;
+import fi.helsinki.ubipositioning.datamodels.Observation;
 
 /**
- * Dummy provider for testing.
+ * Class to mock mqtt provider for testing.
  */
 public class DummyMqttProvider implements IMqttProvider {
     private IUbiMessageListener listener;

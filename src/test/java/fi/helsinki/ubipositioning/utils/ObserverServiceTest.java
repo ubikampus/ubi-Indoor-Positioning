@@ -8,7 +8,7 @@ import java.util.UUID;
 import fi.helsinki.ubipositioning.datamodels.Observer;
 
 /**
- * Test class for observer service.
+ * Tests for BLE listener handler class.
  */
 public class ObserverServiceTest {
     @Test

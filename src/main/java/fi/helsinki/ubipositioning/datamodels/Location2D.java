@@ -1,8 +1,9 @@
 package fi.helsinki.ubipositioning.datamodels;
 
 /**
- * Representation of specific beacons location on two dimensional space.
- * With information about locations standard error and the error ellipse alignment against x-axis.
+ * Location with extra information about error ellipse alignment.
+ *
+ * @see fi.helsinki.ubipositioning.datamodels.Location
  */
 //@Data
 //@NoArgsConstructor

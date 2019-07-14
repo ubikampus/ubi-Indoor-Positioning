@@ -44,7 +44,7 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", -30, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", -90, LocalDateTime.now()));
         b.setObservations(obs);
-        assertEquals(b.getMinRSSI(), -30, 0.0);
+        assertEquals(b.getMeasuredPower(), -30, 0.0);
     }
 
     @Test
@@ -54,6 +54,6 @@ public class BeaconTest {
         obs.add(new Observation("raspi", "beacon", -130, LocalDateTime.now()));
         obs.add(new Observation("raspi", "beacon", -190, LocalDateTime.now()));
         b.setObservations(obs);
-        assertEquals(b.getMinRSSI(), -100, 0.0);
+        assertEquals(b.getMeasuredPower(), -100, 0.0);
     }
 }

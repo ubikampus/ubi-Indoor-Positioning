@@ -7,7 +7,7 @@ import fi.helsinki.ubipositioning.datamodels.Location;
 import fi.helsinki.ubipositioning.datamodels.Observation;
 
 /**
- * Interface for mqtt service.
+ * Interface to inject and use MQTT messaging solutions.
  */
 public interface IMqttService {
     List<Observation> getObservations();
@@ -17,4 +17,6 @@ public interface IMqttService {
     void publish(Location location);
     void setObservationLifetime(int observationLifetime);
     int getObservationLifetime();
+    void setMaxMessages(int maxMessages);
+    int getMaxMessages();
 }

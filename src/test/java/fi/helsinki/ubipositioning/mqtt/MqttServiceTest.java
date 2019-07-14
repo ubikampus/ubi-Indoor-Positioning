@@ -12,12 +12,12 @@ import fi.helsinki.ubipositioning.datamodels.*;
 
 
 /**
- * Test class for MqttService.
+ * Test class for servicing mqtt integration to consumer.
  */
 public class MqttServiceTest {
-    UbiMqttProvider provider;
-    IMqttService service;
-    InOrder inOrder;
+    private UbiMqttProvider provider;
+    private IMqttService service;
+    private InOrder inOrder;
 
     @Before
     public void setUp() throws Exception {
