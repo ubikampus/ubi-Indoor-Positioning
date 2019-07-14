@@ -22,7 +22,7 @@ public class MqttService implements IMqttService {
      */
     private static final int MAX_MESSAGES_TO_STORE = 10000;
     /**
-     * Default lifetime for beacons.
+     * Default lifetime for beacons in seconds.
      */
     private static final int BEACON_LIFETIME = 5;
 
@@ -35,9 +35,9 @@ public class MqttService implements IMqttService {
     /**
      * Creates instance of the class.
      *
-     * @param mqttUrl Mqtt servers URL.
-     * @param subTopic Topic to subscribe to.
-     * @param pubTopic Topic to publish messages to.
+     * @param mqttUrl Mqtt servers URL without '://' start.
+     * @param subTopic Topic to subscribe to so that data can be received as messages.
+     * @param pubTopic Topic to publish data as messages to.
      * @param beacons Initial Beacon information.
      */
     public MqttService(String mqttUrl, String subTopic, String pubTopic, List<Beacon> beacons) {

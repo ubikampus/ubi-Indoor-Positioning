@@ -33,7 +33,7 @@ public class ObservationGenerator {
     }
 
     /**
-     * Initializes the mock generator but gives default values for amount of BLE devices can be.
+     * Initializes the mock generator giving default values for amount of BLE devices can be.
      *
      * @param newOnesPerCall How many new observations generated during every call.
      * @param observerKeys List of BLE listeners names.
@@ -43,7 +43,7 @@ public class ObservationGenerator {
     }
 
     /**
-     * Initializes the mock generator but gives default values for
+     * Initializes the mock generator giving default values for
      *  amount of BLE devices can be and for amount of new observations to be generate during call.
      *
      * @param observerKeys List of BLE listeners names.

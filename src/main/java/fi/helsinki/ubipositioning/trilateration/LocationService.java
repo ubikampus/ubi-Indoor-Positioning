@@ -9,7 +9,7 @@ import fi.helsinki.ubipositioning.datamodels.*;
 import fi.helsinki.ubipositioning.utils.IObserverService;
 
 /**
- * Base logic for trilateration calculation that find solution if possible in n-dimensional space.
+ * Base logic for trilateration calculation that finds solution if possible in n-dimensional space.
  */
 abstract class LocationService implements ILocationService {
     IObserverService iObserverService;
