@@ -5,7 +5,7 @@
 [![](https://jitpack.io/v/ubikampus/ubi-Indoor-Positioning.svg)](https://jitpack.io/#ubikampus/ubi-Indoor-Positioning)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-Ubi Indoor Positioning is a java library that can be used to perform trilateration in n-dimensional space and to listen/publish messages in MQTT buss. Main functionality rotates around finding position of device with detected signal strength. However there is still build in integration for subscribing to MQTT buss topics and to publish into them.
+Ubi Indoor Positioning is a java library that can be used to perform trilateration in n-dimensional space and to listen/publish messages in MQTT bus. Main functionality rotates around finding position of device with detected signal strength. However there is still build in integration for subscribing to MQTT bus topics and to publish into them.
 
 ## Table of Contents <a name="table-of-contents"/>
 
@@ -19,7 +19,7 @@ Ubi Indoor Positioning is a java library that can be used to perform trilaterati
 
 <!-- replace javadoc link with this when next release out: https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/latest/javadoc/ -->
 * [API Javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/feature~README-1767b69a64-1/javadoc/): Documentation for the current release.
-* [Change log](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/feature/README/CHANGELOG.md): Changes in the recent versions.
+* [Changelog](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/master/CHANGELOG.md): Changes in the recent versions.
 
 ## Where can I get the latest release?
 
@@ -59,7 +59,7 @@ Project uses [semantic versioning](https://semver.org/) in defining releases.
 
 ## License
 
-Code is under the [MIT License](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/feature/README/LICENSE)
+Code is under the [MIT License](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/master/LICENSE)
 
 ## Contributors
 
