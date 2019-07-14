@@ -73,7 +73,7 @@ Code is under the [MIT License](https://github.com/ubikampus/ubi-Indoor-Position
 
 ## Generally about the project
 
-This trilateration library is part of larger project to create comprehensive implementation of bluetooth positioning system for ubikampus. 
+This trilateration library is part of larger project to create comprehensive implementation of indoor positioning system for ubikampus. 
 The system consist of [Server](https://github.com/ubikampus/server_program) which uses this library to calculate location of BLE devices using rssi collected by Rasperries, 
 [visualizer](https://github.com/ubikampus/bluetooth-dev-visualizer) for using location data gotten from server, 
 [Rasperry scanner](https://github.com/ubikampus/bluetooth-raspberry-scanner) to scan for BLE devices and to collect their signal strength and 
