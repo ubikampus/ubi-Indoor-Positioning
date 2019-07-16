@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 public class MqttServiceTest {
     @Test
-    public void dumy() {
+    public void dummy() {
 
     }
 }

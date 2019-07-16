@@ -216,6 +216,16 @@ public class MqttService implements IMqttService {
      */
     @Override
     public void publishSigned(String message, String secretKey) {
+        instance.publishSigned(publishTopic, message, secretKey, new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
 
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
     }
 }
