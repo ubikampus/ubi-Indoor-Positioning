@@ -7,7 +7,7 @@ import fi.helsinki.ubimqtt.IUbiMessageListener;
  */
 public interface IMqttService {
     void publish(String message);
-    void PublishSigned(String message, String secretKey);
+    void publishSigned(String message, String secretKey);
     void connect();
     void connect(IUbiMessageListener listener);
     void connectSigned(String publicKey);

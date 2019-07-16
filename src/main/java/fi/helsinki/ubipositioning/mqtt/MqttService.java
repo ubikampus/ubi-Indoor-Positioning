@@ -204,7 +204,7 @@ public class MqttService implements IMqttService {
      * @throws RuntimeException if publishTopic is not valid.
      */
     @Override
-    public void PublishSigned(String message, String secretKey) {
+    public void publishSigned(String message, String secretKey) {
 
     }
 }
