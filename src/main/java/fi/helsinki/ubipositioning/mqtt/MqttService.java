@@ -1,8 +1,10 @@
 package fi.helsinki.ubipositioning.mqtt;
 
+import fi.helsinki.ubimqtt.IUbiMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import fi.helsinki.ubimqtt.IUbiActionListener;
 import fi.helsinki.ubimqtt.UbiMqtt;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
  * Implementation of interface to provide consumer possibility to
@@ -75,7 +77,12 @@ public class MqttService implements IMqttService {
         instance.connect(new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                instance.subscribe(subscribeTopic, listener, new IUbiActionListener() {
+                instance.subscribe(subscribeTopic, new IUbiMessageListener() {
+                    @Override
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
+                        listener.messageArrived(mqttMessage.toString());
+                    }
+                }, new IUbiActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
 
@@ -132,7 +139,12 @@ public class MqttService implements IMqttService {
         instance.connect(new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
-                instance.subscribeSigned(subscribeTopic, new String[]{publicKey}, listener, new IUbiActionListener() {
+                instance.subscribeSigned(subscribeTopic, new String[]{publicKey}, new IUbiMessageListener() {
+                    @Override
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
+                        listener.messageArrived(mqttMessage.toString());
+                    }
+                }, new IUbiActionListener() {
                     @Override
                     public void onSuccess(IMqttToken asyncActionToken) {
 
