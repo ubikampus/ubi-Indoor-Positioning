@@ -2,7 +2,6 @@ package fi.helsinki.ubipositioning.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 import fi.helsinki.ubimqtt.IUbiActionListener;
-import fi.helsinki.ubimqtt.IUbiMessageListener;
 import fi.helsinki.ubimqtt.UbiMqtt;
 
 /**
@@ -14,7 +13,7 @@ public class MqttService implements IMqttService {
     private final UbiMqtt instance;
     private final String subscribeTopic;
     private final String publishTopic;
-    private IUbiMessageListener listener;
+    private IMessageListener listener;
 
     /**
      * Creates instance of the class.
@@ -37,7 +36,7 @@ public class MqttService implements IMqttService {
      * @param publishTopic Topic to publish data as messages to.
      * @param listener Handler to be called when message arrives through subscription.
      */
-    public MqttService(String mqttUrl, String subscribeTopic, String publishTopic, IUbiMessageListener listener) {
+    public MqttService(String mqttUrl, String subscribeTopic, String publishTopic, IMessageListener listener) {
         this.subscribeTopic = subscribeTopic;
         this.publishTopic = publishTopic;
         this.listener = listener;
@@ -68,9 +67,9 @@ public class MqttService implements IMqttService {
      *         if either mqtt bus url or subscribeTopic is badly defined.
      */
     @Override
-    public void connect(IUbiMessageListener listener) {
+    public void connect(IMessageListener listener) {
         if (listener == null) {
-            throw new NullPointerException("MessageListener not set");
+            throw new NullPointerException("IMessageListener not set");
         }
 
         instance.connect(new IUbiActionListener() {
@@ -125,9 +124,9 @@ public class MqttService implements IMqttService {
      *         if either mqtt bus url or subscribeTopic is badly defined.
      */
     @Override
-    public void connectSigned(String publicKey, IUbiMessageListener listener) {
+    public void connectSigned(String publicKey, IMessageListener listener) {
         if (listener == null) {
-            throw new NullPointerException("MessageListener not set");
+            throw new NullPointerException("IMessageListener not set");
         }
 
         instance.connect(new IUbiActionListener() {

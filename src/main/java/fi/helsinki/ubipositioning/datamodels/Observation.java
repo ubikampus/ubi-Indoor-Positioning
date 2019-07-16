@@ -6,9 +6,6 @@ import java.util.Objects;
 /**
  * Wrapper for individual observation collected by listener about BLE device.
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class Observation {
     private String raspId;
     private String beaconId;

@@ -5,10 +5,6 @@ package fi.helsinki.ubipositioning.datamodels;
  *
  * @see fi.helsinki.ubipositioning.datamodels.Location
  */
-//@Data
-//@NoArgsConstructor
-//@EqualsAndHashCode(callSuper = true)
-//@ToString(callSuper = true)
 public class Location2D extends Location {
     private double alignment;
 

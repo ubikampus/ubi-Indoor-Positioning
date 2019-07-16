@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
  *
  * @see Observation
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public class Beacon {
     private String id;
     private double measuredPower;

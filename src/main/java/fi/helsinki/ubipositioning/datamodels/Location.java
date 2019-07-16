@@ -6,9 +6,6 @@ import java.util.Objects;
  * Representation of specific location on two dimensional space
  * with information about locations standard error.
  */
-//@Data
-//@NoArgsConstructor
-//@AllArgsConstructor
 public abstract class Location {
     protected String beaconId;
     protected double x;
