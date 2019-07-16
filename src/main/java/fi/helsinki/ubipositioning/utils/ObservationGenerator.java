@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import fi.helsinki.ubipositioning.datamodels.Beacon;
 import fi.helsinki.ubipositioning.datamodels.Observation;
-import fi.helsinki.ubipositioning.mqtt.MqttService;
 
 /**
  * BLE data generator for mocking data that BLE listeners produce.

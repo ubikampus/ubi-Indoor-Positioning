@@ -1,22 +1,16 @@
-
 package fi.helsinki.ubipositioning.mqtt;
 
-import java.util.List;
-import fi.helsinki.ubipositioning.datamodels.Beacon;
-import fi.helsinki.ubipositioning.datamodels.Location;
-import fi.helsinki.ubipositioning.datamodels.Observation;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
 
 /**
- * Interface to inject and use MQTT messaging solutions.
+ * Interface to hide actual mqtt protocol from service that uses it to serve consumers.
  */
 public interface IMqttService {
-    List<Observation> getObservations();
-    List<Beacon> getBeacons();
-
-    void publish(List<Location> locations);
-    void publish(Location location);
-    void setObservationLifetime(int observationLifetime);
-    int getObservationLifetime();
-    void setMaxMessages(int maxMessages);
-    int getMaxMessages();
+    void publish(String message);
+    void PublishSigned(String message, String secretKey);
+    void connect();
+    void connect(IUbiMessageListener listener);
+    void connectSigned(String publicKey);
+    void connectSigned(String publicKey, IUbiMessageListener listener);
+    void disconnect();
 }
