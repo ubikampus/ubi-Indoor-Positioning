@@ -1,5 +1,13 @@
 package fi.helsinki.ubipositioning.mqtt;
 
-public class MqttServiceTest {
+import org.junit.Test;
 
+/**
+ * Tests to make sure mqtt integration works.
+ */
+public class MqttServiceTest {
+    @Test
+    public void dumy() {
+
+    }
 }
