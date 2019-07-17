@@ -1,10 +1,10 @@
 package fi.helsinki.ubipositioning.mqtt;
 
-import fi.helsinki.ubimqtt.IUbiMessageListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import fi.helsinki.ubimqtt.IUbiActionListener;
-import fi.helsinki.ubimqtt.UbiMqtt;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import fi.helsinki.ubimqtt.IUbiActionListener;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
+import fi.helsinki.ubimqtt.UbiMqtt;
 
 /**
  * Implementation of interface to provide consumer possibility to
@@ -12,9 +12,10 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * and to publish data in messages into a another topic.
  */
 public class MqttService implements IMqttService {
-    private final UbiMqtt instance;
-    private final String subscribeTopic;
-    private final String publishTopic;
+    UbiMqtt instance;
+
+    private String subscribeTopic;
+    private String publishTopic;
     private IMessageListener listener;
 
     /**
@@ -79,7 +80,7 @@ public class MqttService implements IMqttService {
             public void onSuccess(IMqttToken asyncActionToken) {
                 instance.subscribe(subscribeTopic, new IUbiMessageListener() {
                     @Override
-                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
                         listener.messageArrived(mqttMessage.toString());
                     }
                 }, new IUbiActionListener() {
@@ -141,7 +142,7 @@ public class MqttService implements IMqttService {
             public void onSuccess(IMqttToken asyncActionToken) {
                 instance.subscribeSigned(subscribeTopic, new String[]{publicKey}, new IUbiMessageListener() {
                     @Override
-                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) throws Exception {
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
                         listener.messageArrived(mqttMessage.toString());
                     }
                 }, new IUbiActionListener() {
