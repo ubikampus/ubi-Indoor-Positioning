@@ -9,14 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 import fi.helsinki.ubipositioning.datamodels.*;
 import fi.helsinki.ubipositioning.utils.IObserverService;
+import fi.helsinki.ubipositioning.utils.PathLossModel;
 
 
 /**
  * Trilateration in two dimensional space.
  */
 public class LocationService2D extends LocationService {
-    public LocationService2D(IObserverService iObserverService) {
-        super();
+    public LocationService2D(IObserverService iObserverService, PathLossModel pathLossModel) {
+        super(pathLossModel);
         this.iObserverService = iObserverService;
     }
 

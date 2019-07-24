@@ -7,13 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import fi.helsinki.ubipositioning.datamodels.*;
 import fi.helsinki.ubipositioning.utils.IObserverService;
+import fi.helsinki.ubipositioning.utils.PathLossModel;
 
 /**
  * Trilateration in three dimensional space.
  */
 public class LocationService3D extends LocationService {
-    public LocationService3D(IObserverService iObserverService) {
-        super();
+    public LocationService3D(IObserverService iObserverService, PathLossModel pathLossModel) {
+        super(pathLossModel);
         this.iObserverService = iObserverService;
     }
 
