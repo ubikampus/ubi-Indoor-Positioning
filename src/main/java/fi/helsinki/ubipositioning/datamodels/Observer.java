@@ -5,7 +5,6 @@ import java.util.Objects;
 /**
  * Representation for BLE listener. Contains the listeners name and its static location.
  */
-//@Data
 public class Observer {
     private String observerId;
     private double[] position;

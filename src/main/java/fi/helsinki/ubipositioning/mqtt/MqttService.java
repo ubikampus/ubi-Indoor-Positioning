@@ -1,182 +1,232 @@
 package fi.helsinki.ubipositioning.mqtt;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-import fi.helsinki.ubipositioning.datamodels.Beacon;
-import fi.helsinki.ubipositioning.datamodels.Location;
-import fi.helsinki.ubipositioning.datamodels.Observation;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
+import fi.helsinki.ubimqtt.IUbiActionListener;
+import fi.helsinki.ubimqtt.IUbiMessageListener;
+import fi.helsinki.ubimqtt.UbiMqtt;
 
 /**
  * Implementation of interface to provide consumer possibility to
  * get all the messages that have been sent to subscribed topic after start up
  * and to publish data in messages into a another topic.
- *
- * @see IMqttProvider
  */
 public class MqttService implements IMqttService {
-    /**
-     * Default buffer for storing data that comes from subscribed topic.
-     */
-    private static final int MAX_MESSAGES_TO_STORE = 10000;
-    /**
-     * Default lifetime for beacons in seconds.
-     */
-    private static final int BEACON_LIFETIME = 5;
+    UbiMqtt instance;
 
-    private IMqttProvider provider;
-    private Gson gson;
-    private HashMap<String, Beacon> beacons;
-    private int observationLifetime;
-    private int maxMessages;
+    private String subscribeTopic;
+    private String publishTopic;
+    private IMessageListener listener;
 
     /**
      * Creates instance of the class.
      *
      * @param mqttUrl Mqtt servers URL without '://' start.
-     * @param subTopic Topic to subscribe to so that data can be received as messages.
-     * @param pubTopic Topic to publish data as messages to.
-     * @param beacons Initial Beacon information.
+     * @param subscribeTopic Topic to subscribe to so that data can be received as messages.
+     * @param publishTopic Topic to publish data as messages to.
      */
-    public MqttService(String mqttUrl, String subTopic, String pubTopic, List<Beacon> beacons) {
-        this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic), beacons);
-    }
-    /**
-     * Creates instance of the class.
-     *
-     * @param mqttUrl Mqtt servers URL.
-     * @param subTopic Topic to subscribe to.
-     * @param pubTopic Topic to publish messages to.
-     */
-    public MqttService(String mqttUrl, String subTopic, String pubTopic) {
-        this(new UbiMqttProvider(mqttUrl, subTopic, pubTopic));
+    public MqttService(String mqttUrl, String subscribeTopic, String publishTopic) {
+        this.subscribeTopic = subscribeTopic;
+        this.publishTopic = publishTopic;
+        instance = new UbiMqtt(mqttUrl);
     }
 
     /**
      * Creates instance of the class.
      *
-     * @param provider Implementation of the interface that supports listening and publishing to MQTT bus topics.
+     * @param mqttUrl Mqtt servers URL without '://' start.
+     * @param subscribeTopic Topic to subscribe to so that data can be received as messages.
+     * @param publishTopic Topic to publish data as messages to.
+     * @param listener Handler to be called when message arrives through subscription.
      */
-    public MqttService(IMqttProvider provider) {
-        this(provider, new ArrayList<Beacon>());
+    public MqttService(String mqttUrl, String subscribeTopic, String publishTopic, IMessageListener listener) {
+        this.subscribeTopic = subscribeTopic;
+        this.publishTopic = publishTopic;
+        this.listener = listener;
+        instance  = new UbiMqtt(mqttUrl);
     }
 
     /**
-     * Creates instance of the class.
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using defined listener to handle all the messages that comes to the topic after this method is called.
      *
-     * @param provider Implementation of the interface that supports listening and publishing to MQTT bus topics.
-     * @param beacons Initial Beacon information.
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
      */
-    public MqttService(IMqttProvider provider, List<Beacon> beacons) {
-        this.provider = provider;
-        this.beacons = new HashMap<>();
+    @Override
+    public void connect() {
+        connect(listener);
+    }
 
-
-        if (beacons != null) {
-            beacons.forEach(beacon -> this.beacons.put(beacon.getId(), beacon));
+    /**
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using given listener to handle all the messages that comes to the topic after this method is called.
+     *
+     * @param listener Handler to be called when message arrives through subscription.
+     *
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
+     */
+    @Override
+    public void connect(IMessageListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("IMessageListener not set");
         }
 
-        this.gson = createGson();
+        instance.connect(new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                instance.subscribe(subscribeTopic, new IUbiMessageListener() {
+                    @Override
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
+                        listener.messageArrived(mqttMessage.toString());
+                    }
+                }, new IUbiActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
 
-        this.provider.setListener((topic, mqttMessage, listenerId) -> {
-            try {
-                Observation obs = gson.fromJson(mqttMessage.toString(), Observation.class);
-                addObservation(obs);
-            } catch (Exception ex) {
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        throw new RuntimeException(exception);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
             }
         });
-
-        this.observationLifetime = BEACON_LIFETIME;
-        this.maxMessages = MAX_MESSAGES_TO_STORE;
-        this.provider.connect();
     }
 
     /**
-     * Creates Gson instance that serializes data that doesn't fit into JSONs specs.
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using defined listener to handle all the messages that comes to the topic after this method is called
+     * and are been signed by the right keypair.
      *
-     * @return Gson object.
+     * @param publicKey Key that is used to verify sender of the message.
+     *
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
      */
-    private Gson createGson() {
-        GsonBuilder gb = new GsonBuilder();
-        gb.serializeSpecialFloatingPointValues();
-        gb.enableComplexMapKeySerialization();
-        gb.serializeNulls();
-        gb.setLenient();
-
-        return gb.create();
+    @Override
+    public void connectSigned(String publicKey) {
+        connectSigned(publicKey, listener);
     }
 
-    private void addObservation(Observation observation) {
-        if (!beacons.containsKey(observation.getBeaconId())) {
-            beacons.put(observation.getBeaconId(), new Beacon(observation.getBeaconId(), observationLifetime));
+    /**
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using given listener to handle all the messages that comes to the topic after this method is called
+     * and are been signed by the right keypair.
+     *
+     * @param publicKey Key that is used to verify sender of the message.
+     * @param listener Handler to be called when message arrives through subscription.
+     *
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
+     */
+    @Override
+    public void connectSigned(String publicKey, IMessageListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("IMessageListener not set");
         }
 
-        Beacon beacon = beacons.get(observation.getBeaconId());
-        List<Observation> observations = beacon.getObservations();
+        instance.connect(new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                instance.subscribeSigned(subscribeTopic, new String[]{publicKey}, new IUbiMessageListener() {
+                    @Override
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
+                        listener.messageArrived(mqttMessage.toString());
+                    }
+                }, new IUbiActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
 
-        if (observations.size() >= this.maxMessages) {
-            observations.remove(0);
-        }
+                    }
 
-        observation.setTimestamp(LocalDateTime.now());
-        observations.add(observation);
-        beacon.setObservations(observations);
-    }
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        throw new RuntimeException(exception);
+                    }
+                });
+            }
 
-    @Override
-    public List<Observation> getObservations() {
-        return beacons
-                .values()
-                .stream()
-                .map(Beacon::getObservations)
-                .flatMap(List::stream)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Sends list of location data as string in json array format using Gson to MQTT bus.
-     *
-     * @param locations list of data points to publish into MQTT bus.
-     */
-    @Override
-    public void publish(List<Location> locations) {
-        this.provider.publish(gson.toJson(locations));
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
     }
 
     /**
-     * Sends single location object as string in json array format to MQTT bus.
+     * Closes session in MQTT server.
      *
-     * @param location data to be send
+     * @throws RuntimeException if disconnecting failed.
      */
     @Override
-    public void publish(Location location) {
-        publish(Collections.singletonList(location));
+    public void disconnect() {
+        instance.disconnect(new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
     }
 
+    /**
+     * Publish a new message to publishTopic in MQTT bus.
+     *
+     * @param message Data that wanted to be published into the MQTT bus topic.
+     *
+     * @throws RuntimeException if publishTopic is not valid.
+     */
     @Override
-    public List<Beacon> getBeacons() {
-        return new ArrayList<>(beacons.values());
+    public void publish(String message) {
+        instance.publish(publishTopic, message, new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
     }
 
+    /**
+     * Publish a new signed message to publishTopic in MQTT bus.
+     *
+     * @param message Data that wanted to be published into the MQTT bus topic.
+     * @param secretKey Key used to sign the message so that receiver can verify the sender.
+     *
+     * @throws RuntimeException if publishTopic is not valid.
+     */
     @Override
-    public void setObservationLifetime(int observationLifetime) {
-        this.observationLifetime = observationLifetime;
-    }
+    public void publishSigned(String message, String secretKey) {
+        instance.publishSigned(publishTopic, message, secretKey, new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
 
-    @Override
-    public int getObservationLifetime() {
-        return observationLifetime;
-    }
+            }
 
-    @Override
-    public void setMaxMessages(int maxMessages) {
-        this.maxMessages = maxMessages;
-    }
-
-    @Override
-    public int getMaxMessages() {
-        return maxMessages;
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
     }
 }
