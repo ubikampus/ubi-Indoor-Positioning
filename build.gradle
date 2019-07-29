@@ -21,7 +21,7 @@ plugins {
 }
 
 group = 'com.github.ubikampus'
-version = '0.1.0'
+version = '0.2.0'
 
 jacoco {
     toolVersion = "0.8.3"
