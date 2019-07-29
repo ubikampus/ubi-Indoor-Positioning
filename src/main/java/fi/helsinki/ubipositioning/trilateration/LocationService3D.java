@@ -70,7 +70,7 @@ public class LocationService3D extends LocationService {
             try {
                 list.add(calculateLocation(beacon));
             } catch (Exception e) {
-                throw;
+                throw e;
             }
         });
 
