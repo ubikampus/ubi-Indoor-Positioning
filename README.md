@@ -17,8 +17,7 @@ Ubi Indoor Positioning is a java library that can be used to perform trilaterati
 
 ## Documentation
 
-<!-- replace javadoc link with this when next release out: https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/latest/javadoc/ -->
-* [API Javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/feature~README-1767b69a64-1/javadoc/): Documentation for the current release.
+* [API Javadoc](https://javadoc.jitpack.io/com/github/ubikampus/ubi-Indoor-Positioning/latest/javadoc/): Documentation for the current release.
 * [Changelog](https://github.com/ubikampus/ubi-Indoor-Positioning/blob/master/CHANGELOG.md): Changes in the recent versions.
 
 ## Where can I get the latest release?
@@ -32,7 +31,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.ubikampus:ubi-Indoor-Positioning:v0.1.0'
+    implementation 'com.github.ubikampus:ubi-Indoor-Positioning:0.2.0'
 }
 ```
 
@@ -49,7 +48,7 @@ Maven
 <dependency>
     <groupId>com.github.ubikampus</groupId>
     <artifactId>ubi-Indoor-Positioning</artifactId>
-    <version>v0.1.0</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 

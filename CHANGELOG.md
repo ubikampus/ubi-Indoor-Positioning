@@ -1,6 +1,10 @@
 # CHANGELOG.md
 
-## 0.2.0 (unreleased)
+## 0.3.0 (unreleased)
+
+
+
+## 0.2.0 (2019-07-29)
 
 ### Added
 
@@ -11,6 +15,7 @@
   - Javadocs quality.
   - Names of variables and methods.
   - README.md.
+  - Mqtt integration more flexible.
 
 ## 0.1.0 (2019-07-11)
 
