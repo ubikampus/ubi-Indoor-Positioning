@@ -1,6 +1,5 @@
 package fi.helsinki.ubipositioning.trilateration;
 
-import fi.helsinki.ubipositioning.utils.Kalman;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import java.util.*;
@@ -8,9 +7,8 @@ import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.ubipositioning.datamodels.*;
 import fi.helsinki.ubipositioning.utils.IObserverService;
+import fi.helsinki.ubipositioning.utils.Kalman;
 import fi.helsinki.ubipositioning.utils.PathLossModel;
-
-import javax.print.attribute.HashAttributeSet;
 
 /**
  * Base logic for trilateration calculation that finds solution if possible in n-dimensional space.
@@ -66,7 +64,9 @@ abstract class LocationService implements ILocationService {
         }
         for (Map.Entry<String, List<Double>> val :
                 measurements.entrySet()) {
-            dist.add(pathLossModel.calculateDistance(k.Calculate(val.getValue().toArray(new Double[0])), measuredPower)); // changing rssi into millimeters distance.
+            Double[] measurementsArray = val.getValue().toArray(new Double[0]);
+            double kalmanPrediction = k.calculate(measurementsArray);
+            dist.add(pathLossModel.calculateDistance(kalmanPrediction, measuredPower)); // changing rssi into millimeters distance.
             pos.add(iObserverService.getObserver(val.getKey()).getPosition());
         }
 

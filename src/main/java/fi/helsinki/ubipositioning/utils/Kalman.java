@@ -6,25 +6,26 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 
+/**
+ * Wrapper for Apache commons Kalman filter.
+ */
 public class Kalman {
 
-    public double Calculate(Double[] measurements) {
+    public double calculate(Double[] measurements) {
         // A = [ 1 ]
-        RealMatrix A = new Array2DRowRealMatrix(new double[] { 1d });
+        RealMatrix matrixA = new Array2DRowRealMatrix(new double[] { 1d });
         // B = null
-        RealMatrix B = null;
+        RealMatrix matrixB = null;
         // H = [ 1 ]
-        RealMatrix H = new Array2DRowRealMatrix(new double[] { 1d });
+        RealMatrix matrixH = new Array2DRowRealMatrix(new double[] { 1d });
         // Q = [ 1e-5 ]
-        RealMatrix Q = new Array2DRowRealMatrix(new double[] { 0.008 });
-        // P = [ 1 ]
-        RealMatrix P0 = new Array2DRowRealMatrix(new double[] { 1d });
+        RealMatrix matrixQ = new Array2DRowRealMatrix(new double[] { 0.008 });
         // R = [ 0.1 ]
-        RealMatrix R = new Array2DRowRealMatrix(new double[] { 32.9 });
+        RealMatrix matrixR = new Array2DRowRealMatrix(new double[] { 32.9 });
 
         ProcessModel pm
-                = new DefaultProcessModel(A, B, Q, new ArrayRealVector(new double[] { 0 }), null);
-        MeasurementModel mm = new DefaultMeasurementModel(H, R);
+                = new DefaultProcessModel(matrixA, matrixB, matrixQ, new ArrayRealVector(new double[] { 0 }), null);
+        MeasurementModel mm = new DefaultMeasurementModel(matrixH, matrixR);
         KalmanFilter filter = new KalmanFilter(pm, mm);
 
         RealVector z = new ArrayRealVector(measurements);
