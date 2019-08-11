@@ -176,7 +176,7 @@ public class TestDataModels {
         beacon.setObservations(observations);
 
         for (Observation obs : observations) {
-            min = min >= obs.getRssi() ? min : obs.getRssi();
+            min = Math.max(min, obs.getRssi());
         }
 
         assertEquals(min, beacon.getMeasuredPower(), 0.000001);
@@ -186,7 +186,7 @@ public class TestDataModels {
 
         min = beacon.getMeasuredPower();
         for (Observation obs : observations) {
-            min = min >= obs.getRssi() ? min : obs.getRssi();
+            min = Math.max(min, obs.getRssi());
         }
 
         assertEquals(min, beacon.getMeasuredPower(), 0.000001);
@@ -196,7 +196,7 @@ public class TestDataModels {
 
         min = beacon.getMeasuredPower();
         for (Observation obs : observations) {
-            min = min >= obs.getRssi() ? min : obs.getRssi();
+            min = Math.max(min, obs.getRssi());
         }
 
         assertEquals(min, beacon.getMeasuredPower(), 0.000001);
@@ -270,7 +270,7 @@ public class TestDataModels {
         assertNotEquals(b1.hashCode(), b2.hashCode());
         assertNotEquals(b4.hashCode(), b3.hashCode());
 
-        assertTrue(b3.toString().contains("raspId=w21"));
+        assertTrue(b3.toString().contains("observerId=w21"));
         assertTrue(b1.toString().contains("rssi=-56"));
     }
 

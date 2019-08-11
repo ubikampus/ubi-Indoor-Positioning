@@ -2,77 +2,81 @@ package fi.helsinki.ubipositioning.trilateration;
 
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
+import org.apache.commons.math3.linear.RealMatrix;
 import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.ubipositioning.datamodels.*;
-import fi.helsinki.ubipositioning.utils.IObserverService;
-import fi.helsinki.ubipositioning.utils.Kalman;
-import fi.helsinki.ubipositioning.utils.PathLossModel;
+import fi.helsinki.ubipositioning.utils.*;
 
 /**
  * Base logic for trilateration calculation that finds solution if possible in n-dimensional space.
  */
-abstract class LocationService implements ILocationService {
-    IObserverService iObserverService;
-    PathLossModel pathLossModel;
+public class LocationService implements ILocationService {
+    private IObserverService observerService;
+    private IMeasurementFilter filter;
+    private IDataConverter dataConverter;
+    private IResultConverter resultConverter;
 
-    public LocationService(PathLossModel pathLossModel) {
-        this.pathLossModel = pathLossModel;
+    public LocationService(IObserverService observerService, IDataConverter dataConverter,
+                           IResultConverter resultConverter, IMeasurementFilter filter) {
+        this.observerService = observerService;
+        this.filter = filter;
+        this.dataConverter = dataConverter;
+        this.resultConverter = resultConverter;
     }
 
+    public LocationService(IObserverService observerService, IDataConverter dataConverter,
+                           IResultConverter resultConverter) {
+        this(observerService, dataConverter, resultConverter, new MeasurementFilter());
+    }
 
     /**
-     * Sets environmental factor to half way of possible values so that rssi distance conversation is possible.
-     * also sets false that rssi would equal distance.
-     */
-
-    /**
-     * Create solution for trilateration task.
+     * Calculates the location of given device in three dimensional space using trilateration.
      *
-     * @param measuredPower Base power of BLE listener.
-     * @param observersChecked Observers to ignore because are already checked or irrelevant.
-     * @param obs Data on which position localization is done.
+     * @param beacon Device which location wanted to be known.
      *
      * @throws org.apache.commons.math3.linear.SingularMatrixException if covariance doesn't have solution.
      * @throws IllegalArgumentException if signal strength values are from less then two observers.
+     * @throws IllegalArgumentException if beacon hasn't been detected by BLE listeners yet.
      *
-     * @return Optimum object which contains the result for problem in raw form.
+     * @return Location of given device.
      */
-    LeastSquaresOptimizer.Optimum createOptimum(double measuredPower, List<String> observersChecked,
-                                                List<Observation> obs) {
+    @Override
+    public Location calculateLocation(Beacon beacon) {
+        List<Observation> obs = beacon.getObservations();
+
+        if (obs.isEmpty()) {
+            throw new IllegalArgumentException("BLE device must have been seen by at least one observer!");
+        }
+
         List<double[]> pos = new ArrayList<>();
         List<Double> dist = new ArrayList<>();
-        HashMap<String, List<Double>> measurements = new HashMap();
-        Kalman k = new Kalman();
+        Map<String, List<Double>> measurements = new HashMap<>();
 
         // Go through observations from newest to latest.
         for (int i = obs.size() - 1; i >= 0; i--) {
             Observation model = obs.get(i);
 
-            if (!measurements.containsKey(model.getRaspId())) {
-                measurements.put(model.getRaspId(), new ArrayList<>());
+            if (!measurements.containsKey(model.getObserverId())) {
+                measurements.put(model.getObserverId(), new ArrayList<>());
             }
-            measurements.get(model.getRaspId()).add(model.getRssi());
 
-            // preventing double value from observers.
-            //if (!observersChecked.contains(model.getRaspId())) {
-            //    dist.add(pathLossModel.calculateDistance(model.getRssi(), measuredPower)); // changing rssi into millimeters distance.
-            //    pos.add(iObserverService.getObserver(model.getRaspId()).getPosition());
-            //    observersChecked.add(model.getRaspId());
-            //}
+            measurements.get(model.getObserverId()).add(model.getRssi());
         }
-        for (Map.Entry<String, List<Double>> val :
-                measurements.entrySet()) {
+
+        // Populate the arrays with static locations and with their distances to target.
+        // Also inaccuracy is filtered out.
+        for (Map.Entry<String, List<Double>> val : measurements.entrySet()) {
             Double[] measurementsArray = val.getValue().toArray(new Double[0]);
-            double kalmanPrediction = k.calculate(measurementsArray);
-            dist.add(pathLossModel.calculateDistance(kalmanPrediction, measuredPower)); // changing rssi into millimeters distance.
-            pos.add(iObserverService.getObserver(val.getKey()).getPosition());
+            double smooth = filter.smooth(measurementsArray);
+
+            dist.add(dataConverter.convert(smooth, beacon.getMeasuredPower()));
+            pos.add(observerService.getObserver(val.getKey()).getPosition());
         }
 
-
-        double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observers (BLE listeners).
-        double[] distances = new double[dist.size()]; // Distances from each observer to target BLE device.
+        double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observers.
+        double[] distances = new double[dist.size()]; // Distances from each observer to target.
 
         // Move from ArrayList to array so that empty slots can be avoided.
         // Otherwise covariance throws singularity exception
@@ -84,6 +88,40 @@ abstract class LocationService implements ILocationService {
 
         NonLinearLeastSquaresSolver solver;
         solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
-        return solver.solve();
+        LeastSquaresOptimizer.Optimum optimum = solver.solve();
+
+        // Location in form of [x,y,z].
+        double[] centroid = optimum.getPoint().toArray();
+
+        // Standard error in form of [x,y,z].
+        double[] standardDeviation = optimum.getSigma(0).toArray();
+
+        // Covariance matrix.
+        RealMatrix covMatrix = optimum.getCovariances(0);
+
+        return resultConverter.convert(beacon, centroid, standardDeviation, covMatrix);
+    }
+
+    /**
+     * Calculates location of all the devices. Ignoring those that can't be solved.
+     *
+     * @param beacons List of devices that needs to be located.
+     *
+     * @see LocationService#calculateLocation(Beacon)
+     *
+     * @return Location of all the devices that can be pinpointed using trilateration.
+     */
+    @Override
+    public List<Location> calculateAllLocations(List<Beacon> beacons) {
+        List<Location> list = new ArrayList<>();
+
+        beacons.forEach(beacon -> {
+            try {
+                list.add(calculateLocation(beacon));
+            } catch (Exception ignored) {
+            }
+        });
+
+        return list;
     }
 }

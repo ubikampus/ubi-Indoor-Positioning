@@ -25,16 +25,11 @@ public class Beacon {
     }
 
     public Beacon(String id, int maxLifetime) {
-        this.id = id;
-        this.measuredPower = -Double.MAX_VALUE;
-        this.observations = new ArrayList<>();
-        this.maxLifetime = maxLifetime;
+        this(id, -Double.MAX_VALUE, new ArrayList<>(), maxLifetime);
     }
 
     public Beacon(String id, double measuredPower, List<Observation> observations) {
-        this.id = id;
-        this.measuredPower = measuredPower;
-        this.observations = observations;
+        this(id, measuredPower, observations, 30);
     }
 
     public Beacon(String id, double measuredPower, List<Observation> observations, int maxLifetime) {
@@ -48,13 +43,12 @@ public class Beacon {
     }
 
     public List<Observation> getObservations() {
-        observations = observations
-                .stream()
+        observations = observations.stream()
                 .filter(x -> x.getTimestamp().isAfter(LocalDateTime.now().minusSeconds(maxLifetime)))
                 .collect(Collectors.toList());
+
         return observations;
     }
-
 
     /**
      * Set observations of the beacon.

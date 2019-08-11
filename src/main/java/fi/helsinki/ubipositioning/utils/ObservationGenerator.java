@@ -73,7 +73,7 @@ public class ObservationGenerator {
                 Observation latest = null;
 
                 for (Observation s : b.getObservations()) {
-                    if (s.getRaspId().equals(o)) {
+                    if (s.getObserverId().equals(o)) {
                         latest = s;
                     }
                 }
