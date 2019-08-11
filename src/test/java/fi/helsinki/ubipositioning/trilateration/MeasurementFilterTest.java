@@ -59,7 +59,7 @@ public class MeasurementFilterTest {
         }
 
         smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-155, smooth, 1.5);
+        assertEquals(-155, smooth, 2);
 
         obs = new ArrayList<>();
 
