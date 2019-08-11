@@ -7,20 +7,17 @@ import java.util.Objects;
  * Wrapper for individual observation collected by listener about BLE device.
  */
 public class Observation {
-    private String raspId;
+    private String observerId;
     private String beaconId;
     private double rssi;
     private LocalDateTime timestamp;
 
-    public Observation(String raspId, String beaconId, double rssi) {
-        this.raspId = raspId;
-        this.beaconId = beaconId;
-        this.rssi = rssi;
-        this.timestamp = LocalDateTime.now();
+    public Observation(String observerId, String beaconId, double rssi) {
+        this(observerId, beaconId, rssi, LocalDateTime.now());
     }
 
-    public Observation(String raspId, String beaconId, double rssi, LocalDateTime timestamp) {
-        this.raspId = raspId;
+    public Observation(String observerId, String beaconId, double rssi, LocalDateTime timestamp) {
+        this.observerId = observerId;
         this.beaconId = beaconId;
         this.rssi = rssi;
         this.timestamp = timestamp;
@@ -29,8 +26,8 @@ public class Observation {
     public Observation() {
     }
 
-    public String getRaspId() {
-        return this.raspId;
+    public String getObserverId() {
+        return this.observerId;
     }
 
     public String getBeaconId() {
@@ -45,8 +42,8 @@ public class Observation {
         return this.timestamp;
     }
 
-    public void setRaspId(String raspId) {
-        this.raspId = raspId;
+    public void setObserverId(String observerId) {
+        this.observerId = observerId;
     }
 
     public void setBeaconId(String beaconId) {
@@ -75,9 +72,9 @@ public class Observation {
             return false;
         }
         
-        final Object thisRaspId = this.getRaspId();
-        final Object otherRaspId = other.getRaspId();
-        if (!Objects.equals(thisRaspId, otherRaspId)) {
+        final Object thisObserverId = this.getObserverId();
+        final Object otherObserverId = other.getObserverId();
+        if (!Objects.equals(thisObserverId, otherObserverId)) {
             return false;
         }
         
@@ -103,8 +100,8 @@ public class Observation {
     public int hashCode() {
         final int prime = 59;
         int result = 1;
-        final Object thisRaspId = this.getRaspId();
-        result = result * prime + (thisRaspId == null ? 43 : thisRaspId.hashCode());
+        final Object thisObserverId = this.getObserverId();
+        result = result * prime + (thisObserverId == null ? 43 : thisObserverId.hashCode());
         final Object thisBeaconId = this.getBeaconId();
         result = result * prime + (thisBeaconId == null ? 43 : thisBeaconId.hashCode());
         final long thisRssi = Double.doubleToLongBits(this.getRssi());
@@ -115,7 +112,7 @@ public class Observation {
     }
 
     public String toString() {
-        return "Observation(raspId=" + this.getRaspId() + ", beaconId=" + this.getBeaconId() + 
+        return "Observation(observerId=" + this.getObserverId() + ", beaconId=" + this.getBeaconId() +
                 ", rssi=" + this.getRssi() + ", timestamp=" + this.getTimestamp() + ")";
     }
 }

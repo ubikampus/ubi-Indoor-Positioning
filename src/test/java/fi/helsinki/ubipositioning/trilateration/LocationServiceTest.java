@@ -1,14 +1,16 @@
 package fi.helsinki.ubipositioning.trilateration;
 
 import static org.junit.Assert.*;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.RealVector;
 import org.junit.Test;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import fi.helsinki.ubipositioning.datamodels.*;
-import fi.helsinki.ubipositioning.utils.IObserverService;
-import fi.helsinki.ubipositioning.utils.ObserverService;
+import fi.helsinki.ubipositioning.utils.*;
 
 /**
  * Tests for locations trilateration calculations.
@@ -16,8 +18,42 @@ import fi.helsinki.ubipositioning.utils.ObserverService;
 public class LocationServiceTest {
     private IObserverService observers;
     private Map<String, Cord> rasps;
+    private IResultConverter resultConverter;
+
+    // value in the rssi field is already euclidean distance so no actions needed.
+    private ISignalMapper signalMapper = (rssi, measuredPower) -> rssi;
+    
+    // Lambda expression that tells to return first value in the array.
+    private IMeasurementFilter filter = measurements -> measurements[0];
 
     private void setUp2D() {
+        resultConverter = new IResultConverter() {
+            @Override
+            public Location convert(Beacon beacon, double[] centroid, double[] standardDeviation, RealMatrix covMatrix) {
+                EigenDecomposition ed = new EigenDecomposition(covMatrix);
+                double[] realEigenvalues = ed.getRealEigenvalues();
+                RealVector principal = ed.getEigenvector(0);
+                double highestEigenValue = realEigenvalues[0];
+
+                for (int i = 1; i < realEigenvalues.length; i++) {
+                    RealVector eigenvector = ed.getEigenvector(i);
+                    double eigenvalue = realEigenvalues[i];
+
+                    if (highestEigenValue < eigenvalue) {
+                        principal = eigenvector;
+                        highestEigenValue = eigenvalue;
+                    }
+                }
+
+                double[] asArray = principal.toArray();
+                double arctan = Math.atan(asArray[0] / asArray[1]); // angle is gotten through arc tangent.
+
+                return new Location2D(beacon.getId(),
+                        centroid[0], centroid[1],
+                        standardDeviation[0], standardDeviation[1], arctan);
+            }
+        };
+
         observers = new ObserverService(2);
         rasps = new HashMap<>();
 
@@ -39,6 +75,15 @@ public class LocationServiceTest {
     }
 
     private void setUp3D() {
+        resultConverter = new IResultConverter() {
+            @Override
+            public Location convert(Beacon beacon, double[] centroid, double[] standardDeviation, RealMatrix covMatrix) {
+                return new Location3D(beacon.getId(),
+                        centroid[0], centroid[1], centroid[2],
+                        standardDeviation[0], standardDeviation[1], standardDeviation[2]);
+            }
+        };
+
         observers = new ObserverService(3);
         rasps = new HashMap<>();
 
@@ -70,7 +115,7 @@ public class LocationServiceTest {
     @Test
     public void simpleLocationCalculation2D() {
         setUp2D();
-        ILocationService locationService = new LocationService2D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -96,7 +141,7 @@ public class LocationServiceTest {
     @Test
     public void simpleLocationCalculation3D() {
         setUp3D();
-        ILocationService locationService = new LocationService3D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -114,21 +159,21 @@ public class LocationServiceTest {
         beacon.setObservations(obs);
         beacon.setMeasuredPower(0);
 
-        Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
+        Location3D location = (Location3D) locationService.calculateLocation(beacon);
 
-        assertNotNull(locationModel);
-        assertEquals(wanted.x, locationModel.getX(), 0.05);
-        assertEquals(wanted.y, locationModel.getY(), 0.05);
-        assertEquals(wanted.z, locationModel.getZ(), 0.05);
-        assertTrue(locationModel.getXr() < 0.5);
-        assertTrue(locationModel.getYr() < 0.5);
-        assertTrue(locationModel.getZr() < 0.5);
+        assertNotNull(location);
+        assertEquals(wanted.x, location.getX(), 0.05);
+        assertEquals(wanted.y, location.getY(), 0.05);
+        assertEquals(wanted.z, location.getZ(), 0.05);
+        assertTrue(location.getXr() < 0.5);
+        assertTrue(location.getYr() < 0.5);
+        assertTrue(location.getZr() < 0.5);
     }
 
     @Test
     public void onlyCaresAboutLatest2D() {
         setUp2D();
-        ILocationService locationService = new LocationService2D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -147,7 +192,6 @@ public class LocationServiceTest {
 
         beacon.setObservations(obs);
         beacon.setMeasuredPower(0);
-        locationService.setCalculateDistance(false);
         Location location = locationService.calculateLocation(beacon);
 
         assertNotNull(location);
@@ -160,7 +204,7 @@ public class LocationServiceTest {
     @Test
     public void onlyCaresAboutLatest3D() {
         setUp3D();
-        ILocationService locationService = new LocationService3D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -187,21 +231,21 @@ public class LocationServiceTest {
 
         beacon.setObservations(obs);
         beacon.setMeasuredPower(0);
-        Location3D locationModel = (Location3D) locationService.calculateLocation(beacon);
+        Location3D location = (Location3D) locationService.calculateLocation(beacon);
 
-        assertNotNull(locationModel);
-        assertEquals(wanted.x, locationModel.getX(), 0.05);
-        assertEquals(wanted.y, locationModel.getY(), 0.05);
-        assertEquals(wanted.z, locationModel.getZ(), 0.05);
-        assertTrue(locationModel.getXr() < 0.5);
-        assertTrue(locationModel.getYr() < 0.5);
-        assertTrue(locationModel.getZr() < 0.5);
+        assertNotNull(location);
+        assertEquals(wanted.x, location.getX(), 0.05);
+        assertEquals(wanted.y, location.getY(), 0.05);
+        assertEquals(wanted.z, location.getZ(), 0.05);
+        assertTrue(location.getXr() < 0.5);
+        assertTrue(location.getYr() < 0.5);
+        assertTrue(location.getZr() < 0.5);
     }
 
     @Test
     public void locationCannotBeCalculatedWithoutObs2D() {
         setUp2D();
-        ILocationService locationService = new LocationService2D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -219,7 +263,7 @@ public class LocationServiceTest {
     @Test
     public void locationCannotBeCalculatedWithoutObs3D() {
         setUp3D();
-        ILocationService locationService = new LocationService3D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -237,7 +281,7 @@ public class LocationServiceTest {
     @Test
     public void calculateAllLocations2D() {
         setUp2D();
-        ILocationService locationService = new LocationService2D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
         List<Cord> wanted = new ArrayList<>();
         List<Beacon> beacons = new ArrayList<>();
 
@@ -313,11 +357,10 @@ public class LocationServiceTest {
         beacons.add(beacon);
 
         // Assertion.
-        List<Location> locations = locationService.calculateAllLocations(beacons);
 
-        for (int i = 0; i < locations.size(); i++) {
+        for (int i = 0; i < beacons.size(); i++) {
             Cord real = wanted.get(i);
-            Location loc = locations.get(i);
+            Location loc = locationService.calculateLocation(beacons.get(i));
 
             assertNotNull(loc);
             assertEquals(real.x, loc.getX(), 0.05);
@@ -330,7 +373,7 @@ public class LocationServiceTest {
     @Test
     public void calculateAllLocations3D() {
         setUp3D();
-        ILocationService locationService = new LocationService3D(observers);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
         List<Cord> wanted = new ArrayList<>();
         List<Beacon> beacons = new ArrayList<>();
 
@@ -425,12 +468,9 @@ public class LocationServiceTest {
         beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
-        // Assertion.
-        List<Location> locations = locationService.calculateAllLocations(beacons);
-
-        for (int i = 0; i < locations.size(); i++) {
+        for (int i = 0; i < beacons.size(); i++) {
             Cord real = wanted.get(i);
-            Location loc = locations.get(i);
+            Location loc = locationService.calculateLocation(beacons.get(i));
 
             assertNotNull(loc);
             assertEquals(Location3D.class, loc.getClass());
@@ -443,13 +483,6 @@ public class LocationServiceTest {
             assertTrue(ddd.getYr() < 0.5);
             assertTrue(ddd.getZr() < 0.5);
         }
-    }
-
-    @Test
-    public void getDistanceFromRssiWorks() {
-        LocationService locationService = new LocationService2D(observers);
-        locationService.setCalculateDistance(true);
-        assertEquals(locationService.getDistanceFromRssi(-80, -69), 3548.1, 0.10);
     }
 
     private Observation createObservation2D(String raspId, String beaconId, Cord wanted) {
@@ -468,7 +501,7 @@ public class LocationServiceTest {
         return Math.sqrt(Math.pow(c1.x - c2.x, 2) + Math.pow(c1.y - c2.y, 2) + Math.pow(c1.z - c2.z, 2));
     }
 
-    private class Cord {
+    private static class Cord {
         private double x;
         private double y;
         private double z;
