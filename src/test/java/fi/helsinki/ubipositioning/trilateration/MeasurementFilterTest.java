@@ -19,7 +19,7 @@ public class MeasurementFilterTest {
         }
 
         double smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-25, smooth, 1.5);
+        assertEquals(-25, smooth, 2.5);
     }
 
     @Test
@@ -32,7 +32,7 @@ public class MeasurementFilterTest {
         }
 
         double smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-25, smooth, 1.5);
+        assertEquals(-25, smooth, 2.5);
 
         obs = new ArrayList<>();
 
@@ -41,7 +41,7 @@ public class MeasurementFilterTest {
         }
 
         smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-305, smooth, 1.5);
+        assertEquals(-305, smooth, 2.5);
 
         obs = new ArrayList<>();
 
@@ -50,7 +50,7 @@ public class MeasurementFilterTest {
         }
 
         smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-82, smooth, 1.5);
+        assertEquals(-82, smooth, 2.5);
 
         obs = new ArrayList<>();
 
@@ -59,7 +59,7 @@ public class MeasurementFilterTest {
         }
 
         smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-155, smooth, 2);
+        assertEquals(-155, smooth, 2.5);
 
         obs = new ArrayList<>();
 
@@ -68,6 +68,6 @@ public class MeasurementFilterTest {
         }
 
         smooth = filter.smooth(obs.toArray(new Double[0]));
-        assertEquals(-45, smooth, 1.5);
+        assertEquals(-45, smooth, 2.5);
     }
 }
