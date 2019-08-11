@@ -21,7 +21,7 @@ public class LocationServiceTest {
     private IResultConverter resultConverter;
 
     // value in the rssi field is already euclidean distance so no actions needed.
-    private IDataConverter dataConverter = (rssi, measuredPower) -> rssi;
+    private ISignalMapper signalMapper = (rssi, measuredPower) -> rssi;
     
     // Lambda expression that tells to return first value in the array.
     private IMeasurementFilter filter = measurements -> measurements[0];
@@ -115,7 +115,7 @@ public class LocationServiceTest {
     @Test
     public void simpleLocationCalculation2D() {
         setUp2D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -141,7 +141,7 @@ public class LocationServiceTest {
     @Test
     public void simpleLocationCalculation3D() {
         setUp3D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -173,7 +173,7 @@ public class LocationServiceTest {
     @Test
     public void onlyCaresAboutLatest2D() {
         setUp2D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -204,7 +204,7 @@ public class LocationServiceTest {
     @Test
     public void onlyCaresAboutLatest3D() {
         setUp3D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -245,7 +245,7 @@ public class LocationServiceTest {
     @Test
     public void locationCannotBeCalculatedWithoutObs2D() {
         setUp2D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -263,7 +263,7 @@ public class LocationServiceTest {
     @Test
     public void locationCannotBeCalculatedWithoutObs3D() {
         setUp3D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
 
         List<Observation> obs = new ArrayList<>();
         Beacon beacon = new Beacon("beacon-1");
@@ -281,7 +281,7 @@ public class LocationServiceTest {
     @Test
     public void calculateAllLocations2D() {
         setUp2D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
         List<Cord> wanted = new ArrayList<>();
         List<Beacon> beacons = new ArrayList<>();
 
@@ -357,11 +357,10 @@ public class LocationServiceTest {
         beacons.add(beacon);
 
         // Assertion.
-        List<Location> locations = locationService.calculateAllLocations(beacons);
 
-        for (int i = 0; i < locations.size(); i++) {
+        for (int i = 0; i < beacons.size(); i++) {
             Cord real = wanted.get(i);
-            Location loc = locations.get(i);
+            Location loc = locationService.calculateLocation(beacons.get(i));
 
             assertNotNull(loc);
             assertEquals(real.x, loc.getX(), 0.05);
@@ -374,7 +373,7 @@ public class LocationServiceTest {
     @Test
     public void calculateAllLocations3D() {
         setUp3D();
-        ILocationService locationService = new LocationService(observers, dataConverter, resultConverter, filter);
+        ILocationService locationService = new LocationService(observers, signalMapper, resultConverter, filter);
         List<Cord> wanted = new ArrayList<>();
         List<Beacon> beacons = new ArrayList<>();
 
@@ -469,12 +468,9 @@ public class LocationServiceTest {
         beacon.setMeasuredPower(0);
         beacons.add(beacon);
 
-        // Assertion.
-        List<Location> locations = locationService.calculateAllLocations(beacons);
-
-        for (int i = 0; i < locations.size(); i++) {
+        for (int i = 0; i < beacons.size(); i++) {
             Cord real = wanted.get(i);
-            Location loc = locations.get(i);
+            Location loc = locationService.calculateLocation(beacons.get(i));
 
             assertNotNull(loc);
             assertEquals(Location3D.class, loc.getClass());

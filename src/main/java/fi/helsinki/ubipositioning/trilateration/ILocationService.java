@@ -8,5 +8,4 @@ import fi.helsinki.ubipositioning.datamodels.*;
  */
 public interface ILocationService {
     Location calculateLocation(Beacon beacon);
-    List<Location> calculateAllLocations(List<Beacon> beacons);
 }

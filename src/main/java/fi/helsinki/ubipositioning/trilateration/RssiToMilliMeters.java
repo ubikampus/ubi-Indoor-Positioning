@@ -3,7 +3,7 @@ package fi.helsinki.ubipositioning.trilateration;
 /**
  * Converter to change rssi into distance at scale of millimeters.
  */
-public class RssiToMilliMeters implements IDataConverter {
+public class RssiToMilliMeters implements ISignalMapper {
     private double environmentalFactor;
 
     public RssiToMilliMeters(double environmentalFactor) {

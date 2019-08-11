@@ -22,7 +22,7 @@ class MeasurementFilter implements IMeasurementFilter {
     // R = [ 0.1 ]
     private RealMatrix matrixR = new Array2DRowRealMatrix(new double[] { 32.9 });
 
-    // static filter.
+    // static filter
     private KalmanFilter filter;
 
     /**

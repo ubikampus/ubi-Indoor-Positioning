@@ -15,22 +15,22 @@ import fi.helsinki.ubipositioning.utils.*;
 public class LocationService implements ILocationService {
     private IObserverService observerService;
     private IMeasurementFilter filter;
-    private IDataConverter dataConverter;
+    private ISignalMapper signalMapper;
     private IResultConverter resultConverter;
 
     /**
      * Creates instance of the class.
      *
      * @param observerService service to store and handle all the observers.
-     * @param dataConverter converts rssi into distance.
+     * @param signalMapper converts rssi into distance.
      * @param resultConverter converter to create proper model out of result.
      * @param filter filter to smooth out inaccuracy of raw data.
      */
-    public LocationService(IObserverService observerService, IDataConverter dataConverter,
+    public LocationService(IObserverService observerService, ISignalMapper signalMapper,
                            IResultConverter resultConverter, IMeasurementFilter filter) {
         this.observerService = observerService;
         this.filter = filter;
-        this.dataConverter = dataConverter;
+        this.signalMapper = signalMapper;
         this.resultConverter = resultConverter;
     }
 
@@ -40,12 +40,12 @@ public class LocationService implements ILocationService {
      * @see MeasurementFilter
      *
      * @param observerService service to store and handle all the observers.
-     * @param dataConverter converts rssi into distance.
+     * @param signalMapper converts rssi into distance.
      * @param resultConverter converter to create proper model out of result.
      */
-    public LocationService(IObserverService observerService, IDataConverter dataConverter,
+    public LocationService(IObserverService observerService, ISignalMapper signalMapper,
                            IResultConverter resultConverter) {
-        this(observerService, dataConverter, resultConverter, new MeasurementFilter());
+        this(observerService, signalMapper, resultConverter, new MeasurementFilter());
     }
 
     /**
@@ -88,7 +88,7 @@ public class LocationService implements ILocationService {
             Double[] measurementsArray = val.getValue().toArray(new Double[0]);
             double smooth = filter.smooth(measurementsArray);
 
-            dist.add(dataConverter.convert(smooth, beacon.getMeasuredPower()));
+            dist.add(signalMapper.convert(smooth, beacon.getMeasuredPower()));
             pos.add(observerService.getObserver(val.getKey()).getPosition());
         }
 
@@ -118,28 +118,5 @@ public class LocationService implements ILocationService {
 
         // Convert result into proper model.
         return resultConverter.convert(beacon, centroid, standardDeviation, covMatrix);
-    }
-
-    /**
-     * Calculates location of all the devices. Ignoring those that can't be solved.
-     *
-     * @param beacons List of devices that needs to be located.
-     *
-     * @see LocationService#calculateLocation(Beacon)
-     *
-     * @return Location of all the devices that can be pinpointed using trilateration.
-     */
-    @Override
-    public List<Location> calculateAllLocations(List<Beacon> beacons) {
-        List<Location> list = new ArrayList<>();
-
-        beacons.forEach(beacon -> {
-            try {
-                list.add(calculateLocation(beacon));
-            } catch (Exception ignored) {
-            }
-        });
-
-        return list;
     }
 }
