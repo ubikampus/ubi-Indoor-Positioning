@@ -1,4 +1,4 @@
-package fi.helsinki.ubipositioning.utils;
+package fi.helsinki.ubipositioning.trilateration;
 
 /**
  * Interface to generalize rssi conversation into more useful format

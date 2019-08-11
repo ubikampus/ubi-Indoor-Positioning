@@ -1,4 +1,4 @@
-package fi.helsinki.ubipositioning.utils;
+package fi.helsinki.ubipositioning.trilateration;
 
 /**
  * Interface for smoothing inaccuracy out of raw data.

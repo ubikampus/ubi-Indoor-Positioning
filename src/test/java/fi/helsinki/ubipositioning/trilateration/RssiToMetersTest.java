@@ -1,4 +1,4 @@
-package fi.helsinki.ubipositioning.utils;
+package fi.helsinki.ubipositioning.trilateration;
 
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;

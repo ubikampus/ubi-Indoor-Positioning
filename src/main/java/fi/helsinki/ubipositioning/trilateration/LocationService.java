@@ -18,6 +18,14 @@ public class LocationService implements ILocationService {
     private IDataConverter dataConverter;
     private IResultConverter resultConverter;
 
+    /**
+     * Creates instance of the class.
+     *
+     * @param observerService service to store and handle all the observers.
+     * @param dataConverter converts rssi into distance.
+     * @param resultConverter converter to create proper model out of result.
+     * @param filter filter to smooth out inaccuracy of raw data.
+     */
     public LocationService(IObserverService observerService, IDataConverter dataConverter,
                            IResultConverter resultConverter, IMeasurementFilter filter) {
         this.observerService = observerService;
@@ -26,13 +34,22 @@ public class LocationService implements ILocationService {
         this.resultConverter = resultConverter;
     }
 
+    /**
+     * Creates instance of the class using default measurement filter.
+     *
+     * @see MeasurementFilter
+     *
+     * @param observerService service to store and handle all the observers.
+     * @param dataConverter converts rssi into distance.
+     * @param resultConverter converter to create proper model out of result.
+     */
     public LocationService(IObserverService observerService, IDataConverter dataConverter,
                            IResultConverter resultConverter) {
         this(observerService, dataConverter, resultConverter, new MeasurementFilter());
     }
 
     /**
-     * Calculates the location of given device in three dimensional space using trilateration.
+     * Calculates the location of given device in n dimensional space using trilateration.
      *
      * @param beacon Device which location wanted to be known.
      *
@@ -99,6 +116,7 @@ public class LocationService implements ILocationService {
         // Covariance matrix.
         RealMatrix covMatrix = optimum.getCovariances(0);
 
+        // Convert result into proper model.
         return resultConverter.convert(beacon, centroid, standardDeviation, covMatrix);
     }
 
