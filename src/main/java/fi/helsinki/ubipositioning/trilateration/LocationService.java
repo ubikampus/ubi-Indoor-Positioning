@@ -63,6 +63,8 @@ public class LocationService implements ILocationService {
     public Location calculateLocation(Beacon beacon) {
         List<Observation> obs = beacon.getObservations();
 
+        System.out.println(obs.size());
+
         if (obs.isEmpty()) {
             throw new IllegalArgumentException("BLE device must have been seen by at least one observer!");
         }
@@ -82,6 +84,8 @@ public class LocationService implements ILocationService {
             measurements.get(model.getObserverId()).add(model.getRssi());
         }
 
+        System.out.println("success measurements");
+
         // Populate the arrays with static locations and with their distances to target.
         // Also inaccuracy is filtered out.
         for (Map.Entry<String, List<Double>> val : measurements.entrySet()) {
@@ -91,6 +95,8 @@ public class LocationService implements ILocationService {
             dist.add(signalMapper.convert(smooth, beacon.getMeasuredPower()));
             pos.add(observerService.getObserver(val.getKey()).getPosition());
         }
+
+        System.out.println("lists success");
 
         double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observers.
         double[] distances = new double[dist.size()]; // Distances from each observer to target.
@@ -102,6 +108,8 @@ public class LocationService implements ILocationService {
             positions[i] = pos.get(i);
             distances[i] = dist.get(i);
         }
+
+        System.out.println("arrays success");
 
         NonLinearLeastSquaresSolver solver;
         solver = new NonLinearLeastSquaresSolver(new TrilaterationFunction(positions, distances), new LevenbergMarquardtOptimizer());
@@ -115,6 +123,8 @@ public class LocationService implements ILocationService {
 
         // Covariance matrix.
         RealMatrix covMatrix = optimum.getCovariances(0);
+
+        System.out.println("goig ofr converter: " + resultConverter);
 
         // Convert result into proper model.
         return resultConverter.convert(beacon, centroid, standardDeviation, covMatrix);
