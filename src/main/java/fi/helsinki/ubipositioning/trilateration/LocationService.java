@@ -1,6 +1,5 @@
 package fi.helsinki.ubipositioning.trilateration;
 
-import fi.helsinki.ubipositioning.datamodels.Observer;
 import org.apache.commons.math3.fitting.leastsquares.LeastSquaresOptimizer;
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer;
 import org.apache.commons.math3.linear.RealMatrix;
@@ -8,6 +7,7 @@ import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.ubipositioning.datamodels.*;
+import fi.helsinki.ubipositioning.datamodels.Observer;
 import fi.helsinki.ubipositioning.utils.*;
 
 /**
