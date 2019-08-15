@@ -255,7 +255,7 @@ public class LocationServiceTest {
         try {
             Location location = locationService.calculateLocation(beacon);
             fail("Exception wasn't thrown!");
-        } catch (IllegalArgumentException e) {
+        } catch (UnknownDeviceException e) {
             assertTrue(true);
         }
     }
@@ -273,7 +273,7 @@ public class LocationServiceTest {
         try {
             Location location = locationService.calculateLocation(beacon);
             fail("Exception wasn't thrown!");
-        } catch (IllegalArgumentException e) {
+        } catch (UnknownDeviceException e) {
             assertTrue(true);
         }
     }

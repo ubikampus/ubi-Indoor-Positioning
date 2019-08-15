@@ -7,6 +7,7 @@ import java.util.*;
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver;
 import com.lemmingapex.trilateration.TrilaterationFunction;
 import fi.helsinki.ubipositioning.datamodels.*;
+import fi.helsinki.ubipositioning.datamodels.Observer;
 import fi.helsinki.ubipositioning.utils.*;
 
 /**
@@ -55,7 +56,8 @@ public class LocationService implements ILocationService {
      *
      * @throws org.apache.commons.math3.linear.SingularMatrixException if covariance doesn't have solution.
      * @throws IllegalArgumentException if signal strength values are from less then two observers.
-     * @throws IllegalArgumentException if beacon hasn't been detected by BLE listeners yet.
+     * @throws UnknownDeviceException if beacon hasn't been detected by BLE listeners yet.
+     * @throws UnknownDeviceException if observer is not configured into ObserverService.
      *
      * @return Location of given device.
      */
@@ -64,7 +66,7 @@ public class LocationService implements ILocationService {
         List<Observation> obs = beacon.getObservations();
 
         if (obs.isEmpty()) {
-            throw new IllegalArgumentException("BLE device must have been seen by at least one observer!");
+            throw new UnknownDeviceException("BLE device must have been seen by at least one observer!");
         }
 
         List<double[]> pos = new ArrayList<>();
@@ -87,9 +89,14 @@ public class LocationService implements ILocationService {
         for (Map.Entry<String, List<Double>> val : measurements.entrySet()) {
             Double[] measurementsArray = val.getValue().toArray(new Double[0]);
             double smooth = filter.smooth(measurementsArray);
+            Observer observer = observerService.getObserver(val.getKey());
+
+            if (observer == null) {
+                throw new UnknownDeviceException("Observer not configured!");
+            }
 
             dist.add(signalMapper.convert(smooth, beacon.getMeasuredPower()));
-            pos.add(observerService.getObserver(val.getKey()).getPosition());
+            pos.add(observer.getPosition());
         }
 
         double[][] positions = new double[pos.size()][pos.get(0).length]; // Positions of observers.
