@@ -166,6 +166,68 @@ public class MqttService implements IMqttService {
     }
 
     /**
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using defined listener to handle all the messages that comes to the topic after this method is called.
+     * Also decrypts the messages with secret key before giving it to the listener.
+     *
+     * @param secretKey Key that is used to decrypt the messages.
+     *
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
+     */
+    @Override
+    public void connectEncrypted(String secretKey) {
+        connectEncrypted(secretKey, listener);
+    }
+
+    /**
+     * Connects to MQTT bus to subscribe into subscribeTopic and start listening it.
+     * Using defined listener to handle all the messages that comes to the topic after this method is called.
+     * Also decrypts the messages with secret key before giving it to the listener.
+     *
+     * @param secretKey Key that is used to decrypt the messages.
+     * @param listener Handler to be called when message arrives through subscription.
+     *
+     * @throws NullPointerException if listener is not defined.
+     * @throws RuntimeException with problem related throwable as message
+     *         if either mqtt bus url or subscribeTopic is badly defined.
+     */
+    @Override
+    public void connectEncrypted(String secretKey, IMessageListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("IMessageListener not set");
+        }
+
+        instance.connect(new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+                instance.subscribeEncrypted(subscribeTopic, new String[]{secretKey}, new IUbiMessageListener() {
+                    @Override
+                    public void messageArrived(String topic, MqttMessage mqttMessage, String listenerId) {
+                        listener.messageArrived(mqttMessage.toString());
+                    }
+                }, new IUbiActionListener() {
+                    @Override
+                    public void onSuccess(IMqttToken asyncActionToken) {
+
+                    }
+
+                    @Override
+                    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                        throw new RuntimeException(exception);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
+    }
+
+    /**
      * Closes session in MQTT server.
      *
      * @throws RuntimeException if disconnecting failed.
@@ -218,6 +280,29 @@ public class MqttService implements IMqttService {
     @Override
     public void publishSigned(String message, String secretKey) {
         instance.publishSigned(publishTopic, message, secretKey, new IUbiActionListener() {
+            @Override
+            public void onSuccess(IMqttToken asyncActionToken) {
+
+            }
+
+            @Override
+            public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                throw new RuntimeException(exception);
+            }
+        });
+    }
+
+    /**
+     * Publish message in encrypted form to publishTopic in MQTT bus.
+     *
+     * @param message Message to encrypt and publish.
+     * @param publicKey Key used to encrypt the message.
+     *
+     * @throws RuntimeException if publishTopic is not valid.
+     */
+    @Override
+    public void publishEncrypted(String message, String publicKey) {
+        instance.publishEncrypted(publishTopic, message, publicKey, new IUbiActionListener() {
             @Override
             public void onSuccess(IMqttToken asyncActionToken) {
 
