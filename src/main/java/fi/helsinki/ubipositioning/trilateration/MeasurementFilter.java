@@ -41,7 +41,8 @@ class MeasurementFilter implements IMeasurementFilter {
         }
 
         // Ensures that Kalman filter can get used to to the new data as it is progressive analysis.
-        int rounds = Math.round(2000 / measurements.length) + 1;
+        int rounds = 2000 / measurements.length + 1;
+
         for (int i = 0; i < rounds; i++) {
             for (Double measurement : measurements) {
                 filter.predict();

@@ -68,18 +68,19 @@ public class ObservationGenerator {
                 b = new Beacon(k);
                 b.setMeasuredPower(0);
 
-                rssi = Math.random() * -150;
+                rssi = Math.random() * -70;
             } else {
                 Observation latest = null;
 
                 for (Observation s : b.getObservations()) {
                     if (s.getObserverId().equals(o)) {
                         latest = s;
+                        break;
                     }
                 }
 
                 if (latest == null) {
-                    rssi = Math.random() * -100;
+                    rssi = Math.random() * -35;
                 } else {
                     double change = Math.random() * 2 - 1;
                     double previous = latest.getRssi();
