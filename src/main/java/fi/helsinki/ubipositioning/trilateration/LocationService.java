@@ -92,7 +92,7 @@ public class LocationService implements ILocationService {
             Observer observer = observerService.getObserver(val.getKey());
 
             if (observer == null) {
-                throw new UnknownDeviceException("Observer not configured!");
+                throw new UnknownDeviceException("Observer not configured! " + val.getKey() + " unknown!");
             }
 
             dist.add(signalMapper.convert(smooth, beacon.getMeasuredPower()));
